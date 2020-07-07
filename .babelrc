@@ -1,3 +1,13 @@
 {
-  "presets": ["es2015", "stage-2", "stage-3"]
+    "presets": [
+        "@babel/preset-react",
+        [
+            "@babel/preset-env",
+            {
+                "useBuiltIns": "entry",
+                "modules": false
+            }
+        ]
+    ],
+    "plugins": ["syntax-dynamic-import"]
 }
