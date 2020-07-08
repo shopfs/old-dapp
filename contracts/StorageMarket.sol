@@ -26,6 +26,8 @@ interface IERC20 {
 contract StorageMarketPlace {
    
     modifier isUploaded(string memory _hash) {
+        // Since file count starts from 0
+        // Kept the has array due to integer constant error in solidity
         for (uint i = 0; i < hash.length; i ++) {
             require(keccak256(abi.encodePacked((hash[i]))) != keccak256(abi.encodePacked((_hash))), "Cannot upload existing file");
         }
@@ -44,12 +46,11 @@ contract StorageMarketPlace {
     
 
     mapping(uint => File) public Files;
+    string[] public hash;
 
     uint public priceLimit;
-    uint public fileId;
+    uint public fileCount;
 
-    string[] public hash;
-    uint[] public fileCount;
 
     constructor(uint _priceLimit) public {
         priceLimit = _priceLimit;
@@ -57,9 +58,8 @@ contract StorageMarketPlace {
    
     function sell(address _paymentAsset, uint _price, string calldata _hash, string calldata _description) isUploaded(_hash) external returns(bool) {
         require(_price < priceLimit, "Price has to be less than a set price limit");
-        Files[fileId] = File(msg.sender, _paymentAsset, _hash, _description, _price, 0);
-        fileCount.push(fileId);
-        fileId ++;
+        Files[fileCount] = File(msg.sender, _paymentAsset, _hash, _description, _price, 0);
+        fileCount ++;
         hash.push(_hash);
         return true;
     }
