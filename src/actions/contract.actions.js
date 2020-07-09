@@ -1,11 +1,16 @@
 import { alertActions } from "./";
+import config from "config";
 import { contractConstants } from "../constants";
-import { contractService } from "../services";
+import { marketService, erc20Service } from "../services";
 
 export const contractActions = {
     clean,
-    getGreeting,
-    setGreeting
+    getFile,
+    getAllFiles,
+    getPriceLimit,
+    getFileCount,
+    buy,
+    sell
 };
 
 function clean() {
@@ -16,49 +21,146 @@ function clean() {
     };
 }
 
-function getGreeting() {
+function getFile(fileId) {
     return async (dispatch, getState) => {
         dispatch(started());
-        let greeting;
+        let file;
         try {
-            const { account, contract } = getState().web3;
-            greeting = await contractService.getGreeting(contract, account);
+            const { account, market } = getState().web3;
+            file = await marketService.getFile(market, fileId);
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
             dispatch(alertActions.error("Error Getting Greeting"));
             return;
         }
-        dispatch(result({ data: { greeting } }));
+        dispatch(result({ data: { file } }));
 
-        return greeting;
+        return file;
     };
 }
 
-function setGreeting(greeting) {
+function getFileCount() {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let fileCount;
+        try {
+            const { account, market } = getState().web3;
+            fileCount = await marketService.getFileCount(market);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            dispatch(alertActions.error("Error Getting Greeting"));
+            return;
+        }
+        dispatch(result({ data: { fileCount } }));
+
+        return fileCount;
+    };
+}
+
+function getPriceLimit() {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let priceLimit;
+        try {
+            const { account, market } = getState().web3;
+            priceLimit = await marketService.getPriceLimit(market);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            dispatch(alertActions.error("Error Getting Greeting"));
+            return;
+        }
+        dispatch(result({ data: { priceLimit } }));
+
+        return priceLimit;
+    };
+}
+
+function getAllFiles() {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let allFiles;
+        try {
+            const { account, market } = getState().web3;
+            allFiles = await marketService.getAllFiles(market);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            dispatch(alertActions.error("Error Getting Greeting"));
+            return;
+        }
+        dispatch(result({ data: { allFiles } }));
+
+        return allFiles;
+    };
+}
+
+function sell(price, fileHash, fileDescription) {
     return async (dispatch, getState) => {
         dispatch(started());
         let data;
         try {
-            const { account, contract } = getState().web3;
-            data = await contractService.setGreeting(
-                contract,
-                account,
-                greeting
+            const { account, market } = getState().web3;
+            const priceLimit = await marketService.getPriceLimit(market);
+            if (parseInt(price) > parseInt(priceLimit)) {
+                throw "Price higher than priceLimit (" + priceLimit + " DAI)";
+            }
+            data = await marketService.sell(
+                market,
+                config.testnetDaiAddress,
+                price,
+                fileHash,
+                fileDescription
             );
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
-            dispatch(alertActions.error("Error Setting Greeting"));
+            dispatch(alertActions.error("Error Selling File: " + e.toString()));
             return;
         }
         if (!data.error) {
-            dispatch(alertActions.success("Successfully Set Greeting"));
+            dispatch(alertActions.success("Successfully Sold File"));
             dispatch(done());
         } else {
             dispatch(failure(data.error));
             dispatch(
-                alertActions.error("Error Setting Greeting: " + data.error)
+                alertActions.error("Error Selling File: " + data.error)
+            );
+        }
+    };
+}
+
+function buy(fileId) {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let data;
+        try {
+            const { account, market, dai } = getState().web3;
+            const file = await marketService.getFile(market, fileId);
+            data = await erc20Service.approve(
+                dai,
+                config.marketAddress,
+                file.price
+            );
+            if (data.error) {
+                throw "Could not approve Market to transfer DAI";
+            }
+            data = await marketService.buy(market, fileId);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            dispatch(alertActions.error("Error Buying File: " + e.toString()));
+            return;
+        }
+        if (!data.error) {
+            dispatch(alertActions.success("Successfully Bought File"));
+            dispatch(done());
+        } else {
+            dispatch(failure(data.error));
+            dispatch(
+                alertActions.error("Error Buying File: " + data.error)
             );
         }
     };
