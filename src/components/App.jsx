@@ -48,10 +48,16 @@ class App extends React.Component {
                                 </div>
                             }
                         >
-                            <Switch>
-                                <Route exact path="/" component={HomePage} />
-                                <Redirect from="*" to="/" />
-                            </Switch>
+                            {this.props.connected && (
+                                <Switch>
+                                    <Route
+                                        exact
+                                        path="/"
+                                        component={HomePage}
+                                    />
+                                    <Redirect from="*" to="/" />
+                                </Switch>
+                            )}
                         </React.Suspense>
                         <NavBar />
                     </ErrorBoundary>
@@ -62,8 +68,8 @@ class App extends React.Component {
 }
 
 function mapState(state) {
-    const { web3 } = state.web3;
-    return { web3 };
+    const { web3, connected } = state.web3;
+    return { web3, connected };
 }
 
 const actionCreators = {

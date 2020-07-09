@@ -2,7 +2,8 @@ import Web3 from "web3";
 import config from "config";
 import { alertActions } from "./";
 import { web3Constants } from "../constants";
-import Greeter from "../assets/abis/Greeter.json";
+import StorageMarket from "../assets/abis/StorageMarketPlace.json";
+import TestnetDai from "../assets/abis/TestnetDai.json";
 
 export const web3Actions = {
     loadWeb3,
@@ -99,23 +100,38 @@ function loadWeb3() {
             dispatch(alertActions.error(error));
             return;
         }
-        let contract;
+        let market;
         try {
-            contract = await new web3.eth.Contract(
-                Greeter["abi"],
-                config.contractAddress,
+            market = await new web3.eth.Contract(
+                StorageMarket["abi"],
+                config.marketAddress,
                 {from: account}
             );
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
-            let error = "Could not load Greeter Contract";
+            let error = "Could not load Market Contract";
             dispatch(alertActions.error(error));
             return;
         }
-        dispatch(loaded({web3, account, networkId, contract, connected: true}));
+
+        let dai;
+        try {
+            dai = await new web3.eth.Contract(
+                TestnetDai["abi"],
+                config.testnetDaiAddress,
+                {from: account}
+            );
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            let error = "Could not load ERC20 Contract";
+            dispatch(alertActions.error(error));
+            return;
+        }
+        dispatch(loaded({web3, account, networkId, market, dai, connected: true}));
         dispatch(alertActions.success("MetaMask Connected"));
-        return contract;
+        return;
     };
 
 }
