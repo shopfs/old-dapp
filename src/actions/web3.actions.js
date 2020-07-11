@@ -1,4 +1,5 @@
 import Web3 from "web3";
+import Box from '3box';
 import config from "config";
 import { alertActions } from "./";
 import { web3Constants } from "../constants";
@@ -129,9 +130,32 @@ function loadWeb3() {
             dispatch(alertActions.error(error));
             return;
         }
-        dispatch(loaded({web3, account, networkId, market, dai, connected: true}));
+		
+		let box,space;
+		try {
+			//authenticate user's 3box 
+			const box = await Box.openBox(
+			account,
+			window.ethereum);
+			//authenticate users's space
+			space = await box.openSpace(
+			'ipfsethmaketplace');
+			//wait till user's data is synced from network
+			await box.syncDone;
+			await space.syncDone;
+		} catch(e) {
+			//throws this error if failed to authenticate
+			console.log(e);
+			dispatch(failure(e));
+            let error = "failed to initialize 3box auth session";
+            dispatch(alertActions.error(error));
+            return;
+		}
+		
+		dispatch(loaded({web3, account, networkId, market, dai, connected: true,box,space}));
         dispatch(alertActions.success("MetaMask Connected"));
         return;
+		
     };
 
 }
