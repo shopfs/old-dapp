@@ -36,13 +36,17 @@ contract StorageMarketPlace {
         address paymentAsset;
         string hash;
         string description;
+        address orbitDb;
         uint price;
         uint numRetriveals;
     }
     
+    
 
     mapping(uint => File) public Files;
     mapping(string => bool) public hashExists;
+    // for tracking buyer and the files he brought
+    mapping(address => uint[]) public buyerInfo;
 
     uint public priceLimit;
     uint public fileCount;
@@ -52,9 +56,9 @@ contract StorageMarketPlace {
         priceLimit = _priceLimit;
     }
    
-    function sell(address _paymentAsset, uint _price, string calldata _hash, string calldata _description) isUploaded(_hash) external returns(bool) {
+    function sell(address _paymentAsset, uint _price, string calldata _hash, string calldata _description, address _orbitDb) isUploaded(_hash) external returns(bool) {
         require(_price < priceLimit, "Price has to be less than a set price limit");
-        Files[fileCount] = File(msg.sender, _paymentAsset, _hash, _description, _price, 0);
+        Files[fileCount] = File(msg.sender, _paymentAsset, _hash, _description, _orbitDb, _price, 0);
         fileCount ++;
         hashExists[_hash] = true;
         return true;
@@ -64,9 +68,16 @@ contract StorageMarketPlace {
         File storage file = Files[_id];
         IERC20(file.paymentAsset).transferFrom(msg.sender, file.seller, file.price);
         file.numRetriveals ++;
+        uint[] storage buyerIds = buyerInfo[msg.sender];
+        // checking if the particular buyer exists or not
+        if (buyerIds.length > 0) {
+            buyerIds.push(_id);
+        } else {
+            // Initializing the the mapping with first id if buyer is buying 1st time
+            buyerInfo[msg.sender] = [_id];
+        }
         return true;
     }
    
    
 }
-
