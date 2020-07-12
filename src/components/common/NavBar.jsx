@@ -41,13 +41,16 @@ class NavBar extends React.Component {
                             onClick={() => {
                                 this.props.loadWeb3();
 								console.log(account);
-							    this.props.loadbox(0xAd825C9ebEC95a33Ed40915e577022C8FE593B5D);
                             }}
                         >
                             Connect with Metamask
                         </div>
                     )}
                 </div>
+				<button onClick={() => {
+                                this.props.loadbox(this.props.account);
+								console.log(account);
+                            }}>3box</button>
             </div>
         );
     }
