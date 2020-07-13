@@ -129,9 +129,11 @@ function loadWeb3() {
             dispatch(alertActions.error(error));
             return;
         }
-        dispatch(loaded({web3, account, networkId, market, dai, connected: true}));
+		
+		dispatch(loaded({web3, account, networkId, market, dai,connected: true}));
         dispatch(alertActions.success("MetaMask Connected"));
         return;
+		
     };
 
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { web3Actions } from "../../actions";
+import { web3Actions, boxActions } from "../../actions";
 import loading from "../../assets/img/loading.gif";
 import "../../assets/scss/navBar.scss";
 
@@ -40,26 +40,35 @@ class NavBar extends React.Component {
                             className="connect"
                             onClick={() => {
                                 this.props.loadWeb3();
+								this.props.loadbox(this.props.account);
+								console.log(this.props.account);
                             }}
                         >
                             Connect with Metamask
                         </div>
                     )}
                 </div>
+				<button onClick={() => {
+                                this.props.loadbox(this.props.account);
+								console.log(account);
+                            }}>3box</button>
             </div>
         );
     }
 }
 function mapState(state) {
     const { account, connected } = state.web3;
+	const { loggedIn } = state.box;
     const inProgress =
         state.contract.inProgress ||
+		state.box.inProgress ||
         state.web3.inProgress;
-    return { inProgress, account, connected };
+    return { inProgress, account, connected, loggedIn };
 }
 
 const actionCreators = {
-    loadWeb3: web3Actions.loadWeb3
+    loadWeb3: web3Actions.loadWeb3,
+	loadbox: boxActions.loadbox
 };
 
 const connectedNavBar = withRouter(connect(mapState, actionCreators)(NavBar));
