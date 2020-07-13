@@ -29,7 +29,7 @@ contract StorageMarketPlace {
         require(!hashExists[_hash], "Cannot upload existing file");
         _;
     }
-   
+
 
     struct File {
         address seller;
@@ -41,7 +41,7 @@ contract StorageMarketPlace {
         uint numRetriveals;
     }
     
-    
+    event Buy(address indexed buyer, uint indexed filedId);
 
     mapping(uint => File) public Files;
     mapping(string => bool) public hashExists;
@@ -76,8 +76,8 @@ contract StorageMarketPlace {
             // Initializing the the mapping with first id if buyer is buying 1st time
             buyerInfo[msg.sender] = [_id];
         }
+        emit Buy(msg.sender, _id);
         return true;
     }
-   
    
 }
