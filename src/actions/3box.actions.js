@@ -92,6 +92,44 @@ function getProfiles(accounts) {
     };
 }
 
+//displays all post in thread also
+function getThread(space, name, firstModerator, members) {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let thread1;
+        try {
+            thread1 = await Box.getThread(space, name, firstModerator, members);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            let error = "Could not load 3Box thread for space";
+            dispatch(alertActions.error(error));
+            return;
+        }
+        dispatch(loaded({ thread1 }));
+    };
+}
+
+//
+function joinThread(name) {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let thread2;
+        try {
+            thread2 = await space.joinThread(name);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            let error = "Could not load 3Box thread for space";
+            dispatch(alertActions.error(error));
+            return;
+        }
+        dispatch(loaded({ thread2 }));
+    };
+}
+
+//get post,add moderator,send message in thread(thread.post) left
+
 function clean() {
     return dispatch => {
         dispatch({

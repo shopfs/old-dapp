@@ -40,7 +40,8 @@ class NavBar extends React.Component {
                             className="connect"
                             onClick={() => {
                                 this.props.loadWeb3();
-								console.log(account);
+								this.props.loadbox(this.props.account);
+								console.log(this.props.account);
                             }}
                         >
                             Connect with Metamask
