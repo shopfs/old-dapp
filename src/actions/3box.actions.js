@@ -7,6 +7,9 @@ export const boxActions = {
     loadProfile,
     getDataProfile,
     getProfiles,
+    createThread,
+    addModerator,
+    postMessage,
     clean
 };
 
@@ -15,26 +18,23 @@ function loadbox(account) {
         dispatch(started());
         let box, space;
         try {
-           //authenticate user's 3box auth  
-			const box = await Box.openBox(
-			account,
-			window.ethereum);
-			console.log(box);
-			//authenticate users's space for ipfsethmarketplace app
-			//for new user it will create ipfsethmarketplace space
-			//for exissting user it will access his ipfsethmarketplace space
-			space = await box.openSpace(
-			boxConstants.SPACE_NAME);
-			console.log(space)
-			//wait till user's data is synced from network
-			await box.syncDone;
-			await space.syncDone;
+            //authenticate user's 3box auth
+            const box = await Box.openBox(account, window.ethereum);
+            console.log(box);
+            //authenticate users's space for ipfsethmarketplace app
+            //for new user it will create ipfsethmarketplace space
+            //for exissting user it will access his ipfsethmarketplace space
+            space = await box.openSpace(boxConstants.SPACE_NAME);
+            console.log(space);
+            //wait till user's data is synced from network
+            await box.syncDone;
+            await space.syncDone;
         } catch (e) {
-           console.log(e);
-           dispatch(failure(e.toString()));
-           let error = "Could not load 3Box";
-           dispatch(alertActions.error(error));
-           return;
+            console.log(e);
+            dispatch(failure(e.toString()));
+            let error = "Could not load 3Box";
+            dispatch(alertActions.error(error));
+            return;
         }
         dispatch(loaded({ box, space, loggedIn: true }));
         dispatch(alertActions.success("Login with 3Box Successful"));
@@ -89,6 +89,59 @@ function getProfiles(accounts) {
             return;
         }
         dispatch(loaded({ data: { profiles } }));
+    };
+}
+
+function createThread() {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let thread;
+        try {
+            const { space } = getState().box;
+            thread = await space.createConfidentialThread("thread1");
+            console.log("confidential space created: ", thread.address);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            return;
+        }
+        dispatch(loaded({ data: { thread } }));
+    };
+}
+
+function addModerator(address) {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let thread;
+        try {
+            const { data } = getState().box;
+            thread = data.thread;
+            await thread.addModerator(address);
+            console.log("moderator addedd: ", address);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            return;
+        }
+        dispatch(loaded({}));
+    };
+}
+
+function postMessage(message) {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let thread;
+        try {
+            const { data } = getState().box;
+            thread = data.thread;
+            await thread.post(message);
+            console.log("message posted: ", message);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            return;
+        }
+        dispatch(loaded({}));
     };
 }
 
