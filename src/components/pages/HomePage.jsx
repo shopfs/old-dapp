@@ -25,9 +25,9 @@ class HomePage extends React.Component {
         return (
             <div className="homePage">
                 <div className="homePageInner">
-                    <FilesDisplay allFiles={allFiles} />
+                    {/* <FilesDisplay allFiles={allFiles} /> */}
                     <div>
-                        <SellForm afterSubmit={this.refresh} />
+                        {/* <SellForm afterSubmit={this.refresh} /> */}
                         <ThreadTest />
                     </div>
                 </div>

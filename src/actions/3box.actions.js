@@ -8,8 +8,11 @@ export const boxActions = {
     getDataProfile,
     getProfiles,
     createThread,
+    createConfidentialThread,
+    joinThread,
     addModerator,
     postMessage,
+    getPosts,
     clean
 };
 
@@ -28,6 +31,7 @@ function loadbox(account) {
             console.log(space);
             //wait till user's data is synced from network
             await box.syncDone;
+            window.box = box;
             await space.syncDone;
         } catch (e) {
             console.log(e);
@@ -92,14 +96,39 @@ function getProfiles(accounts) {
     };
 }
 
-function createThread() {
+function createThread(threadName) {
     return async (dispatch, getState) => {
         dispatch(started());
         let thread;
         try {
             const { space } = getState().box;
-            thread = await space.createConfidentialThread("thread1");
-            console.log("confidential space created: ", thread.address);
+            thread = await space.joinThread(threadName, { members: true });
+            await space.syncDone;
+
+            console.log("space DID: ", space.DID);
+            console.log("public thread created: ", thread.address);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            return;
+        }
+        dispatch(loaded({ data: { thread } }));
+    };
+}
+
+function createConfidentialThread(threadName) {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let thread;
+        try {
+            const { space } = getState().box;
+            thread = await space.createConfidentialThread(threadName, {
+                members: true
+            });
+            await space.syncDone;
+
+            console.log("space DID: ", space.DID);
+            console.log("confidential thread created: ", thread.address);
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
@@ -114,9 +143,10 @@ function addModerator(address) {
         dispatch(started());
         let thread;
         try {
-            const { data } = getState().box;
+            const { data, space } = getState().box;
             thread = data.thread;
             await thread.addModerator(address);
+            await space.syncDone;
             console.log("moderator addedd: ", address);
         } catch (e) {
             console.log(e);
@@ -132,9 +162,10 @@ function postMessage(message) {
         dispatch(started());
         let thread;
         try {
-            const { data } = getState().box;
+            const { data, space } = getState().box;
             thread = data.thread;
             await thread.post(message);
+            await space.syncDone;
             console.log("message posted: ", message);
         } catch (e) {
             console.log(e);
@@ -145,13 +176,35 @@ function postMessage(message) {
     };
 }
 
-//displays all post in thread also
-function getThread(space, name, firstModerator, members) {
+//function getThread(space, name, firstModerator, members) {
+//    return async (dispatch, getState) => {
+//        dispatch(started());
+//        let thread1;
+//        try {
+//            thread1 = await Box.getThread(space, name, firstModerator, members);
+//        } catch (e) {
+//            console.log(e);
+//            dispatch(failure(e));
+//            let error = "Could not load 3Box thread for space";
+//            dispatch(alertActions.error(error));
+//            return;
+//        }
+//        dispatch(loaded({ thread1 }));
+//    };
+//}
+
+function joinThread(orbitdbAddress) {
     return async (dispatch, getState) => {
         dispatch(started());
-        let thread1;
+        let thread;
         try {
-            thread1 = await Box.getThread(space, name, firstModerator, members);
+            const { space } = getState().box;
+            thread = await space.joinThreadByAddress(orbitdbAddress);
+            await space.syncDone;
+
+            console.log("space DID: ", space.DID);
+            console.log("thread joined: ", thread.address);
+            console.log("moderators: ", await thread.listModerators());
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
@@ -159,17 +212,20 @@ function getThread(space, name, firstModerator, members) {
             dispatch(alertActions.error(error));
             return;
         }
-        dispatch(loaded({ thread1 }));
+        dispatch(loaded({ data: { thread } }));
     };
 }
 
-//
-function joinThread(name) {
+function getPosts() {
     return async (dispatch, getState) => {
         dispatch(started());
-        let thread2;
+        let posts;
         try {
-            thread2 = await space.joinThread(name);
+            const { data, space } = getState().box;
+            let thread = data.thread;
+            posts = await thread.getPosts();
+            await space.syncDone;
+            console.log("found posts: ", posts);
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
@@ -177,11 +233,9 @@ function joinThread(name) {
             dispatch(alertActions.error(error));
             return;
         }
-        dispatch(loaded({ thread2 }));
+        dispatch(loaded({ data: { posts } }));
     };
 }
-
-//get post,add moderator,send message in thread(thread.post) left
 
 function clean() {
     return dispatch => {
