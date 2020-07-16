@@ -11,6 +11,7 @@ class NavBar extends React.Component {
         this.state = {
             pathname: this.props.location.pathname
         };
+        this.connect = this.connect.bind(this);
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -20,6 +21,11 @@ class NavBar extends React.Component {
             };
         }
         return null;
+    }
+
+    async connect() {
+        await this.props.loadWeb3();
+        await this.props.loadbox(this.props.account);
     }
 
     render() {
@@ -39,36 +45,30 @@ class NavBar extends React.Component {
                         <div
                             className="connect"
                             onClick={() => {
-                                this.props.loadWeb3();
-								this.props.loadbox(this.props.account);
-								console.log(this.props.account);
+                                this.connect();
                             }}
                         >
                             Connect with Metamask
                         </div>
                     )}
                 </div>
-				<button onClick={() => {
-                                this.props.loadbox(this.props.account);
-								console.log(account);
-                            }}>3box</button>
             </div>
         );
     }
 }
 function mapState(state) {
     const { account, connected } = state.web3;
-	const { loggedIn } = state.box;
+    const { loggedIn } = state.box;
     const inProgress =
         state.contract.inProgress ||
-		state.box.inProgress ||
+        state.box.inProgress ||
         state.web3.inProgress;
     return { inProgress, account, connected, loggedIn };
 }
 
 const actionCreators = {
     loadWeb3: web3Actions.loadWeb3,
-	loadbox: boxActions.loadbox
+    loadbox: boxActions.loadbox
 };
 
 const connectedNavBar = withRouter(connect(mapState, actionCreators)(NavBar));

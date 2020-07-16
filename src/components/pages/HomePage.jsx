@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { contractActions } from "../../actions";
 import FilesDisplay from "./FilesDisplay";
 import SellForm from "./SellForm";
+import ThreadTest from "./ThreadTest";
 import "../../assets/scss/homePage.scss";
 
 class HomePage extends React.Component {
@@ -25,7 +26,10 @@ class HomePage extends React.Component {
             <div className="homePage">
                 <div className="homePageInner">
                     <FilesDisplay allFiles={allFiles} />
-                    <SellForm afterSubmit={this.refresh} />
+                    <div>
+                        <SellForm afterSubmit={this.refresh} />
+                        {/* <ThreadTest /> */}
+                    </div>
                 </div>
             </div>
         );
