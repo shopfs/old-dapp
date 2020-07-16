@@ -1,18 +1,17 @@
-import { boxConstants } from "../constants";
+import { daemonConstants } from "../constants";
 
 const initialState = {
-    profile: {},
     inProgress: false,
     data: {}
 };
-export function box(state = initialState, action) {
+export function daemon(state = initialState, action) {
     switch (action.type) {
-        case boxConstants.STARTED:
+        case daemonConstants.STARTED:
             return {
                 ...state,
                 inProgress: true
             };
-        case boxConstants.LOADED:
+        case daemonConstants.LOADED:
             return {
                 ...state,
                 inProgress: false,
@@ -22,13 +21,13 @@ export function box(state = initialState, action) {
                     ...action.data
                 }
             };
-        case boxConstants.CLEAN:
+        case daemonConstants.CLEAN:
             return {
                 ...state,
                 inProgress: false,
                 data: {}
             };
-        case boxConstants.ERROR:
+        case daemonConstants.ERROR:
             return {
                 ...state,
                 inProgress: false,

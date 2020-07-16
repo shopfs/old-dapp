@@ -199,7 +199,8 @@ function joinThread(orbitdbAddress) {
         let thread;
         try {
             const { space } = getState().box;
-            thread = await space.joinThreadByAddress(orbitdbAddress);
+            console.log("start");
+            thread = await space.joinThreadByAddress(orbitdbAddress, { accessTimeout: 60000});
             await space.syncDone;
 
             console.log("space DID: ", space.DID);
