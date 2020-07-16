@@ -2,7 +2,9 @@ import { alertActions } from "./";
 import config from "config";
 import { contractConstants } from "../constants";
 import { marketService, erc20Service } from "../services";
+import { client } from "../helpers/daemon.js"
 
+console.log(client)
 export const contractActions = {
     clean,
     getFile,
@@ -102,6 +104,7 @@ function sell(price, fileHash, fileDescription) {
         dispatch(started());
         let data;
         try {
+            // adding Daemon code
             const { account, market } = getState().web3;
             const priceLimit = await marketService.getPriceLimit(market);
             if (parseInt(price) > parseInt(priceLimit)) {
