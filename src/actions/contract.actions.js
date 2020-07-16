@@ -32,7 +32,7 @@ function getFile(fileId) {
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
-            dispatch(alertActions.error("Error Getting Greeting"));
+            dispatch(alertActions.error("Error Getting File"));
             return;
         }
         dispatch(result({ data: { file } }));
@@ -51,7 +51,7 @@ function getFileCount() {
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
-            dispatch(alertActions.error("Error Getting Greeting"));
+            dispatch(alertActions.error("Error Getting FileCount"));
             return;
         }
         dispatch(result({ data: { fileCount } }));
@@ -70,7 +70,7 @@ function getPriceLimit() {
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
-            dispatch(alertActions.error("Error Getting Greeting"));
+            dispatch(alertActions.error("Error Getting PriceLimit"));
             return;
         }
         dispatch(result({ data: { priceLimit } }));
@@ -89,7 +89,7 @@ function getAllFiles() {
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
-            dispatch(alertActions.error("Error Getting Greeting"));
+            dispatch(alertActions.error("Error Getting All Files"));
             return;
         }
         dispatch(result({ data: { allFiles } }));
