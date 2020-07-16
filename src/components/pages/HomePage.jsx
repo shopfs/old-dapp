@@ -25,10 +25,10 @@ class HomePage extends React.Component {
         return (
             <div className="homePage">
                 <div className="homePageInner">
-                    {/* <FilesDisplay allFiles={allFiles} /> */}
+                    <FilesDisplay allFiles={allFiles} />
                     <div>
-                        {/* <SellForm afterSubmit={this.refresh} /> */}
-                        <ThreadTest />
+                        <SellForm afterSubmit={this.refresh} />
+                        {/* <ThreadTest /> */}
                     </div>
                 </div>
             </div>

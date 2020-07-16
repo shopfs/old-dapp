@@ -3,10 +3,7 @@ import { alertActions } from "./";
 import { daemonConstants } from "../constants";
 
 export const daemonActions = {
-    clean
 };
-
-const daemon = new SpaceClient({url: `http://0.0.0.0:9998`});
 
 function clean() {
     return dispatch => {
