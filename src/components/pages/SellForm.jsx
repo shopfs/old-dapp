@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { contractActions } from "../../actions";
+import { daemonActions, contractActions } from "../../actions";
 
-const SellForm = ({ sell, afterSubmit }) => {
+const SellForm = ({ sell, afterSubmit, uploadFile }) => {
     const [description, setDescription] = useState("");
-    const [hash, setHash] = useState("");
+    const [path, setPath] = useState("");
     const [price, setPrice] = useState("");
-    const [file, setFile] = useState("")
+
+    const sellFile = async () => {
+        const threadInfo = await uploadFile(path)
+        console.log(threadInfo)
+        // await sell(price, hash, description);
+        // afterSubmit();
+        // setPath("");
+        // setPrice("");
+        // setDescription("");
+    };
 
     return (
         <section className="sellForm">
@@ -18,9 +27,9 @@ const SellForm = ({ sell, afterSubmit }) => {
             />
             <input
                 type="text"
-                placeholder="file hash"
-                value={hash}
-                onChange={e => setHash(e.target.value)}
+                placeholder="full file path"
+                value={path}
+                onChange={e => setPath(e.target.value)}
             />
             <input
                 type="number"
@@ -28,20 +37,9 @@ const SellForm = ({ sell, afterSubmit }) => {
                 value={price}
                 onChange={e => setPrice(e.target.value)}
             />
-            <Button>
-                Upload a file
-            </Button>
-            <input type="file"
-             onChange={e => setFile(event.target.files[0])}
-            />             
             <button
-                onClick={async e => {
-                    await sell(price, hash, description, file);
-                    afterSubmit();
-                    setHash("");
-                    setPrice("");
-                    setDescription("");
-                    setFile("")
+                onClick={e => {
+                    sellFile();
                 }}
             >
                 Sell File
@@ -55,12 +53,10 @@ function mapState(state) {
 }
 
 const actionCreators = {
-    sell: contractActions.sell
+    sell: contractActions.sell,
+    uploadFile: daemonActions.uploadFile
 };
 
-const connectedSellForm = connect(
-    mapState,
-    actionCreators
-)(SellForm);
+const connectedSellForm = connect(mapState, actionCreators)(SellForm);
 
 export default connectedSellForm;

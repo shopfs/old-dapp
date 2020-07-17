@@ -25,7 +25,7 @@ class NavBar extends React.Component {
 
     async connect() {
         await this.props.loadWeb3();
-        await this.props.loadbox(this.props.account);
+        // await this.props.loadbox(this.props.account);
     }
 
     render() {
@@ -62,6 +62,7 @@ function mapState(state) {
     const inProgress =
         state.contract.inProgress ||
         state.box.inProgress ||
+        state.daemon.inProgress ||
         state.web3.inProgress;
     return { inProgress, account, connected, loggedIn };
 }
