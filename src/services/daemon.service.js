@@ -2,18 +2,25 @@ import SpaceClient from "@fleekhq/space-client";
 
 const client = new SpaceClient({ url: `http://0.0.0.0:9998` });
 
-const createBucket = async (bucketName) => {
+export const daemonService = {
+    createBucket,
+    shareBucket,
+    uploadFile
+};
+
+async function createBucket(bucketName) {
     const bucketResponse = await client.createBucket({ slug: bucketName });
     return bucketResponse.getBucket();
-};
+}
 
-const shareBucket = async (bucketName) => {
+async function shareBucket(bucketName) {
     // bucket sharing details to be saved in  3box/any other alternative
     const sharingResponse = await client.shareBucket({ bucketName });
-    return sharingResponse.getThreadinfo();
-};
+    const threadInfo = sharingResponse.getThreadinfo();
+    return { key: threadInfo.getKey(), addresses: threadInfo.getAddressesList() };
+}
 
-const uploadFile = async (filePath) => {
+async function uploadFile(bucketName, filePath) {
     // uploading file to bucket have to integrate with button
     const stream = await client.addItems({
         bucket: bucketName,
@@ -29,7 +36,10 @@ const uploadFile = async (filePath) => {
         console.error("error: ", error);
     });
 
-    await stream.on("end", () => {
-        console.log("end");
+    return await new Promise(resolve => {
+        stream.on("end", () => {
+            console.log("end");
+            resolve();
+        });
     });
-};
+}
