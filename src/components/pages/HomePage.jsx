@@ -25,6 +25,7 @@ class HomePage extends React.Component {
         return (
             <div className="homePage">
                 <div className="homePageInner">
+				<button class="btn">login</button>
                     <FilesDisplay allFiles={allFiles} />
                     <div>
                         <SellForm afterSubmit={this.refresh} />
