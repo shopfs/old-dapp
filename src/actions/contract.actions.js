@@ -97,11 +97,20 @@ function getAllFiles() {
     };
 }
 
-function sell(price, fileHash, fileDescription) {
+function sell(price, fileHash, fileDescription, file) {
     return async (dispatch, getState) => {
         dispatch(started());
         let data;
         try {
+            // // adding Daemon code
+            // // Creating bucket
+            // // pass the path into upload file function
+            // console.log(file)
+            // console.log(await createBucket())
+
+            // console.log(await shareBucket())
+
+            // console.log(await uploadFile())
             const { account, market } = getState().web3;
             const priceLimit = await marketService.getPriceLimit(market);
             if (parseInt(price) > parseInt(priceLimit)) {

@@ -9,7 +9,7 @@
     "start": "webpack-dev-server --config webpack.local.js"
   },
   "dependencies": {
-    "3box": "1.20.4-beta.1",
+    "3box": "^1.20.3",
     "@fleekhq/space-client": "^0.1.5",
     "babel-polyfill": "^6.26.0",
     "history": "^4.10.1",
@@ -23,7 +23,8 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "web3": "^1.2.9",
-    "webpack-merge": "^4.2.2"
+    "webpack-merge": "^4.2.2",
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

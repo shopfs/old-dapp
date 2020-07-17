@@ -6,6 +6,7 @@ const SellForm = ({ sell, afterSubmit }) => {
     const [description, setDescription] = useState("");
     const [hash, setHash] = useState("");
     const [price, setPrice] = useState("");
+    const [file, setFile] = useState("")
 
     return (
         <section className="sellForm">
@@ -27,13 +28,20 @@ const SellForm = ({ sell, afterSubmit }) => {
                 value={price}
                 onChange={e => setPrice(e.target.value)}
             />
+            <Button>
+                Upload a file
+            </Button>
+            <input type="file"
+             onChange={e => setFile(event.target.files[0])}
+            />             
             <button
                 onClick={async e => {
-                    await sell(price, hash, description);
+                    await sell(price, hash, description, file);
                     afterSubmit();
                     setHash("");
                     setPrice("");
                     setDescription("");
+                    setFile("")
                 }}
             >
                 Sell File
