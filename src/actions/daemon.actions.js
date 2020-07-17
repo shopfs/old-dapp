@@ -1,4 +1,3 @@
-import { SpaceClient } from "@fleekhq/space-client";
 import { alertActions } from "./";
 import { daemonConstants } from "../constants";
 

@@ -1,0 +1,51 @@
+@import "config.scss";
+
+.threadPage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    padding-top: 5rem;
+    font-size: 1rem;
+    background: $blue1;
+    .threadPageInner {
+        padding: 0.5rem;
+        height: 100%;
+        width: 100%;
+         display: flex;
+         flex-direction: row;
+         justify-content: center;
+         align-items: flex-start;
+        section {
+            width: 15rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin: 1rem 0;
+            p {
+                margin: 0;
+            }
+            button {
+                background: $blue2;
+                color: $white;
+                border-radius: 0.5rem;
+                height: 2rem;
+                margin-top: 1rem;
+            }
+
+            input {
+                border-radius: 0.5rem;
+                height: 2rem;
+            }
+        }
+        .threadTest {
+            border: 1px solid $blue2;
+            padding: 0.5rem;
+        }
+        .threadTest div {
+            margin: 1rem 0;
+        }
+    }
+}
