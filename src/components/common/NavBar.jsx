@@ -50,7 +50,7 @@ class NavBar extends React.Component {
                                 this.connect();
                             }}
                         >
-                            Login
+                            Join now
                         </div>
                     )}
                 </div>

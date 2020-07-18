@@ -50,12 +50,12 @@ class App extends React.Component {
                                 </div>
                             }
                         >
-                            {this.props.connected && (
+                           
                                 <Switch>
                                     <Route
                                         exact
                                         path="/"
-                                        component={SellPage}
+                                        component={HomePage}
                                     />	
                                     <Route
                                         exact
@@ -64,7 +64,7 @@ class App extends React.Component {
                                     />									
                                     <Redirect from="*" to="/" />
                                 </Switch>
-                            )}
+                            
                         </React.Suspense>
                         <NavBar />
                     </ErrorBoundary>
