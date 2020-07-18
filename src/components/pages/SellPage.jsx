@@ -4,7 +4,7 @@ import { contractActions } from "../../actions";
 import FilesDisplay from "./FilesDisplay";
 import SellForm from "./SellForm";
 import ThreadTest from "./ThreadTest";
-import "../../assets/scss/homePage.scss";
+import "../../assets/scss/sellPage.scss";
 
 class SellPage extends React.Component {
     constructor(props) {

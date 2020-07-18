@@ -55,15 +55,13 @@ class App extends React.Component {
                                     <Route
                                         exact
                                         path="/"
-                                        component={HomePage}
-                                    />
-									/*
+                                        component={SellPage}
+                                    />	
                                     <Route
                                         exact
                                         path="/thread"
                                         component={ThreadPage}
-                                    />
-									*/
+                                    />									
                                     <Redirect from="*" to="/" />
                                 </Switch>
                             )}
