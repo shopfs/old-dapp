@@ -1,7 +1,7 @@
 import { alertActions } from "./";
 import config from "config";
 import { contractConstants } from "../constants";
-import { marketService, erc20Service } from "../services";
+import { marketService, erc20Service, ilpdService } from "../services";
 
 export const contractActions = {
     clean,
@@ -102,27 +102,19 @@ function sell(price, fileHash, fileDescription, file) {
         dispatch(started());
         let data;
         try {
-            // // adding Daemon code
-            // // Creating bucket
-            // // pass the path into upload file function
-            // console.log(file)
-            // console.log(await createBucket())
-
-            // console.log(await shareBucket())
-
-            // console.log(await uploadFile())
             const { account, market } = getState().web3;
             const priceLimit = await marketService.getPriceLimit(market);
             if (parseInt(price) > parseInt(priceLimit)) {
                 throw "Price higher than priceLimit (" + priceLimit + " DAI)";
             }
-            data = await marketService.sell(
-                market,
-                config.testnetDaiAddress,
-                price,
-                fileHash,
-                fileDescription
-            );
+            const serilaizedData = await ilpdService.serlializeFile(price, fileHash, fileDescription)
+            // data = await marketService.sell(
+            //     market,
+            //     config.testnetDaiAddress,
+            //     price,
+            //     fileHash,
+            //     serilaizedData
+            // );
         } catch (e) {
             console.log(e);
             dispatch(failure(e));

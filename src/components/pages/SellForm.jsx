@@ -8,13 +8,14 @@ const SellForm = ({ sell, afterSubmit, uploadFile }) => {
     const [price, setPrice] = useState("");
 
     const sellFile = async () => {
-        const threadInfo = await uploadFile(path)
-        console.log(threadInfo)
-        // await sell(price, hash, description);
-        // afterSubmit();
-        // setPath("");
-        // setPrice("");
-        // setDescription("");
+        const fileDaemonPayload = await uploadFile(path)
+        console.log(fileDaemonPayload)
+        // the thread info and bucket name needs to be stored on firebase with seller address as the key
+        await sell(price, fileDaemonPayload.uploadData, description);
+        afterSubmit();
+        setPath("");
+        setPrice("");
+        setDescription("");
     };
 
     return (

@@ -10,12 +10,16 @@ function uploadFile(filePath) {
     return async (dispatch, getState) => {
         dispatch(started());
         let threadInfo;
+        const fileDaemonPayload = {}
         try {
             const { account } = getState().web3;
             const bucketName = account + "." + Date.now()
             await daemonService.createBucket(bucketName)
-            await daemonService.uploadFile(bucketName, filePath)
+            const uploadData = await daemonService.uploadFile(bucketName, filePath)
             threadInfo = await daemonService.shareBucket(bucketName)
+            fileDaemonPayload['uploadData'] = uploadData
+            fileDaemonPayload['threadInfo'] = threadInfo
+            fileDaemonPayload['bucketName'] = bucketName
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
@@ -25,8 +29,8 @@ function uploadFile(filePath) {
             return;
         }
         dispatch(alertActions.success("Successfully Uploaded File"));
-        dispatch(loaded({ data: { threadInfo } }));
-        return threadInfo;
+        dispatch(loaded({ data: { fileDaemonPayload } }));
+        return fileDaemonPayload
     };
 }
 
