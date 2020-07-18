@@ -25,11 +25,7 @@ class HomePage extends React.Component {
         return (
             <div className="homePage">
                 <div className="homePageInner">
-                    <FilesDisplay allFiles={allFiles} />
-                    <div>
-                        <SellForm afterSubmit={this.refresh} />
-                        { <ThreadTest /> }
-                    </div>
+                    <div> Welcome To IPFS-Marketplace </div>
                 </div>
             </div>
         );
