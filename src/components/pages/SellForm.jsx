@@ -39,9 +39,9 @@ const SellForm = ({ sell, afterSubmit, uploadFile }) => {
                 onChange={e => setPrice(e.target.value)}
             />
 			//Button is not valid 
-            /*<Button>
+            <Button>
                 Upload a file
-            </Button>*/
+            </Button>
             <input type="file"
              onChange={e => setFile(event.target.files[0])}
             />             

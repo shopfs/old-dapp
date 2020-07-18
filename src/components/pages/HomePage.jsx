@@ -29,11 +29,11 @@ class HomePage extends React.Component {
 					
 					
 					
-					//<FilesDisplay allFiles={allFiles} />
-                    //<div>
-                        //<SellForm afterSubmit={this.refresh} />
-                        //{/* <ThreadTest /> */}
-                    //</div>
+					/*<FilesDisplay allFiles={allFiles} />
+                    <div>
+                        <SellForm afterSubmit={this.refresh} />
+                         { <ThreadTest /> }
+                    </div>*/
 					
                 </div>
             </div>
