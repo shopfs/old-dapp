@@ -29,19 +29,18 @@ contract StorageMarketPlace {
         require(!hashExists[_hash], "Cannot upload existing file");
         _;
     }
-
+   
 
     struct File {
         address seller;
         address paymentAsset;
         string hash;
-        string description;
-        address orbitDb;
+        uint8[] serializedData;
         uint price;
         uint numRetriveals;
     }
     
-    event Buy(address indexed buyer, uint indexed filedId);
+    
 
     mapping(uint => File) public Files;
     mapping(string => bool) public hashExists;
@@ -56,9 +55,9 @@ contract StorageMarketPlace {
         priceLimit = _priceLimit;
     }
    
-    function sell(address _paymentAsset, uint _price, string calldata _hash, string calldata _description, address _orbitDb) isUploaded(_hash) external returns(bool) {
+    function sell(address _paymentAsset, uint _price, string calldata _hash, uint8[] calldata serializedData) isUploaded(_hash) external returns(bool) {
         require(_price < priceLimit, "Price has to be less than a set price limit");
-        Files[fileCount] = File(msg.sender, _paymentAsset, _hash, _description, _orbitDb, _price, 0);
+        Files[fileCount] = File(msg.sender, _paymentAsset, _hash, serializedData, _price, 0);
         fileCount ++;
         hashExists[_hash] = true;
         return true;
@@ -76,8 +75,8 @@ contract StorageMarketPlace {
             // Initializing the the mapping with first id if buyer is buying 1st time
             buyerInfo[msg.sender] = [_id];
         }
-        emit Buy(msg.sender, _id);
         return true;
     }
+   
    
 }
