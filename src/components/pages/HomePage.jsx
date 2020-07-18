@@ -9,27 +9,22 @@ import "../../assets/scss/homePage.scss";
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
-        this.refresh = this.refresh.bind(this);
-    }
-
-    async componentDidMount() {
-        await this.refresh();
-    }
-
-    async refresh() {
-        await this.props.getAllFiles();
+        //this.refresh = this.refresh.bind(this);
     }
 
     render() {
-        const { allFiles } = this.props.data;
         return (
             <div className="homePage">
-                <div className="homePageInner">
-                    <FilesDisplay allFiles={allFiles} />
-                    <div>
-                        <SellForm afterSubmit={this.refresh} />
-                        {/* <ThreadTest /> */}
-                    </div>
+                <div className="homePageInner1">
+                    <div> Welcome To ShopFS </div>
+                </div>
+				<div className="homePageInner2">
+                    <div>Sell your files directly to customers using power of blockchain and p2p storage</div>
+				</div>
+				<div className="homePageInner3">
+                    <div className="inner-box"> img1</div>
+					<div className="inner-box"> img2</div>
+					<div className="inner-box"> img3</div>
                 </div>
             </div>
         );

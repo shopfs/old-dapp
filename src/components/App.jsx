@@ -7,7 +7,8 @@ import { web3Actions } from "../actions";
 import { ErrorBoundary, NavBar } from "../components/common";
 import loading from "../assets/img/loading.gif";
 import "../assets/scss/app.scss";
-const HomePage = React.lazy(() => import("../components/pages/HomePage"));
+const HomePage = React.lazy(() => import("../components/pages/Homepage"));
+const SellPage = React.lazy(() => import("../components/pages/Sellpage"));
 const ThreadPage = React.lazy(() => import("../components/pages/ThreadPage"));
 
 class App extends React.Component {
@@ -49,21 +50,21 @@ class App extends React.Component {
                                 </div>
                             }
                         >
-                            {this.props.connected && (
+                           
                                 <Switch>
                                     <Route
                                         exact
                                         path="/"
                                         component={HomePage}
-                                    />
+                                    />	
                                     <Route
                                         exact
                                         path="/thread"
                                         component={ThreadPage}
-                                    />
+                                    />									
                                     <Redirect from="*" to="/" />
                                 </Switch>
-                            )}
+                            
                         </React.Suspense>
                         <NavBar />
                     </ErrorBoundary>

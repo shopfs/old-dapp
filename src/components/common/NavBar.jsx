@@ -25,7 +25,9 @@ class NavBar extends React.Component {
 
     async connect() {
         await this.props.loadWeb3();
+		//3box commented for faster loading for now
         // await this.props.loadbox(this.props.account);
+
     }
 
     render() {
@@ -36,19 +38,19 @@ class NavBar extends React.Component {
                     className="loading"
                     src={loading}
                     style={inProgress ? { opacity: 1 } : { opacity: 0 }}
-                />
-                <div className="navBarLogo">ETH + IPFS Market</div>
+                />	
+                <div className="navBarLogo">ShopFS</div>				
                 <div className="navBarAddress">
                     {connected ? (
                         "Logged in as " + account
                     ) : (
                         <div
-                            className="connect"
+                            className="btn-hover"
                             onClick={() => {
                                 this.connect();
                             }}
                         >
-                            Connect with Metamask
+                            Join now
                         </div>
                     )}
                 </div>
@@ -58,13 +60,13 @@ class NavBar extends React.Component {
 }
 function mapState(state) {
     const { account, connected } = state.web3;
-    const { loggedIn } = state.box;
+    //const { loggedIn } = state.box;
     const inProgress =
         state.contract.inProgress ||
-        state.box.inProgress ||
+        //state.box.inProgress ||
         state.daemon.inProgress ||
         state.web3.inProgress;
-    return { inProgress, account, connected, loggedIn };
+    return { inProgress, account, connected };
 }
 
 const actionCreators = {
