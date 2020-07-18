@@ -1,6 +1,6 @@
 import SpaceClient from "@fleekhq/space-client";
 
-const client = new SpaceClient({ url: `http://0.0.0.0:9998` });
+const client = new SpaceClient({ url: `http://localhost:9998` });
 
 export const daemonService = {
     createBucket,
@@ -21,15 +21,12 @@ async function shareBucket(bucketName) {
 }
 
 async function uploadFile(bucketName, filePath) {
+    let uploadData
     // uploading file to bucket have to integrate with button
     const stream = await client.addItems({
         bucket: bucketName,
         targetPath: "/", // path in the bucket to be saved
         sourcePaths: [filePath]
-    });
-    // events to capture the file uploading journey
-    await stream.on("data", data => {
-        console.log("data: ", data);
     });
 
     await stream.on("error", error => {
@@ -37,9 +34,9 @@ async function uploadFile(bucketName, filePath) {
     });
 
     return await new Promise(resolve => {
-        stream.on("end", () => {
-            console.log("end");
-            resolve();
-        });
+        stream.on("data", data => {
+        console.log("data: ", data);
+        resolve(data.array[0][1])
+    });
     });
 }
