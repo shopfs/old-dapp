@@ -25,7 +25,7 @@ class HomePage extends React.Component {
         return (
             <div className="homePage">
                 <div className="homePageInner">
-                    <div> Welcome To IPFS-Marketplace </div>
+                    <div> Welcome To ShopFS </div>
                 </div>
             </div>
         );

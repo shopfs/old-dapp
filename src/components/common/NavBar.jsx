@@ -25,6 +25,7 @@ class NavBar extends React.Component {
 
     async connect() {
         await this.props.loadWeb3();
+		//3box commented for faster loading for now
         // await this.props.loadbox(this.props.account);
 
     }
@@ -37,7 +38,8 @@ class NavBar extends React.Component {
                     className="loading"
                     src={loading}
                     style={inProgress ? { opacity: 1 } : { opacity: 0 }}
-                />			
+                />	
+                <div className="navBarLogo">ShopFS</div>				
                 <div className="navBarAddress">
                     {connected ? (
                         "Logged in as " + account
