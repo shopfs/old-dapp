@@ -37,8 +37,7 @@ class NavBar extends React.Component {
                     className="loading"
                     src={loading}
                     style={inProgress ? { opacity: 1 } : { opacity: 0 }}
-                />
-                //<div className="navBarLogo"></div>
+                />			
                 <div className="navBarAddress">
                     {connected ? (
                         "Logged in as " + account

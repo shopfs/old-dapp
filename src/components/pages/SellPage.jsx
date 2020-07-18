@@ -6,7 +6,7 @@ import SellForm from "./SellForm";
 import ThreadTest from "./ThreadTest";
 import "../../assets/scss/homePage.scss";
 
-class HomePage extends React.Component {
+class SellPage extends React.Component {
     constructor(props) {
         super(props);
         this.refresh = this.refresh.bind(this);
@@ -28,7 +28,7 @@ class HomePage extends React.Component {
                     <FilesDisplay allFiles={allFiles} />
                     <div>
                         <SellForm afterSubmit={this.refresh} />
-                        { <ThreadTest /> }
+                        {/* <ThreadTest /> */}
                     </div>
                 </div>
             </div>
@@ -45,5 +45,5 @@ const actionCreators = {
     getAllFiles: contractActions.getAllFiles
 };
 
-const connectedHomePage = connect(mapState, actionCreators)(HomePage);
-export default connectedHomePage;
+const connectedSellPage = connect(mapState, actionCreators)(SellPage);
+export default connectedSellPage;
