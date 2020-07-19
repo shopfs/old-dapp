@@ -4,6 +4,7 @@ import { contractActions } from "../../actions";
 import FilesDisplay from "./FilesDisplay";
 import SellForm from "./SellForm";
 import ThreadTest from "./ThreadTest";
+import Tabs from './Tabs';
 import "../../assets/scss/sellPage.scss";
 
 class SellPage extends React.Component {
@@ -25,11 +26,15 @@ class SellPage extends React.Component {
         return (
             <div className="homePage">
                 <div className="homePageInner">
-                    <FilesDisplay allFiles={allFiles} />
-                    <div>
+				 <Tabs>
+				    <div label="Buyer">
+                        <FilesDisplay allFiles={allFiles} />
+					</div>
+                    <div label="Seller">
                         <SellForm afterSubmit={this.refresh} />
                         {/* <ThreadTest /> */}
                     </div>
+					</Tabs>
                 </div>
             </div>
         );
