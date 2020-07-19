@@ -5,38 +5,38 @@
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    width: 100%;
-    height: 100%;
+    width: 1365px;
+    height: 700px;
     padding-top: 5rem;
     font-size: 1rem;
     background: $blue1;
     .homePageInner {
         padding: 0.5rem;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: flex-start;
+		padding-top: 2rem;
+        height: 700px;
+        width: 700px;
+        align-items: center;
         display: grid;
+		border: 1px solid #ccc;
         grid-template-columns: 1fr 1fr;
 		
 		.tab-list {
             border-bottom: 1px solid #ccc;
             padding-left: 0;
+			cursor: pointer;
         }
 
-        .tab-list-item {
+        .tab-list-item {		
             display: inline-block;
             list-style: none;
             margin-bottom: -1px;
-            padding: 0.5rem 0.75rem;
+            padding: 0.5rem 0.75rem;		
         }
 
-        .tab-list-active {
+        .tab-list-active {	
             background-color: white;
             border: solid #ccc;
-            border-width: 1px 1px 0 1px;
+            border-width: 1px 1px 0 1px;	
         }
 		
         section {
