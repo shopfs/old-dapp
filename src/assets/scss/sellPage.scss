@@ -10,6 +10,7 @@
     padding-top: 5rem;
     font-size: 1rem;
     background: $blue1;
+	overflow-y:scroll;
     .homePageInner {
 		padding-top: 2rem;
         height:100%;
@@ -19,15 +20,7 @@
 		border: 1px solid #ccc;
         grid-template-columns: 1fr 1fr;
 		margin-left:20px;
-		.Inner {
-		
-        height:100%;
-		width: 500px;
-        align-items: center;
-		border: 1px solid #ccc;
-		margin-left:20px;
-		}
-		
+	
 		.tab-list {
 		    height:100%;
 			width: 500px;
