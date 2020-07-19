@@ -50,19 +50,18 @@ class App extends React.Component {
                                 </div>
                             }
                         >
-                            
+                           
                                 <Switch>
                                     <Route
                                         exact
                                         path="/"
                                         component={HomePage}
                                     />	
-                                  <Route
+                                    <Route
                                         exact
                                         path="/thread"
                                         component={ThreadPage}
-                                    />
-			
+                                    />									
                                     <Redirect from="*" to="/" />
                                 </Switch>
                             

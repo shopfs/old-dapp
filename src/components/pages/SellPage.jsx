@@ -30,6 +30,7 @@ class SellPage extends React.Component {
 				    <div label="Buyer">
                         <FilesDisplay allFiles={allFiles} />
 					</div>
+					
                     <div label="Seller">
                         <SellForm afterSubmit={this.refresh} />
                         {/* <ThreadTest /> */}

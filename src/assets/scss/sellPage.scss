@@ -11,29 +11,40 @@
     font-size: 1rem;
     background: $blue1;
     .homePageInner {
-        padding: 0.5rem;
 		padding-top: 2rem;
-        height: 700px;
-        width: 700px;
+        height:100%;
+		width: 500px;
         align-items: center;
         display: grid;
 		border: 1px solid #ccc;
         grid-template-columns: 1fr 1fr;
+		margin-left:20px;
+		.Inner {
+		
+        height:100%;
+		width: 500px;
+        align-items: center;
+		border: 1px solid #ccc;
+		margin-left:20px;
+		}
 		
 		.tab-list {
+		    height:100%;
+			width: 500px;
             border-bottom: 1px solid #ccc;
-            padding-left: 0;
 			cursor: pointer;
+			margin-left:20px;
         }
 
         .tab-list-item {		
             display: inline-block;
             list-style: none;
             margin-bottom: -1px;
-            padding: 0.5rem 0.75rem;		
+            padding: 0.5rem 0.75rem;			
         }
 
         .tab-list-active {	
+		    width: 200px;
             background-color: white;
             border: solid #ccc;
             border-width: 1px 1px 0 1px;	
