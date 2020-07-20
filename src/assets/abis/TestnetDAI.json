@@ -18238,7 +18238,7 @@
     }
   },
   "schemaVersion": "3.2.2",
-  "updatedAt": "2020-07-20T14:14:24.696Z",
+  "updatedAt": "2020-07-20T17:23:44.136Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "ERC20 minting logic Sourced from OpenZeppelin and thoroughly butchered to remove security guards. Anybody can mint - STRICTLY FOR TEST PURPOSES",
