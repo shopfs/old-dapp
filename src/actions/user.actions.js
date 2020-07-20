@@ -5,7 +5,8 @@ import {
     daemonService,
     marketService,
     erc20Service,
-    ipldService
+    ipldService,
+    keysService
 } from "../services";
 
 export const userActions = {
@@ -14,7 +15,9 @@ export const userActions = {
     getAllFiles,
     getPriceLimit,
     getFileCount,
+    getBuyerFiles,
     buy,
+    downloadFile,
     uploadAndSellFile
 };
 
@@ -42,6 +45,25 @@ function getFile(fileId) {
         dispatch(result({ data: { file } }));
 
         return file;
+    };
+}
+
+function getBuyerFiles() {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let files;
+        try {
+            const { account, market } = getState().web3;
+            files = await marketService.getBuyerFiles(market, account);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            dispatch(alertActions.error("Error Getting Buyer Files"));
+            return;
+        }
+        dispatch(result({ data: { buyerFiles: files } }));
+
+        return files;
     };
 }
 
@@ -114,30 +136,29 @@ function uploadAndSellFile(path, description, price) {
             }
 
             const bucketName = account + "." + Date.now();
-            await daemonService.createBucket(bucketName);
-            const uploadData = await daemonService.uploadFile(bucketName, path);
-            console.log(uploadData);
-            threadInfo = await daemonService.shareBucket(bucketName);
+            const fileName = path.replace(/^.*[\\\/]/, "");
 
-            await keysService.putThreadData({
-                threadInfo,
+            await daemonService.createBucket(bucketName);
+            await daemonService.uploadFile(bucketName, path);
+            const threadInfo = await daemonService.shareBucket(bucketName);
+            const metadataHash = await ipldService.uploadMetadata({
+                fileName,
                 bucketName,
-                uploadData
+                description,
+                imageHash: ""
             });
 
-            // const serializedData = await ipldService.serializeFile(
-            //     price,
-            //     hash,
-            //     description
-            // );
+            await keysService.putThreadData(metadataHash, {
+                threadInfo,
+                bucketName
+            });
 
-            // data = await marketService.sell(
-            //     market,
-            //     config.testnetDaiAddress,
-            //     price,
-            //     fileHash,
-            //     metadataHash
-            // );
+            data = await marketService.sell(
+                market,
+                config.testnetDAIAddress,
+                price,
+                metadataHash
+            );
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
@@ -183,6 +204,24 @@ function buy(fileId) {
             dispatch(failure(data.error));
             dispatch(alertActions.error("Error Buying File: " + data.error));
         }
+    };
+}
+
+function downloadFile(metadataHash) {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        try {
+            const { account, market, dai } = getState().web3;
+            const threadData = await keysService.getThreadData(metadataHash);
+            console.log({ threadData });
+            await daemonService.joinBucket(threadData.bucketName, threadData.threadInfo);
+            const location = await daemonService.openFile(threadData.bucketName);
+        } catch (error) {
+            console.log({ error });
+            dispatch(failure(error));
+            return;
+        }
+        dispatch(done());
     };
 }
 

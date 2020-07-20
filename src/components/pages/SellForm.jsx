@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { userActions } from "../../actions";
 
-const SellForm = ({ sell, afterSubmit, uploadFile }) => {
+const SellForm = ({ sell, afterSubmit, uploadAndSellFile }) => {
     const [description, setDescription] = useState("");
     const [path, setPath] = useState("");
     const [price, setPrice] = useState("");
@@ -56,7 +56,7 @@ function mapState(state) {
 }
 
 const actionCreators = {
-    uploadAndSellFile: userActions.sellFile
+    uploadAndSellFile: userActions.uploadAndSellFile
 };
 
 const connectedSellForm = connect(mapState, actionCreators)(SellForm);

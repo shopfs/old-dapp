@@ -59,6 +59,11 @@ class App extends React.Component {
                                     />	
                                     <Route
                                         exact
+                                        path="/sell"
+                                        component={SellPage}
+                                    />	
+                                    <Route
+                                        exact
                                         path="/thread"
                                         component={ThreadPage}
                                     />									

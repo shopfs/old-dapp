@@ -2,14 +2,17 @@ import React from "react";
 import { connect } from "react-redux";
 import { userActions } from "../../actions";
 
-const FilesDisplay = ({ buy, allFiles }) => {
+const FilesDisplay = ({ buy, allFiles, buyerFiles, downloadFile }) => {
     return (
         <section className="filesDisplay">
             {allFiles &&
                 allFiles.map((file, fileId) => (
-                    <div className="fileItem" key={file.hash}>
-                        <p> Description: {file.description} </p>
-                        <p> Hash: {file.hash} </p>
+                    <div className="fileItem" key={file.metadataHash}>
+                        <p> Description: {file.metadata.description} </p>
+                        <p> FileName: {file.metadata.fileName} </p>
+                        <p> BucketName: {file.metadata.bucketName} </p>
+                        <p> ImageHash: {file.metadata.imageHash} </p>
+                        <p> Hash: {file.metadataHash} </p>
                         <p> Retrievals: {file.numRetriveals} </p>
                         <p> Price: {file.price + " DAI"} </p>
                         <button
@@ -18,6 +21,15 @@ const FilesDisplay = ({ buy, allFiles }) => {
                             }}
                         >
                             Buy File
+                        </button>
+                        {/* buyerFiles && buyerFiles.includes(fileId) && (
+                        )*/}
+                        <button
+                            onClick={async e => {
+                                await downloadFile(file.metadataHash);
+                            }}
+                        >
+                            Download File
                         </button>
                     </div>
                 ))}
@@ -30,7 +42,8 @@ function mapState(state) {
 }
 
 const actionCreators = {
-    buy: userActions.buy
+    buy: userActions.buy,
+    downloadFile: userActions.downloadFile
 };
 
 const connectedFilesDisplay = connect(mapState, actionCreators)(FilesDisplay);

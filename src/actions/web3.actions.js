@@ -3,7 +3,7 @@ import config from "config";
 import { alertActions } from "./";
 import { web3Constants } from "../constants";
 import StorageMarket from "../assets/abis/StorageMarketPlace.json";
-import TestnetDai from "../assets/abis/TestnetDai.json";
+import TestnetDAI from "../assets/abis/TestnetDAI.json";
 
 export const web3Actions = {
     loadWeb3,
@@ -118,8 +118,8 @@ function loadWeb3() {
         let dai;
         try {
             dai = await new web3.eth.Contract(
-                TestnetDai["abi"],
-                config.testnetDaiAddress,
+                TestnetDAI["abi"],
+                config.testnetDAIAddress,
                 {from: account}
             );
         } catch (e) {

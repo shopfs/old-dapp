@@ -34,7 +34,6 @@ contract StorageMarketPlace {
     struct File {
         address seller;
         address paymentAsset;
-        string fileHash; // unique fileHash
         string metadataHash; // unique metadataHash
         uint price;
         uint numRetriveals;
@@ -54,10 +53,10 @@ contract StorageMarketPlace {
         priceLimit = _priceLimit;
     }
    
-    function sell(address _paymentAsset, uint _price, string calldata _fileHash, string calldata _metadataHash) isUploaded(_fileHash) external returns(bool) {
+    function sell(address _paymentAsset, uint _price, string calldata _metadataHash) isUploaded(_metadataHash) external returns(bool) {
         require(_price < priceLimit, "Price has to be less than a set price limit");
-        Files[fileCount] = File(msg.sender, _paymentAsset, _fileHash, _metadataHash, _price, 0);
-        hashExists[_fileHash] = true;
+        Files[fileCount] = File(msg.sender, _paymentAsset, _metadataHash, _price, 0);
+        hashExists[_metadataHash] = true;
         fileCount ++;
         return true;
     }
