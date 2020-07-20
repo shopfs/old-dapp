@@ -4,13 +4,18 @@ import { userActions } from "../../actions";
 import FilesDisplay from "./FilesDisplay";
 import SellForm from "./SellForm";
 import ThreadTest from "./ThreadTest";
+import Tabs from "./Tabs";
 import "../../assets/scss/sellPage.scss";
 
-const SellPage = ({ data: { allFiles, buyerFiles }, connected, getAllFiles, getBuyerFiles }) => {
+const SellPage = ({
+    data: { allFiles },
+    connected,
+    getAllFiles,
+    getBuyerFiles
+}) => {
     useEffect(() => {
         if (connected) {
             getAllFiles();
-            // getBuyerFiles();
         }
     }, [connected]);
 
@@ -19,10 +24,14 @@ const SellPage = ({ data: { allFiles, buyerFiles }, connected, getAllFiles, getB
             <div className="homePageInner">
                 {connected && (
                     <>
-                        <FilesDisplay allFiles={allFiles} buyerFiles={buyerFiles} />
-                        <div>
-                            <SellForm afterSubmit={getAllFiles} />
-                        </div>
+                        <Tabs>
+                            <div label="Buyer">
+                                <FilesDisplay allFiles={allFiles} />
+                            </div>
+                            <div label="Seller">
+                                <SellForm afterSubmit={getAllFiles} />
+                            </div>
+                        </Tabs>
                     </>
                 )}
             </div>
@@ -37,8 +46,7 @@ function mapState(state) {
 }
 
 const actionCreators = {
-    getAllFiles: userActions.getAllFiles,
-    getBuyerFiles: userActions.getBuyerFiles
+    getAllFiles: userActions.getAllFiles
 };
 
 const connectedSellPage = connect(mapState, actionCreators)(SellPage);

@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { userActions } from "../../actions";
+import Modal from "./Modal";
+import "./styles.css";
 
-const FilesDisplay = ({ buy, allFiles, buyerFiles, downloadFile }) => {
+const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
+    const [show, setShow] = useState(false);
+    const openModal = () => setShow(true);
+    const closeModal = () => setShow(false);
     return (
         <section className="filesDisplay">
             {allFiles &&
@@ -16,14 +21,12 @@ const FilesDisplay = ({ buy, allFiles, buyerFiles, downloadFile }) => {
                         <p> Retrievals: {file.numRetriveals} </p>
                         <p> Price: {file.price + " DAI"} </p>
                         <button
-                            onClick={async e => {
-                                await buy(fileId);
+                            onClick={e => {
+                                buy(fileId);
                             }}
                         >
                             Buy File
                         </button>
-                        {/* buyerFiles && buyerFiles.includes(fileId) && (
-                        )*/}
                         <button
                             onClick={async e => {
                                 await downloadFile(file.metadataHash);
@@ -31,6 +34,8 @@ const FilesDisplay = ({ buy, allFiles, buyerFiles, downloadFile }) => {
                         >
                             Download File
                         </button>
+                        <button onClick={openModal}>Show modal</button>
+                        <Modal closeModal={closeModal} show={show} />
                     </div>
                 ))}
         </section>

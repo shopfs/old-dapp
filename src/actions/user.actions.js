@@ -15,7 +15,6 @@ export const userActions = {
     getAllFiles,
     getPriceLimit,
     getFileCount,
-    getBuyerFiles,
     buy,
     downloadFile,
     uploadAndSellFile
@@ -45,25 +44,6 @@ function getFile(fileId) {
         dispatch(result({ data: { file } }));
 
         return file;
-    };
-}
-
-function getBuyerFiles() {
-    return async (dispatch, getState) => {
-        dispatch(started());
-        let files;
-        try {
-            const { account, market } = getState().web3;
-            files = await marketService.getBuyerFiles(market, account);
-        } catch (e) {
-            console.log(e);
-            dispatch(failure(e));
-            dispatch(alertActions.error("Error Getting Buyer Files"));
-            return;
-        }
-        dispatch(result({ data: { buyerFiles: files } }));
-
-        return files;
     };
 }
 

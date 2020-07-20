@@ -50,6 +50,7 @@ contract StorageMarketPlace {
 
 
     constructor(uint _priceLimit) public {
+        require(_priceLimit > 0, "Proce Limit cannot be 0");
         priceLimit = _priceLimit;
     }
    
@@ -63,6 +64,7 @@ contract StorageMarketPlace {
    
     function buy(uint _id) external returns(bool) {
         File storage file = Files[_id];
+        require(msg.sender != file.seller, "Seller cannot buy his own file");
         IERC20(file.paymentAsset).transferFrom(msg.sender, file.seller, file.price);
         file.numRetriveals ++;
         uint[] storage buyerIds = buyerInfo[msg.sender];

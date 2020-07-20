@@ -57,7 +57,7 @@ class App extends React.Component {
                                         path="/"
                                         component={HomePage}
                                     />	
-                                    <Route
+                                /*  <Route
                                         exact
                                         path="/sell"
                                         component={SellPage}
@@ -66,7 +66,8 @@ class App extends React.Component {
                                         exact
                                         path="/thread"
                                         component={ThreadPage}
-                                    />									
+                                    />
+								*/
                                     <Redirect from="*" to="/" />
                                 </Switch>
                             
