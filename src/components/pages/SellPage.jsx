@@ -1,54 +1,52 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { contractActions } from "../../actions";
+import { userActions } from "../../actions";
 import FilesDisplay from "./FilesDisplay";
 import SellForm from "./SellForm";
 import ThreadTest from "./ThreadTest";
-import Tabs from './Tabs';
+import Tabs from "./Tabs";
 import "../../assets/scss/sellPage.scss";
 
-class SellPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.refresh = this.refresh.bind(this);
-    }
+const SellPage = ({
+    data: { allFiles },
+    connected,
+    getAllFiles,
+    getBuyerFiles
+}) => {
+    useEffect(() => {
+        if (connected) {
+            getAllFiles();
+        }
+    }, [connected]);
 
-    async componentDidMount() {
-        await this.refresh();
-    }
-
-    async refresh() {
-        await this.props.getAllFiles();
-    }
-
-    render() {
-        const { allFiles } = this.props.data;
-        return (
-            <div className="homePage">
-                <div className="homePageInner">
-				 <Tabs>
-				    <div label="Buyer">
-                        <FilesDisplay allFiles={allFiles} />
-					</div>
-					
-                    <div label="Seller">
-                        <SellForm afterSubmit={this.refresh} />
-                        {/* <ThreadTest /> */}
-                    </div>
-					</Tabs>
-                </div>
+    return (
+        <div className="homePage">
+            <div className="homePageInner">
+                {connected && (
+                    <>
+                        <Tabs>
+                            <div label="Buyer">
+                                <FilesDisplay allFiles={allFiles} />
+                            </div>
+                            <div label="Seller">
+                                <SellForm afterSubmit={getAllFiles} />
+                            </div>
+                        </Tabs>
+                    </>
+                )}
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 function mapState(state) {
-    const { data } = state.contract;
-    return { data };
+    const { connected } = state.web3;
+    const { data } = state.user;
+    return { data, connected };
 }
 
 const actionCreators = {
-    getAllFiles: contractActions.getAllFiles
+    getAllFiles: userActions.getAllFiles
 };
 
 const connectedSellPage = connect(mapState, actionCreators)(SellPage);

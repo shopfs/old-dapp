@@ -5,7 +5,9 @@ const client = new SpaceClient({ url: `http://localhost:9998` });
 export const daemonService = {
     createBucket,
     shareBucket,
-    uploadFile
+    uploadFile,
+    joinBucket,
+    openFile
 };
 
 async function createBucket(bucketName) {
@@ -17,11 +19,14 @@ async function shareBucket(bucketName) {
     // bucket sharing details to be saved in  3box/any other alternative
     const sharingResponse = await client.shareBucket({ bucketName });
     const threadInfo = sharingResponse.getThreadinfo();
-    return { key: threadInfo.getKey(), addresses: threadInfo.getAddressesList() };
+    return {
+        key: threadInfo.getKey(),
+        addresses: threadInfo.getAddressesList()
+    };
 }
 
 async function uploadFile(bucketName, filePath) {
-    let uploadData
+    let uploadData;
     // uploading file to bucket have to integrate with button
     const stream = await client.addItems({
         bucket: bucketName,
@@ -35,8 +40,25 @@ async function uploadFile(bucketName, filePath) {
 
     return await new Promise(resolve => {
         stream.on("data", data => {
-        console.log("data: ", data);
-        resolve(data.array[0][1])
+            console.log("data: ", data);
+            resolve(data.array[0][1]);
+        });
     });
+}
+
+async function joinBucket(bucketName, threadInfo) {
+    const bucket = await client.joinBucket({ bucket: bucketName, threadInfo });
+    console.log({ bucket });
+    return;
+}
+
+async function openFile(bucket) {
+    const openFileRes = await client.openFile({
+        bucket,
+        path: "/"
     });
+
+    const location = openFileRes.getLocation();
+    console.log(location);
+    return location;
 }

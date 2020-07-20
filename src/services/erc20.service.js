@@ -5,9 +5,8 @@ export const erc20Service = {
 };
 
 async function approve(erc20, spender, value) {
-    const receipt = await erc20.methods
-        .approve(spender, parseInt(value))
-        .send();
+    const bigValue = BigInt(value * 10 ** 18);
+    const receipt = await erc20.methods.approve(spender, bigValue).send();
     if (!receipt.status) {
         logReceipt(receipt);
         return { error: "Transaction failed" };

@@ -1,22 +1,29 @@
 import { alertActions } from "./";
 import config from "config";
-import { contractConstants } from "../constants";
-import { marketService, erc20Service, ilpdService } from "../services";
+import { userConstants } from "../constants";
+import {
+    daemonService,
+    marketService,
+    erc20Service,
+    ipldService,
+    keysService
+} from "../services";
 
-export const contractActions = {
+export const userActions = {
     clean,
     getFile,
     getAllFiles,
     getPriceLimit,
     getFileCount,
     buy,
-    sell
+    downloadFile,
+    uploadAndSellFile
 };
 
 function clean() {
     return dispatch => {
         dispatch({
-            type: contractConstants.CLEAN
+            type: userConstants.CLEAN
         });
     };
 }
@@ -97,7 +104,7 @@ function getAllFiles() {
     };
 }
 
-function sell(price, fileHash, fileDescription, file) {
+function uploadAndSellFile(path, description, price) {
     return async (dispatch, getState) => {
         dispatch(started());
         let data;
@@ -107,14 +114,31 @@ function sell(price, fileHash, fileDescription, file) {
             if (parseInt(price) > parseInt(priceLimit)) {
                 throw "Price higher than priceLimit (" + priceLimit + " DAI)";
             }
-            const serilaizedData = await ilpdService.serlializeFile(price, fileHash, fileDescription)
-            // data = await marketService.sell(
-            //     market,
-            //     config.testnetDaiAddress,
-            //     price,
-            //     fileHash,
-            //     serilaizedData
-            // );
+
+            const bucketName = account + "." + Date.now();
+            const fileName = path.replace(/^.*[\\\/]/, "");
+
+            await daemonService.createBucket(bucketName);
+            await daemonService.uploadFile(bucketName, path);
+            const threadInfo = await daemonService.shareBucket(bucketName);
+            const metadataHash = await ipldService.uploadMetadata({
+                fileName,
+                bucketName,
+                description,
+                imageHash: ""
+            });
+
+            await keysService.putThreadData(metadataHash, {
+                threadInfo,
+                bucketName
+            });
+
+            data = await marketService.sell(
+                market,
+                config.testnetDAIAddress,
+                price,
+                metadataHash
+            );
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
@@ -126,9 +150,7 @@ function sell(price, fileHash, fileDescription, file) {
             dispatch(done());
         } else {
             dispatch(failure(data.error));
-            dispatch(
-                alertActions.error("Error Selling File: " + data.error)
-            );
+            dispatch(alertActions.error("Error Selling File: " + data.error));
         }
     };
 }
@@ -160,42 +182,58 @@ function buy(fileId) {
             dispatch(done());
         } else {
             dispatch(failure(data.error));
-            dispatch(
-                alertActions.error("Error Buying File: " + data.error)
-            );
+            dispatch(alertActions.error("Error Buying File: " + data.error));
         }
+    };
+}
+
+function downloadFile(metadataHash) {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        try {
+            const { account, market, dai } = getState().web3;
+            const threadData = await keysService.getThreadData(metadataHash);
+            console.log({ threadData });
+            await daemonService.joinBucket(threadData.bucketName, threadData.threadInfo);
+            const location = await daemonService.openFile(threadData.bucketName);
+        } catch (error) {
+            console.log({ error });
+            dispatch(failure(error));
+            return;
+        }
+        dispatch(done());
     };
 }
 
 function started() {
     return {
-        type: contractConstants.STARTED
+        type: userConstants.STARTED
     };
 }
 
 function done() {
     return {
-        type: contractConstants.DONE
+        type: userConstants.DONE
     };
 }
 
 function cleanSelected(result) {
     return {
-        type: contractConstants.CLEAN_SELECTED,
+        type: userConstants.CLEAN_SELECTED,
         ...result
     };
 }
 
 function result(result) {
     return {
-        type: contractConstants.RESULT,
+        type: userConstants.RESULT,
         ...result
     };
 }
 
 function failure(error) {
     return {
-        type: contractConstants.ERROR,
+        type: userConstants.ERROR,
         error
     };
 }

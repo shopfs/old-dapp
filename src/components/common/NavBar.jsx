@@ -62,9 +62,8 @@ function mapState(state) {
     const { account, connected } = state.web3;
     //const { loggedIn } = state.box;
     const inProgress =
-        state.contract.inProgress ||
+        state.user.inProgress ||
         //state.box.inProgress ||
-        state.daemon.inProgress ||
         state.web3.inProgress;
     return { inProgress, account, connected };
 }
