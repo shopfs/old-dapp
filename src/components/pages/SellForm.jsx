@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { daemonActions, contractActions } from "../../actions";
+import { userActions } from "../../actions";
 
 const SellForm = ({ sell, afterSubmit, uploadFile }) => {
     const [description, setDescription] = useState("");
@@ -8,10 +8,12 @@ const SellForm = ({ sell, afterSubmit, uploadFile }) => {
     const [price, setPrice] = useState("");
 
     const sellFile = async () => {
-        const fileDaemonPayload = await uploadFile(path)
-        console.log(fileDaemonPayload)
-        // the thread info and bucket name needs to be stored on firebase with seller address as the key
-        await sell(price, fileDaemonPayload.uploadData, description);
+        // const fileDaemonPayload = await uploadFile(path)
+        // console.log(fileDaemonPayload)
+        // // the thread info and bucket name needs to be stored on firebase with seller address as the key
+        // await sell(price, fileDaemonPayload, uploadData, description);
+
+        await uploadAndSellFile(path, description, price);
         afterSubmit();
         setPath("");
         setPrice("");
@@ -54,8 +56,7 @@ function mapState(state) {
 }
 
 const actionCreators = {
-    sell: contractActions.sell,
-    uploadFile: daemonActions.uploadFile
+    uploadAndSellFile: userActions.sellFile
 };
 
 const connectedSellForm = connect(mapState, actionCreators)(SellForm);

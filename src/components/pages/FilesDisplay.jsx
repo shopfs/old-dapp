@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { contractActions } from "../../actions";
+import { userActions } from "../../actions";
 
 const FilesDisplay = ({ buy, allFiles }) => {
     return (
@@ -30,7 +30,7 @@ function mapState(state) {
 }
 
 const actionCreators = {
-    buy: contractActions.buy
+    buy: userActions.buy
 };
 
 const connectedFilesDisplay = connect(mapState, actionCreators)(FilesDisplay);

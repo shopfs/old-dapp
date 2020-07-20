@@ -35,9 +35,9 @@ async function getAllFiles(market) {
     );
 }
 
-async function sell(market, erc20Address, price, fileHash, fileDescription) {
+async function sell(market, erc20Address, price, fileHash, metadataHash) {
     const receipt = await market.methods
-        .sell(erc20Address, parseInt(price), fileHash, fileDescription)
+        .sell(erc20Address, parseInt(price), fileHash, metadataHash)
         .send();
     if (!receipt.status) {
         logReceipt(receipt);

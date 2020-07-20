@@ -1,0 +1,8 @@
+export const userConstants = {
+    STARTED: "USER_STARTED",
+    DONE: "USER_DONE",
+    CLEAN: "USER_CLEAN",
+    CLEAN_SELECTED: "USER_CLEAN_SELECTED",
+    ERROR: "USER_ERROR",
+    RESULT: "USER_RESULT"
+};

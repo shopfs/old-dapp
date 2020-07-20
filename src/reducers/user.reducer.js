@@ -1,24 +1,24 @@
-import { contractConstants } from "../constants";
+import { userConstants } from "../constants";
 
-export function contract(state = {data: {}}, action) {
+export function user(state = {data: {}}, action) {
     switch (action.type) {
-        case contractConstants.STARTED:
+        case userConstants.STARTED:
             return {
                 ...state,
                 inProgress: true
             };
-        case contractConstants.DONE:
+        case userConstants.DONE:
             return {
                 ...state,
                 inProgress: false
             };
-        case contractConstants.CLEAN:
+        case userConstants.CLEAN:
             return {
                 ...state,
                 data: {},
                 inProgress: false,
             };
-        case contractConstants.ERROR:
+        case userConstants.ERROR:
             return {
                 role: state.role,
                 inProgress: false,
@@ -28,7 +28,7 @@ export function contract(state = {data: {}}, action) {
                     ...action.data
                 }
             };
-        case contractConstants.CLEAN_SELECTED:
+        case userConstants.CLEAN_SELECTED:
             return {
                 ...state,
                 ...action,
@@ -37,7 +37,7 @@ export function contract(state = {data: {}}, action) {
                     ...action.data
                 }
             };
-        case contractConstants.RESULT:
+        case userConstants.RESULT:
             return {
                 ...state,
                 inProgress: false,

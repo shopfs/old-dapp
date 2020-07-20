@@ -7,9 +7,9 @@ import { web3Actions } from "../actions";
 import { ErrorBoundary, NavBar } from "../components/common";
 import loading from "../assets/img/loading.gif";
 import "../assets/scss/app.scss";
-const HomePage = React.lazy(() => import("../components/pages/Homepage"));
-const SellPage = React.lazy(() => import("../components/pages/Sellpage"));
-const ThreadPage = React.lazy(() => import("../components/pages/ThreadPage"));
+const HomePage = React.lazy(() => import("./pages/HomePage"));
+const SellPage = React.lazy(() => import("./pages/SellPage"));
+const ThreadPage = React.lazy(() => import("./pages/ThreadPage"));
 
 class App extends React.Component {
     constructor(props) {

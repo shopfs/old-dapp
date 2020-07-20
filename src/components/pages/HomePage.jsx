@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { contractActions } from "../../actions";
+import { userActions } from "../../actions";
 import FilesDisplay from "./FilesDisplay";
 import SellForm from "./SellForm";
 import ThreadTest from "./ThreadTest";
@@ -32,12 +32,12 @@ class HomePage extends React.Component {
 }
 
 function mapState(state) {
-    const { data } = state.contract;
+    const { data } = state.user;
     return { data };
 }
 
 const actionCreators = {
-    getAllFiles: contractActions.getAllFiles
+    getAllFiles: userActions.getAllFiles
 };
 
 const connectedHomePage = connect(mapState, actionCreators)(HomePage);
