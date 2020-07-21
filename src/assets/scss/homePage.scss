@@ -8,13 +8,13 @@
     height: 100%;
     padding-top: 5rem;
     background: #fff;
-	overflow-y: scroll;
+    overflow-y: scroll;
     .homePageInner1 {
-	    display: grid;
-	    padding-top: 10rem;
+        display: grid;
+        padding-top: 10rem;
         height: 250px;
         width: 100%;
-		font-size: 4rem;
+        font-size: 4rem;
         justify-content: center;
         align-items: center;
         section {
@@ -39,7 +39,8 @@
                 height: 2rem;
             }
         }
-        .sellForm, .threadTest {
+        .sellForm,
+        .threadTest {
             border: 1px solid $blue2;
             padding: 0.5rem;
         }
@@ -56,32 +57,32 @@
             padding: 0.5rem;
         }
     }
-	.homePageInner2 {
-	    display: grid;
+    .homePageInner2 {
+        display: grid;
         height: 250px;
         width: 100%;
-		padding-left:15rem;
-		font-size: 2rem;
+        padding-left: 15rem;
+        font-size: 2rem;
         justify-content: center;
         align-items: center;
         grid-template-rows: 1fr 1fr;
-	}
-	.homePageInner3 {
-	    display: flex;
+    }
+    .homePageInner3 {
+        display: flex;
         height: 250px;
         width: 100%;
-		font-size: 2rem;
+        font-size: 2rem;
         justify-content: center;
         align-items: center;
-		flex-direction:row;
+        flex-direction: row;
         grid-template-columns: 1rem 1rem;
-		.inner-box {
-		    background: #ccd6e6;
-		    justify-content: center;
+        .inner-box {
+            background: #ccd6e6;
+            justify-content: center;
             align-items: center;
-			padding:10rem;
-			height:5px;
-			width:100%;
-		}
-	}
+            padding: 10rem;
+            height: 5px;
+            width: 100%;
+        }
+    }
 }
