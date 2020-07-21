@@ -10,39 +10,39 @@
     padding-top: 5rem;
     font-size: 1rem;
     background: $blue1;
-	overflow-y:scroll;
+    overflow-y: scroll;
     .homePageInner {
-		padding-top: 2rem;
-        height:100%;
-		width: 500px;
+        padding-top: 2rem;
+        height: 100%;
+        width: 500px;
         align-items: center;
         display: grid;
-		border: 1px solid #ccc;
+        border: 1px solid #ccc;
         grid-template-columns: 1fr 1fr;
-		margin-left:20px;
-	
-		.tab-list {
-		    height:100%;
-			width: 500px;
+        margin-left: 20px;
+
+        .tab-list {
+            height: 100%;
+            width: 500px;
             border-bottom: 1px solid #ccc;
-			cursor: pointer;
-			margin-left:20px;
+            cursor: pointer;
+            margin-left: 20px;
         }
 
-        .tab-list-item {		
+        .tab-list-item {
             display: inline-block;
             list-style: none;
             margin-bottom: -1px;
-            padding: 0.5rem 0.75rem;			
+            padding: 0.5rem 0.75rem;
         }
 
-        .tab-list-active {	
-		    width: 200px;
+        .tab-list-active {
+            width: 200px;
             background-color: white;
             border: solid #ccc;
-            border-width: 1px 1px 0 1px;	
+            border-width: 1px 1px 0 1px;
         }
-		
+
         section {
             width: 15rem;
             width: 100%;
@@ -65,7 +65,8 @@
                 height: 2rem;
             }
         }
-        .sellForm, .threadTest {
+        .sellForm,
+        .threadTest {
             border: 1px solid $blue2;
             padding: 0.5rem;
         }
@@ -81,5 +82,8 @@
             margin-bottom: 0.5rem;
             padding: 0.5rem;
         }
+    }
+    .file-img {
+        width: 50%;
     }
 }

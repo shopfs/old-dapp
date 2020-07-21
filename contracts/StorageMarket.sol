@@ -1,4 +1,5 @@
 pragma solidity ^0.6.0;
+pragma experimental ABIEncoderV2;
 
 
 /**
@@ -26,7 +27,9 @@ interface IERC20 {
 contract StorageMarketPlace {
    
     modifier isUploaded(string memory _hash) {
-        require(!hashExists[_hash], "Cannot upload existing file");
+        uint fileId = hashToFile[_hash];
+        File storage existingFile = Files[fileId];
+        require(existingFile.seller == address(0), "Cannot upload existing file");
         _;
     }
    
@@ -36,11 +39,11 @@ contract StorageMarketPlace {
         address paymentAsset;
         string metadataHash; // unique metadataHash
         uint price;
-        uint numRetriveals;
+        uint numRetrievals;
     }
     
     mapping(uint => File) public Files;
-    mapping(string => bool) public hashExists;
+    mapping(string => uint) public hashToFile;
 
     // for tracking buyer and the files he brought
     mapping(address => uint[]) public buyerInfo;
@@ -50,14 +53,14 @@ contract StorageMarketPlace {
 
 
     constructor(uint _priceLimit) public {
-        require(_priceLimit > 0, "Proce Limit cannot be 0");
+        require(_priceLimit > 0, "Price Limit cannot be 0");
         priceLimit = _priceLimit;
     }
    
     function sell(address _paymentAsset, uint _price, string calldata _metadataHash) isUploaded(_metadataHash) external returns(bool) {
         require(_price < priceLimit, "Price has to be less than a set price limit");
         Files[fileCount] = File(msg.sender, _paymentAsset, _metadataHash, _price, 0);
-        hashExists[_metadataHash] = true;
+        hashToFile[_metadataHash] = fileCount;
         fileCount ++;
         return true;
     }
@@ -66,7 +69,7 @@ contract StorageMarketPlace {
         File storage file = Files[_id];
         require(msg.sender != file.seller, "Seller cannot buy his own file");
         IERC20(file.paymentAsset).transferFrom(msg.sender, file.seller, file.price);
-        file.numRetriveals ++;
+        file.numRetrievals ++;
         uint[] storage buyerIds = buyerInfo[msg.sender];
         // checking if the particular buyer exists or not
         if (buyerIds.length > 0) {
@@ -77,6 +80,9 @@ contract StorageMarketPlace {
         }
         return true;
     }
-   
-   
+
+    function getFileFromHash(string memory _metadataHash) public view returns (File memory file) {
+        return Files[hashToFile[_metadataHash]];
+    }
+
 }
