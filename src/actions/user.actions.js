@@ -109,9 +109,8 @@ function getAllFiles() {
 function uploadAndSellFile(path, description, imageHash, price) {
     return async (dispatch, getState) => {
         dispatch(started());
-        let data;
         try {
-            const { account, market } = getState().web3;
+            const { account, market, web3 } = getState().web3;
             const priceLimit = await marketService.getPriceLimit(market);
             if (parseInt(price) > parseInt(priceLimit)) {
                 throw "Price higher than priceLimit (" + priceLimit + " DAI)";
@@ -130,30 +129,29 @@ function uploadAndSellFile(path, description, imageHash, price) {
                 imageHash
             });
 
-            await keysService.putThreadData(metadataHash, {
-                threadInfo,
-                bucketName
-            });
-
-            data = await marketService.sell(
+            await marketService.sell(
                 market,
                 config.testnetDAIAddress,
                 price,
                 metadataHash
             );
-        } catch (e) {
-            console.log(e);
-            dispatch(failure(e));
-            dispatch(alertActions.error("Error Selling File: " + e.toString()));
+
+            console.log("sign metadataHash");
+            const signature = web3.eth.sign(metadataHash, account);
+
+            await keysService.putThreadData(metadataHash, {
+                threadInfo,
+                bucketName,
+                signature
+            });
+        } catch (error) {
+            console.log({error});
+            dispatch(failure(error));
+            dispatch(alertActions.error("Error Selling File"));
             return;
         }
-        if (!data.error) {
-            dispatch(alertActions.success("Successfully Sold File"));
-            dispatch(done());
-        } else {
-            dispatch(failure(data.error));
-            dispatch(alertActions.error("Error Selling File: " + data.error));
-        }
+        dispatch(alertActions.success("Successfully Sold File"));
+        dispatch(done());
     };
 }
 
