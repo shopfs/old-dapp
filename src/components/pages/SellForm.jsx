@@ -1,23 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { userActions } from "../../actions";
 
-const SellForm = ({ sell, afterSubmit, uploadAndSellFile }) => {
+const SellForm = ({ sell, afterSubmit, uploadAndSellFile, uploadImage }) => {
     const [description, setDescription] = useState("");
     const [path, setPath] = useState("");
     const [price, setPrice] = useState("");
+    const [imgHash, setImgHash] = useState(null);
 
     const sellFile = async () => {
-        // const fileDaemonPayload = await uploadFile(path)
-        // console.log(fileDaemonPayload)
-        // // the thread info and bucket name needs to be stored on firebase with seller address as the key
-        // await sell(price, fileDaemonPayload, uploadData, description);
-
-        await uploadAndSellFile(path, description, price);
+        await uploadAndSellFile(path, description, imageHash, price);
         afterSubmit();
         setPath("");
         setPrice("");
         setDescription("");
+    };
+
+    const uploadFile = async file => {
+        console.log("file uploading to ipfs");
+        const fileHash = await uploadImage(file);
+        console.log("file upload done: ", fileHash);
+        setImgHash(fileHash);
     };
 
     return (
@@ -34,6 +37,21 @@ const SellForm = ({ sell, afterSubmit, uploadAndSellFile }) => {
                 value={path}
                 onChange={e => setPath(e.target.value)}
             />
+            {imgHash && (
+                <img
+                    className="file-img"
+                    src={`https://ipfs.infura.io/ipfs/${imgHash}`}
+                />
+            )}
+            <input
+                type="file"
+                onChange={e => {
+                    const file = e.target.files[0];
+                    uploadFile(file);
+                }}
+                accept="image/*"
+            />
+
             <input
                 type="number"
                 placeholder="price in DAI"
@@ -56,7 +74,8 @@ function mapState(state) {
 }
 
 const actionCreators = {
-    uploadAndSellFile: userActions.uploadAndSellFile
+    uploadAndSellFile: userActions.uploadAndSellFile,
+    uploadImage: userActions.uploadImage
 };
 
 const connectedSellForm = connect(mapState, actionCreators)(SellForm);

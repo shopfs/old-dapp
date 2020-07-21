@@ -1,6 +1,7 @@
 import { alertActions } from "./";
 import config from "config";
 import { userConstants } from "../constants";
+import fleekStorage from "@fleekhq/fleek-storage-js";
 import {
     daemonService,
     marketService,
@@ -16,6 +17,7 @@ export const userActions = {
     getPriceLimit,
     getFileCount,
     buy,
+    uploadImage,
     downloadFile,
     uploadAndSellFile
 };
@@ -104,7 +106,7 @@ function getAllFiles() {
     };
 }
 
-function uploadAndSellFile(path, description, price) {
+function uploadAndSellFile(path, description, imageHash, price) {
     return async (dispatch, getState) => {
         dispatch(started());
         let data;
@@ -125,7 +127,7 @@ function uploadAndSellFile(path, description, price) {
                 fileName,
                 bucketName,
                 description,
-                imageHash: ""
+                imageHash
             });
 
             await keysService.putThreadData(metadataHash, {
@@ -194,14 +196,41 @@ function downloadFile(metadataHash) {
             const { account, market, dai } = getState().web3;
             const threadData = await keysService.getThreadData(metadataHash);
             console.log({ threadData });
-            await daemonService.joinBucket(threadData.bucketName, threadData.threadInfo);
-            const location = await daemonService.openFile(threadData.bucketName);
+            await daemonService.joinBucket(
+                threadData.bucketName,
+                threadData.threadInfo
+            );
+            const location = await daemonService.openFile(
+                threadData.bucketName
+            );
         } catch (error) {
             console.log({ error });
             dispatch(failure(error));
             return;
         }
         dispatch(done());
+    };
+}
+
+function uploadImage(file) {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let imageHash;
+        try {
+            const uploadedFile = await fleekStorage.upload({
+                apiKey: "9cILwykg8eJ7JifGfuS4zA==",
+                apiSecret: "u1gcUczk4+o3B0XBP2A0DcWABEvDqUdxz06MgXc3FRA=",
+                key: file.name,
+                data: file
+            });
+            imageHash = uploadedFile.hash;
+        } catch (error) {
+            console.log({ error });
+            dispatch(failure(error));
+            return;
+        }
+        dispatch(done());
+        return imageHash;
     };
 }
 

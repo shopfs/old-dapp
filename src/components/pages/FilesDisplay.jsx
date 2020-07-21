@@ -16,7 +16,15 @@ const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
                         <p> Description: {file.metadata.description} </p>
                         <p> FileName: {file.metadata.fileName} </p>
                         <p> BucketName: {file.metadata.bucketName} </p>
-                        <p> ImageHash: {file.metadata.imageHash} </p>
+                        {file.metadata.imageHash && (
+                            <>
+                                <p> ImageHash: {file.metadata.imageHash} </p>
+                                <img
+                                    className="file-img"
+                                    src={`https://ipfs.infura.io/ipfs/${file.metadata.imageHash}`}
+                                />
+                            </>
+                        )}
                         <p> Hash: {file.metadataHash} </p>
                         <p> Retrievals: {file.numRetriveals} </p>
                         <p> Price: {file.price + " DAI"} </p>
