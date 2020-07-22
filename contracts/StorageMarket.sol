@@ -55,12 +55,13 @@ contract StorageMarketPlace {
         priceLimit = _priceLimit;
     }
    
-    function sell(address _paymentAsset, uint _price, string calldata _metadataHash) isUploaded(_metadataHash) external returns(bool) {
+    function sell(address _paymentAsset, uint _price, string calldata _metadataHash) isUploaded(_metadataHash) external returns(uint) {
         require(_price < priceLimit, "Price has to be less than a set price limit");
         Files[fileCount] = File(msg.sender, _paymentAsset, _metadataHash, _price, 0);
+        uint currentFile = fileCount;
         hashExists[_metadataHash] = true;
         fileCount ++;
-        return true;
+        return currentFile;
     }
    
     function buy(uint _id) external returns(bool) {
@@ -78,9 +79,4 @@ contract StorageMarketPlace {
         }
         return true;
     }
-
-    function getFileFromHash(uint _fileId) public view returns (File memory file) {
-        return Files[_fileId];
-    }
-
 }
