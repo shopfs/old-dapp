@@ -137,7 +137,7 @@ function uploadAndSellFile(path, description, imageHash, price) {
             );
 
             console.log("sign metadataHash");
-            const signature = web3.eth.sign(metadataHash, account);
+            const signature = web3.eth.sign(account, metadataHash);
 
             await keysService.putThreadData(metadataHash, {
                 threadInfo,
