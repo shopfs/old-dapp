@@ -129,17 +129,21 @@ function uploadAndSellFile(path, description, imageHash, price) {
                 imageHash
             });
 
-            await marketService.sell(
+            console.log({metadataHash}); 
+
+            const fileId = await marketService.sell(
                 market,
                 config.testnetDAIAddress,
                 price,
                 metadataHash
             );
 
-            console.log("sign metadataHash");
-            const signature = web3.eth.sign(account, metadataHash);
+            console.log("sign fileId");
+            const signature = await web3.eth.personal.sign(fileId, account);
+            console.log({signature})
 
-            await keysService.putThreadData(metadataHash, {
+
+            await keysService.putThreadData(fileId, {
                 threadInfo,
                 bucketName,
                 signature
@@ -187,12 +191,15 @@ function buy(fileId) {
     };
 }
 
-function downloadFile(metadataHash) {
+function downloadFile(fileId) {
     return async (dispatch, getState) => {
         dispatch(started());
         try {
-            const { account, market, dai } = getState().web3;
-            const threadData = await keysService.getThreadData(metadataHash);
+            const { account, web3 } = getState().web3;
+            console.log("sign fileId");
+            const signature = await web3.eth.personal.sign(fileId.toString(), account);
+            console.log({signature})
+            const threadData = await keysService.getThreadData(fileId, signature);
             console.log({ threadData });
             await daemonService.joinBucket(
                 threadData.bucketName,
@@ -201,6 +208,7 @@ function downloadFile(metadataHash) {
             const location = await daemonService.openFile(
                 threadData.bucketName
             );
+            console.log({location})
         } catch (error) {
             console.log({ error });
             dispatch(failure(error));
