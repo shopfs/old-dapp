@@ -2,6 +2,7 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { web3Actions, boxActions } from "../../actions";
+import { history } from "../../helpers";
 import loading from "../../assets/img/loading.gif";
 import "../../assets/scss/navBar.scss";
 
@@ -25,6 +26,7 @@ class NavBar extends React.Component {
 
     async connect() {
         await this.props.loadWeb3();
+		history.push("/sell");
 		//3box commented for faster loading for now
         // await this.props.loadbox(this.props.account);
 

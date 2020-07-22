@@ -10,9 +10,6 @@ const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
     const openModal = () => setShow(true);
     const closeModal = () => setShow(false);
 	
-	const openfunc = () => {
-    this.props.history.push("/DetailsPage");
-    };
     return (
         <section className="filesDisplay">
             {allFiles &&
