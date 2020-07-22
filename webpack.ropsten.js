@@ -4,6 +4,12 @@ const common = require("./webpack.common.js");
 module.exports = merge(common, {
     mode: "production",
     devtool: "source-map",
+    devServer: {
+    historyApiFallback: true,
+    hot: true,
+    host: "localhost",
+    port: 3000
+    },
     externals: {
         config: JSON.stringify({
             networkId: 3,
