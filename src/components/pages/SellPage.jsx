@@ -22,7 +22,7 @@ const SellPage = ({
     return (
         <div className="homePage">
             <div className="homePageInner">
-                
+                {connected && (
                     <>
                         <Tabs>
                             <div label="Buyer">
@@ -33,7 +33,7 @@ const SellPage = ({
                             </div>
                         </Tabs>
                     </>
-                
+                )}
             </div>
         </div>
     );

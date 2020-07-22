@@ -1,6 +1,11 @@
 import React from "react";
+import { connect } from "react-redux";
+import { userActions } from "../../actions";
+import { history } from "../../helpers";
 
-function DetailsPage(props) {
+
+function DetailsPage = ({ getFile }) => {
+	
   
   return (
     <>
