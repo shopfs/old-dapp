@@ -27,9 +27,7 @@ interface IERC20 {
 contract StorageMarketPlace {
    
     modifier isUploaded(string memory _hash) {
-        uint fileId = hashToFile[_hash];
-        File storage existingFile = Files[fileId];
-        require(existingFile.seller == address(0), "Cannot upload existing file");
+        require(!hashExists[_hash], "Cannot upload existing file");
         _;
     }
    
@@ -43,7 +41,7 @@ contract StorageMarketPlace {
     }
     
     mapping(uint => File) public Files;
-    mapping(string => uint) public hashToFile;
+    mapping(string => bool) public hashExists;
 
     // for tracking buyer and the files he brought
     mapping(address => uint[]) public buyerInfo;
@@ -60,7 +58,7 @@ contract StorageMarketPlace {
     function sell(address _paymentAsset, uint _price, string calldata _metadataHash) isUploaded(_metadataHash) external returns(bool) {
         require(_price < priceLimit, "Price has to be less than a set price limit");
         Files[fileCount] = File(msg.sender, _paymentAsset, _metadataHash, _price, 0);
-        hashToFile[_metadataHash] = fileCount;
+        hashExists[_metadataHash] = true;
         fileCount ++;
         return true;
     }
@@ -81,8 +79,8 @@ contract StorageMarketPlace {
         return true;
     }
 
-    function getFileFromHash(string memory _metadataHash) public view returns (File memory file) {
-        return Files[hashToFile[_metadataHash]];
+    function getFileFromHash(uint _fileId) public view returns (File memory file) {
+        return Files[_fileId];
     }
 
 }
