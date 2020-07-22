@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { userActions } from "../../actions";
 import Modal from "./Modal";
-import { history } from "../../helpers";
 import "./styles.css";
 
 const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
     const [show, setShow] = useState(false);
     const openModal = () => setShow(true);
     const closeModal = () => setShow(false);
-	
     return (
         <section className="filesDisplay">
             {allFiles &&
@@ -31,11 +29,8 @@ const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
                         <p> Retrievals: {file.numRetriveals} </p>
                         <p> Price: {file.price + " DAI"} </p>
                         <button
-                            /*onClick={e => {
+                            onClick={e => {
                                 buy(fileId);
-                            }}*/
-							onClick={e => {
-                                openfunc;
                             }}
                         >
                             Buy File

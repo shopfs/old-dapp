@@ -6,7 +6,6 @@ import SellForm from "./SellForm";
 import ThreadTest from "./ThreadTest";
 import Tabs from "./Tabs";
 import "../../assets/scss/sellPage.scss";
-import { history } from "../../helpers";
 
 const SellPage = ({
     data: { allFiles },
@@ -19,6 +18,7 @@ const SellPage = ({
             getAllFiles();
         }
     }, [connected]);
+
     return (
         <div className="homePage">
             <div className="homePageInner">
@@ -32,30 +32,19 @@ const SellPage = ({
                                 <SellForm afterSubmit={getAllFiles} />
                             </div>
                         </Tabs>
-					<button
-                            /*onClick={e => {
-                                buy(fileId);
-                            }}*/
-							onClick={() => history.push("/details")}
-                        >
-                            details page test
-                        </button>	
                     </>
                 )}
             </div>
         </div>
     );
 };
-
 function mapState(state) {
     const { connected } = state.web3;
     const { data } = state.user;
     return { data, connected };
 }
-
 const actionCreators = {
     getAllFiles: userActions.getAllFiles
 };
-
 const connectedSellPage = connect(mapState, actionCreators)(SellPage);
 export default connectedSellPage;
