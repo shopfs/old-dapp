@@ -6,6 +6,7 @@ import SellForm from "./SellForm";
 import ThreadTest from "./ThreadTest";
 import Tabs from "./Tabs";
 import "../../assets/scss/sellPage.scss";
+import { history } from "../../helpers";
 
 const SellPage = ({
     data: { allFiles },
@@ -18,7 +19,6 @@ const SellPage = ({
             getAllFiles();
         }
     }, [connected]);
-
     return (
         <div className="homePage">
             <div className="homePageInner">
@@ -32,6 +32,14 @@ const SellPage = ({
                                 <SellForm afterSubmit={getAllFiles} />
                             </div>
                         </Tabs>
+					<button
+                            /*onClick={e => {
+                                buy(fileId);
+                            }}*/
+							onClick={() => history.push("/details")}
+                        >
+                            details page test
+                        </button>	
                     </>
                 )}
             </div>

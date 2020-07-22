@@ -9,6 +9,7 @@ const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
     const [show, setShow] = useState(false);
     const openModal = () => setShow(true);
     const closeModal = () => setShow(false);
+	
 	const openfunc = () => {
     this.props.history.push("/DetailsPage");
     };
@@ -36,9 +37,9 @@ const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
                             /*onClick={e => {
                                 buy(fileId);
                             }}*/
-							/*onClick={e => {
+							onClick={e => {
                                 openfunc;
-                            }}*/
+                            }}
                         >
                             Buy File
                         </button>

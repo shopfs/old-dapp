@@ -10,6 +10,7 @@ import "../assets/scss/app.scss";
 const HomePage = React.lazy(() => import("./pages/HomePage"));
 const SellPage = React.lazy(() => import("./pages/SellPage"));
 const ThreadPage = React.lazy(() => import("./pages/ThreadPage"));
+const DetailsPage = React.lazy(() => import("./pages/DetailsPage"));
 
 class App extends React.Component {
     constructor(props) {
@@ -50,19 +51,24 @@ class App extends React.Component {
                                 </div>
                             }
                         >
-                           
+                        
                                 <Switch>
                                     <Route
                                         exact
                                         path="/"
                                         component={HomePage}
                                     />	
-                                /*  <Route
+                                    <Route
                                         exact
                                         path="/sell"
                                         component={SellPage}
-                                    />	
-                                    <Route
+                                    />
+									<Route
+                                        exact
+                                        path="/details"
+                                        component={DetailsPage}
+                                    />
+                                    /*<Route
                                         exact
                                         path="/thread"
                                         component={ThreadPage}
@@ -70,7 +76,7 @@ class App extends React.Component {
 								*/
                                     <Redirect from="*" to="/" />
                                 </Switch>
-                            
+						
                         </React.Suspense>
                         <NavBar />
                     </ErrorBoundary>
