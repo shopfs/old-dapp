@@ -5,7 +5,7 @@ import { history } from "../../helpers";
 
 
 function DetailsPage = ({ getFile }) => {
-	
+  
   
   return (
     <>
