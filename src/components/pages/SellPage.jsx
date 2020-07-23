@@ -38,16 +38,13 @@ const SellPage = ({
         </div>
     );
 };
-
 function mapState(state) {
     const { connected } = state.web3;
     const { data } = state.user;
     return { data, connected };
 }
-
 const actionCreators = {
     getAllFiles: userActions.getAllFiles
 };
-
 const connectedSellPage = connect(mapState, actionCreators)(SellPage);
 export default connectedSellPage;
