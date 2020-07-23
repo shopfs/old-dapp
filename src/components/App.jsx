@@ -51,32 +51,26 @@ class App extends React.Component {
                                 </div>
                             }
                         >
-                        
-                                <Switch>
-                                    <Route
-                                        exact
-                                        path="/"
-                                        component={HomePage}
-                                    />	
-                                    <Route
-                                        exact
-                                        path="/sell"
-                                        component={SellPage}
-                                    />
-									<Route
-                                        exact
-                                        path="/details/:fileId"
-                                        component={DetailsPage}
-                                    />
-                                    /*<Route
+                            <Switch>
+                                <Route exact path="/" component={HomePage} />
+                                <Route
+                                    exact
+                                    path="/sell"
+                                    component={SellPage}
+                                />
+                                <Route
+                                    exact
+                                    path="/details/:fileId"
+                                    component={DetailsPage}
+                                />
+                                {/*<Route
                                         exact
                                         path="/thread"
                                         component={ThreadPage}
                                     />
-								*/
-                                    <Redirect from="*" to="/" />
-                                </Switch>
-						
+								*/}
+                                <Redirect from="*" to="/" />
+                            </Switch>
                         </React.Suspense>
                         <NavBar />
                     </ErrorBoundary>
