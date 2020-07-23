@@ -45,8 +45,6 @@ const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
                         </button>
 						/*route to file selected*/
 						<button onClick={() => history.push("/details")}> GOTO detailspage </button>
-                        <button onClick={openModal}>Show modal</button>
-                        <Modal closeModal={closeModal} show={show} />
                     </div>
                 ))}
         </section>
