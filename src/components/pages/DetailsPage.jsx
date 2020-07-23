@@ -4,15 +4,16 @@ import { userActions } from "../../actions";
 import { history } from "../../helpers";
 
 
-const DetailsPage = ({ buy,File }) => {
+const DetailsPage = ({ fileId,getFile }) => {
+  
   
   //details file for details of single file
   return (
     <section className="filedetails">
 	  <div>welcome to detailspage,what should go here?</div>
 	  {  
-		file && (
-		<div className="oneFile">
+		file = getFile(fileId) && (
+		<div className="fileItem" key={file.metadataHash}>
 		<p> Description: {file.metadata.description} </p>
         <p> FileName: {file.metadata.fileName} </p>
         <p> BucketName: {file.metadata.bucketName} </p>
@@ -48,4 +49,14 @@ const DetailsPage = ({ buy,File }) => {
   );
 }
 
-export default DetailsPage;
+function mapState(state) {
+    return {};
+}
+
+const actionCreators = {
+    getFile: userActions.getFile
+};
+
+const connectedDetailsDisplay = connect(mapState, actionCreators)(DetailsPage);
+
+export default connectedDetailsDisplay;

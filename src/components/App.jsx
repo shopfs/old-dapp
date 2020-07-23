@@ -65,7 +65,7 @@ class App extends React.Component {
                                     />
 									<Route
                                         exact
-                                        path="/details"
+                                        path="/details/:fileId"
                                         component={DetailsPage}
                                     />
                                     /*<Route

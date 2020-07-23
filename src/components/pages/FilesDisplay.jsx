@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { userActions } from "../../actions";
 import Modal from "./Modal";
+import { history } from "../../helpers";
 import "./styles.css";
 
 const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
@@ -42,6 +43,8 @@ const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
                         >
                             Download File
                         </button>
+						/*route to file selected*/
+						<button onClick={() => history.push("/details")}> GOTO detailspage </button>
                         <button onClick={openModal}>Show modal</button>
                         <Modal closeModal={closeModal} show={show} />
                     </div>
