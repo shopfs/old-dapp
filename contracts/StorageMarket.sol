@@ -1,5 +1,4 @@
 pragma solidity ^0.6.0;
-pragma experimental ABIEncoderV2;
 
 
 /**
@@ -25,12 +24,6 @@ interface IERC20 {
 }
 
 contract StorageMarketPlace {
-   
-    modifier isUploaded(string memory _hash) {
-        require(!hashExists[_hash], "Cannot upload existing file");
-        _;
-    }
-   
 
     struct File {
         address seller;
@@ -38,49 +31,61 @@ contract StorageMarketPlace {
         string metadataHash; // unique metadataHash
         uint price;
         uint numRetrievals;
+        mapping(address => bool) buyers;
     }
     
     mapping(uint => File) public Files;
     mapping(string => bool) public hashExists;
 
-    // for tracking buyer and the files he brought
-    mapping(address => uint[]) public buyerInfo;
-
     uint public priceLimit;
     uint public fileCount;
 
+    event Buy(uint indexed fileId, address indexed buyer);
+    event Sell(uint indexed fileId, address indexed seller);
+
+    modifier isNewFile(string memory _hash) {
+        require(!hashExists[_hash], "Cannot upload existing file");
+        _;
+    }
+
+    modifier isValidPrice(uint _price) {
+        require(_price < priceLimit, "Price must be less than priceLimit");
+        _;
+    }
+
+    modifier isValidBuy(uint _fileId) {
+        File storage file = Files[_fileId];
+        require(msg.sender != file.seller, "Seller cannot buy their own file");
+        require(file.buyers[msg.sender] == false, "Buyer cannot buy file again");
+        _;
+    }
 
     constructor(uint _priceLimit) public {
         require(_priceLimit > 0, "Price Limit cannot be 0");
         priceLimit = _priceLimit;
     }
    
-    function sell(address _paymentAsset, uint _price, string calldata _metadataHash) isUploaded(_metadataHash) external returns(bool) {
-        require(_price < priceLimit, "Price has to be less than a set price limit");
+    function sell(address _paymentAsset, uint _price, string calldata _metadataHash) isNewFile(_metadataHash) isValidPrice(_price) external returns(uint) {
         Files[fileCount] = File(msg.sender, _paymentAsset, _metadataHash, _price, 0);
+        uint currentFile = fileCount;
         hashExists[_metadataHash] = true;
         fileCount ++;
-        return true;
+        emit Sell(currentFile, msg.sender);
+        return currentFile;
     }
-   
-    function buy(uint _id) external returns(bool) {
-        File storage file = Files[_id];
-        require(msg.sender != file.seller, "Seller cannot buy his own file");
+
+    function buy(uint _fileId) isValidBuy(_fileId) external returns(bool) {
+        File storage file = Files[_fileId];
+
         IERC20(file.paymentAsset).transferFrom(msg.sender, file.seller, file.price);
         file.numRetrievals ++;
-        uint[] storage buyerIds = buyerInfo[msg.sender];
-        // checking if the particular buyer exists or not
-        if (buyerIds.length > 0) {
-            buyerIds.push(_id);
-        } else {
-            // Initializing the the mapping with first id if buyer is buying 1st time
-            buyerInfo[msg.sender] = [_id];
-        }
+        file.buyers[msg.sender] = true;
+        emit Buy(_fileId, msg.sender);
         return true;
     }
 
-    function getFileFromHash(uint _fileId) public view returns (File memory file) {
-        return Files[_fileId];
+    function isBuyer(uint _fileId, address buyer) public view returns (bool) {
+        File storage file = Files[_fileId];
+        return file.buyers[buyer];
     }
-
 }

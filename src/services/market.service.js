@@ -38,7 +38,7 @@ async function getBuyerFiles(market, buyer) {
 
 async function getAllFiles(market) {
     const fileCount = await getFileCount(market);
-    console.log({fileCount});
+    console.log({ fileCount });
     return await Promise.all(
         Array(parseInt(fileCount))
             .fill(1)
@@ -47,14 +47,16 @@ async function getAllFiles(market) {
 }
 
 async function sell(market, erc20Address, price, metadataHash) {
+    console.log({ erc20Address });
     const receipt = await market.methods
         .sell(erc20Address, BigInt(price * 10 ** 18), metadataHash)
         .send();
+    console.log({receipt})
     if (!receipt.status) {
         logReceipt(receipt);
-        return { error: "Transaction failed" };
+        throw "Transaction failed";
     }
-    return {};
+    return receipt.events["Sell"].returnValues.fileId;
 }
 
 //must call approve on erc20Address before calling buy
@@ -62,7 +64,7 @@ async function buy(market, fileId) {
     const receipt = await market.methods.buy(parseInt(fileId)).send();
     if (!receipt.status) {
         logReceipt(receipt);
-        return { error: "Transaction failed" };
+        throw "Transaction failed";
     }
     return {};
 }
