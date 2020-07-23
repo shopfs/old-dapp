@@ -37,7 +37,7 @@ const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
                         </button>
                         <button
                             onClick={async e => {
-                                await downloadFile(file.metadataHash);
+                                await downloadFile(fileId);
                             }}
                         >
                             Download File

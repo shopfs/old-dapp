@@ -9,7 +9,7 @@ const SellForm = ({ sell, afterSubmit, uploadAndSellFile, uploadImage }) => {
     const [imgHash, setImgHash] = useState(null);
 
     const sellFile = async () => {
-        await uploadAndSellFile(path, description, imageHash, price);
+        await uploadAndSellFile(path, description, imgHash, price);
         afterSubmit();
         setPath("");
         setPrice("");
