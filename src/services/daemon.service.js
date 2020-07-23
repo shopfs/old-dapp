@@ -12,16 +12,26 @@ export const daemonService = {
 
 async function createBucket(bucketName) {
     const bucketResponse = await client.createBucket({ slug: bucketName });
+
     return bucketResponse.getBucket();
 }
 
 async function shareBucket(bucketName) {
+    const dirRes = await client.listDirectories({
+        bucket: bucketName
+    });
+    const entriesList = dirRes.getEntriesList();
+    const path = entriesList[0].getPath();
+
     // bucket sharing details to be saved in  3box/any other alternative
     const sharingResponse = await client.shareBucket({ bucketName });
     const threadInfo = sharingResponse.getThreadinfo();
     return {
-        key: threadInfo.getKey(),
-        addresses: threadInfo.getAddressesList()
+        threadInfo: {
+            key: threadInfo.getKey(),
+            addresses: threadInfo.getAddressesList()
+        },
+        path
     };
 }
 
@@ -48,14 +58,14 @@ async function uploadFile(bucketName, filePath) {
 
 async function joinBucket(bucketName, threadInfo) {
     const bucket = await client.joinBucket({ bucket: bucketName, threadInfo });
-    console.log({ bucket });
     return;
 }
 
-async function openFile(bucket) {
+async function openFile(bucket, path) {
+    console.log({bucket, path})
     const openFileRes = await client.openFile({
         bucket,
-        path: "/"
+        path
     });
 
     const location = openFileRes.getLocation();
