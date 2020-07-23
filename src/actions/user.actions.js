@@ -121,9 +121,10 @@ function uploadAndSellFile(path, description, imageHash, price) {
 
             await daemonService.createBucket(bucketName);
             await daemonService.uploadFile(bucketName, path);
-            const threadInfo = await daemonService.shareBucket(bucketName);
+            const threadData = await daemonService.shareBucket(bucketName);
             const metadataHash = await ipldService.uploadMetadata({
                 fileName,
+                path,
                 bucketName,
                 description,
                 imageHash
@@ -144,7 +145,8 @@ function uploadAndSellFile(path, description, imageHash, price) {
 
 
             await keysService.putThreadData(fileId, {
-                threadInfo,
+                threadInfo: threadData.threadInfo,
+                path: threadData.path,
                 bucketName,
                 signature
             });
@@ -205,8 +207,10 @@ function downloadFile(fileId) {
                 threadData.bucketName,
                 threadData.threadInfo
             );
+            console.log("bucketJoined");
             const location = await daemonService.openFile(
-                threadData.bucketName
+                threadData.bucketName,
+                threadData.path
             );
             console.log({location})
         } catch (error) {
