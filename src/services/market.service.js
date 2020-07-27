@@ -13,6 +13,7 @@ export const marketService = {
 };
 
 async function getFile(market, fileId) {
+    console.log({market, fileId});
     let file = await market.methods.Files(parseInt(fileId)).call();
     file.price = file.price / 10 ** 18;
     const metadata = await ipldService.getMetadata(file.metadataHash);

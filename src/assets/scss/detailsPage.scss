@@ -1,0 +1,24 @@
+@import "config";
+
+.filePage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.fileItem {
+    background: $blue1;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .file-img{
+        width: 100px
+    }
+}
+
+

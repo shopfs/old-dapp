@@ -14,9 +14,9 @@ const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
             {allFiles &&
                 allFiles.map((file, fileId) => (
                     <div className="fileItem" key={file.metadataHash}>
-                        <p> Description: {file.metadata.description} </p>
                         <p> FileName: {file.metadata.fileName} </p>
-                        <p> BucketName: {file.metadata.bucketName} </p>
+                        <p> Description: {file.metadata.description} </p>
+                        {/* <p> BucketName: {file.metadata.bucketName} </p> */}
                         {file.metadata.imageHash && (
                             <>
                                 <p> ImageHash: {file.metadata.imageHash} </p>
@@ -26,25 +26,30 @@ const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
                                 />
                             </>
                         )}
-                        <p> Hash: {file.metadataHash} </p>
-                        <p> Retrievals: {file.numRetriveals} </p>
+                        {/* <p> Hash: {file.metadataHash} </p>
+                        <p> Retrievals: {file.numRetriveals} </p> */}
                         <p> Price: {file.price + " DAI"} </p>
+                        {/* <button */}
+                        {/*     onClick={e => { */}
+                        {/*         buy(fileId); */}
+                        {/*     }} */}
+                        {/* > */}
+                        {/*     Buy File */}
+                        {/* </button> */}
+                        {/* <button */}
+                        {/*     onClick={async e => { */}
+                        {/*         await downloadFile(fileId); */}
+                        {/*     }} */}
+                        {/* > */}
+                        {/*     Download File */}
+                        {/* </button> */}
                         <button
-                            onClick={e => {
-                                buy(fileId);
+                            onClick={() => {
+                                history.push("/details/"+fileId);
                             }}
                         >
-                            Buy File
+                            View more
                         </button>
-                        <button
-                            onClick={async e => {
-                                await downloadFile(fileId);
-                            }}
-                        >
-                            Download File
-                        </button>
-						/*route to file selected*/
-						<button onClick={() => history.push("/details")}> GOTO detailspage </button>
                     </div>
                 ))}
         </section>
@@ -56,8 +61,6 @@ function mapState(state) {
 }
 
 const actionCreators = {
-    buy: userActions.buy,
-    downloadFile: userActions.downloadFile
 };
 
 const connectedFilesDisplay = connect(mapState, actionCreators)(FilesDisplay);
