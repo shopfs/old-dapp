@@ -1,8 +1,6 @@
-
-
-
-
-
+/**
+ *Submitted for verification at Etherscan.io on 2020-07-28
+*/
 
 /**
  *Submitted for verification at Etherscan.io on 2019-11-12
@@ -1839,11 +1837,6 @@ library SafeMath {
 contract StorageMarketPlace is Sablier {
     using SafeMath for uint;
     
-    modifier isUploaded(string memory _hash) {
-        require(!hashExists[_hash], "Cannot upload existing file");
-        _;
-    }
-   
 
     struct File {
         address seller;
@@ -1856,24 +1849,24 @@ contract StorageMarketPlace is Sablier {
     struct BuyerSubscription {
         address buyer;
         uint amount;
+        uint streamId;
         bool isActive;
     }
     
     struct SellerSubscription {
         address seller;
         uint amount;
+        uint streamId;
         bool isActive;
     }
     
     mapping(uint => File) public Files;
     
-    mapping(bytes => bool) public hashExists;
-    
     // to track the subscriptions for a seller
-    mapping (address => BuyerSubscription[]) public subscriptionHolders;
+    mapping (address => BuyerSubscription[]) public sellerToBuyer;
     
     // to track the subscriptions for a buyer
-    mapping(address => SellerSubscription[]) public subscriptionSellers;
+    mapping(address => SellerSubscription[]) public buyerToSeller;
     
     
 
@@ -1884,17 +1877,15 @@ contract StorageMarketPlace is Sablier {
     uint public fileCount;
 
 
-    constructor(uint _priceLimit) public {
+    constructor(uint _priceLimit) public Sablier(msg.sender) {
         require(_priceLimit > 0, "Price Limit cannot be 0");
         priceLimit = _priceLimit;
     }
    
-    function sell(address _paymentAsset, uint _price, string calldata _metadataHash) isUploaded(_metadataHash) external returns(uint) {
+    function sell(address _paymentAsset, uint _price, string calldata _metadataHash) external returns(uint) {
         require(_price < priceLimit, "Price has to be less than a set price limit");
         Files[fileCount] = File(msg.sender, _paymentAsset, _metadataHash, _price, 0);
         uint currentFile = fileCount;
-        bytes memory convertedHash = bytes(_metadataHash);
-        hashExists[convertedHash] = true;
         fileCount ++;
         return currentFile;
     }
@@ -1912,10 +1903,9 @@ contract StorageMarketPlace is Sablier {
             // Initializing the the mapping with first id if buyer is buying 1st time
             buyerInfo[msg.sender] = [_id];
         }
-        return true;
     }
         
-        function createSubscription(uint _deposit, address _token, uint _startTime, uint _stopTime, address reciever) external returns (uint256)  {
+        function createSubscription(uint _deposit, address _token, uint _startTime, uint _stopTime, address reciever) external  {
         require(reciever != address(0x00), "cannot stream to the zero address");
         require(reciever != address(this), "cannot stream to the contract itself");
         require(reciever != msg.sender, "cannot stream to yourself");
@@ -1930,11 +1920,10 @@ contract StorageMarketPlace is Sablier {
         uint256 actualDepositAmount = _deposit.sub(remainder);
         uint256 streamId = createStream(reciever, actualDepositAmount, _token, _startTime, _stopTime);
         // Once stream is created update both mappings so that the subscription can be tracked easily from both sides
-        BuyerSubscription[] storage buyerSubscriptions = subscriptionHolders[reciever];
-        buyerSubscriptions.push(BuyerSubscription(msg.sender, _deposit, true));
-        SellerSubscription[] storage sellerSubscriptions = subscriptionSellers[msg.sender];
-        sellerSubscriptions.push(SellerSubscription(reciever, _deposit, true));
-        return streamId;
+        BuyerSubscription[] storage buyerSubscriptions = sellerToBuyer[reciever];
+        buyerSubscriptions.push(BuyerSubscription(msg.sender, _deposit, streamId, true));
+        SellerSubscription[] storage sellerSubscriptions = buyerToSeller[msg.sender];
+        sellerSubscriptions.push(SellerSubscription(reciever, _deposit, streamId, true));
     }
     
     function withdraw(uint256 _streamId, address buyer, uint256 _amount) public {
@@ -1942,8 +1931,8 @@ contract StorageMarketPlace is Sablier {
         ( , , , , , uint256 stopTime, , ) = getStream(_streamId);
         // get stop time of the stream if stop time is <= now then stream has ended so mark false in is active to filter on ui and transfer the amount requested by seller if stream still active then onlt trnsfer
             if (stopTime >= now) {
-            BuyerSubscription[] storage buyerSubscriptions = subscriptionHolders[msg.sender];
-            SellerSubscription[] storage sellerSubscriptions = subscriptionSellers[buyer];
+            BuyerSubscription[] storage buyerSubscriptions = sellerToBuyer[msg.sender];
+            SellerSubscription[] storage sellerSubscriptions = buyerToSeller[buyer];
             for (uint i = 0; i < buyerSubscriptions.length; i ++) {
                 if (buyerSubscriptions[i].buyer == buyer) {
                     buyerSubscriptions[i].isActive = false;
@@ -1960,8 +1949,8 @@ contract StorageMarketPlace is Sablier {
     
     function cancelSubscription(uint256 _streamId, address seller) public {
         // first making the isActive property false in order to filter on UI
-         BuyerSubscription[] storage buyerSubscriptions = subscriptionHolders[seller];
-         SellerSubscription[] storage sellerSubscriptions = subscriptionSellers[msg.sender];
+         BuyerSubscription[] storage buyerSubscriptions = sellerToBuyer[seller];
+         SellerSubscription[] storage sellerSubscriptions = buyerToSeller[msg.sender];
          for (uint i = 0; i < buyerSubscriptions.length; i ++) {
                 if (buyerSubscriptions[i].buyer == msg.sender) {
                     buyerSubscriptions[i].isActive = false;
