@@ -9,7 +9,10 @@ export const marketService = {
     getPriceLimit,
     getFileCount,
     buy,
-    sell
+    sell,
+    createSubscription,
+    withdrawSubscriptionAmount,
+    cancelSubscription
 };
 
 async function getFile(market, fileId) {
@@ -48,7 +51,6 @@ async function getAllFiles(market) {
 }
 
 async function sell(market, erc20Address, price, metadataHash) {
-    console.log({ erc20Address });
     const receipt = await market.methods
         .sell(erc20Address, BigInt(price * 10 ** 18), metadataHash)
         .send();
@@ -64,6 +66,36 @@ async function sell(market, erc20Address, price, metadataHash) {
 async function buy(market, fileId) {
     const receipt = await market.methods.buy(parseInt(fileId)).send();
     if (!receipt.status) {
+        logReceipt(receipt);
+        throw "Transaction failed";
+    }
+    return {};
+}
+
+// call approve before in actiom
+async function createSubscription(depositAmount, daiAddress, startTime, stopTime) {
+    const receipt = await market.methods.createSubscription(depositAmount, daiAddress, startTime, stopTime).send()
+ if (!receipt.status) {
+        logReceipt(receipt);
+        throw "Transaction failed";
+    }
+    return {};
+}
+
+// seller clicks wothdraw for that particular subscription to get the funds locked, buyer address needed for filtering in mapping
+async function withdrawSubscriptionAmount(streamId, buyer, amount) {
+ const receipt = await market.methods.withdraw(streamId, buyer, amount).send()
+ if (!receipt.status) {
+        logReceipt(receipt);
+        throw "Transaction failed";
+    }
+    return {};
+}
+
+// buyer clicks on cancel for that particular seller
+async function cancelSubscription(streamId, seller) {
+ const receipt = await market.methods.cancelSubscription(streamId, seller).send()
+ if (!receipt.status) {
         logReceipt(receipt);
         throw "Transaction failed";
     }

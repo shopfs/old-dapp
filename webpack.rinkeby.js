@@ -13,7 +13,7 @@ module.exports = merge(common, {
     externals: {
         config: JSON.stringify({
             networkId: 4,
-            marketAddress: "0x6e769470f6f8d99794e53c87fd8254e5d4fedb8b",
+            marketAddress: "0xc065c823ebeb500f292a8ae8f0f045f977209fda",
             testnetDAIAddress: "0xc3dbf84Abb494ce5199D5d4D815b10EC29529ff8"
         })
     }

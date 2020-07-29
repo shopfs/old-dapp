@@ -1,7 +1,7 @@
 import { SpaceClient } from '@fleekhq/space-client';
 
 const client = new SpaceClient({
-  url: 'http://0.0.0.0:9998',
+  url: 'http://localhost:9998',
 });
 
 export const daemonService = {
@@ -66,7 +66,7 @@ async function openFile(bucket, threadInfo) {
         path: ""
     };
     console.log({ input0 });
-    await timeout(5000)
+    await timeout(15000)
     console.log("timeout done, listing");
     const dirRes0 = await client.listDirectory(input0);
     const entryList0 = dirRes0.getEntriesList();
