@@ -116,12 +116,19 @@ function uploadAndSellFile(path, description, imageHash, price) {
                 throw "Price higher than priceLimit (" + priceLimit + " DAI)";
             }
 
-            const bucketName = account + "." + Date.now();
+            // const bucketName = "bucket_" + account + "_" + Date.now();
+            const bucketName = "bucket" + Date.now();
+            console.log({ bucketName });
             const fileName = path.replace(/^.*[\\\/]/, "");
+            console.log({ fileName });
 
-            await daemonService.createBucket(bucketName);
-            await daemonService.uploadFile(bucketName, path);
-            const threadData = await daemonService.shareBucket(bucketName);
+            // await daemonService.createBucket(bucketName);
+            // await daemonService.createFolder(bucketName);
+            const threadInfo = await daemonService.uploadFile(bucketName, path);
+            // const threadInfo = await daemonService.shareBucket(bucketName);
+            // const filePath = await daemonService.getFilePath(bucketName);
+
+            console.log({ threadInfo });
             const metadataHash = await ipldService.uploadMetadata({
                 fileName,
                 path,
@@ -129,8 +136,9 @@ function uploadAndSellFile(path, description, imageHash, price) {
                 description,
                 imageHash
             });
+            console.log("got metadataHash");
 
-            console.log({metadataHash}); 
+            console.log({ metadataHash });
 
             const fileId = await marketService.sell(
                 market,
@@ -138,20 +146,21 @@ function uploadAndSellFile(path, description, imageHash, price) {
                 price,
                 metadataHash
             );
+            console.log("file sold on market");
 
-            console.log("sign fileId");
             const signature = await web3.eth.personal.sign(fileId, account);
-            console.log({signature})
-
+            console.log("fileId signed");
+            console.log({ signature });
 
             await keysService.putThreadData(fileId, {
-                threadInfo: threadData.threadInfo,
-                path: threadData.path,
+                threadInfo,
+                // path: filePath,
                 bucketName,
                 signature
             });
+            console.log("thread data uploaded");
         } catch (error) {
-            console.log({error});
+            console.log({ error });
             dispatch(failure(error));
             dispatch(alertActions.error("Error Selling File"));
             return;
@@ -199,20 +208,30 @@ function downloadFile(fileId) {
         try {
             const { account, web3 } = getState().web3;
             console.log("sign fileId");
-            const signature = await web3.eth.personal.sign(fileId.toString(), account);
-            console.log({signature})
-            const threadData = await keysService.getThreadData(fileId, signature);
-            console.log({ threadData });
-            await daemonService.joinBucket(
-                threadData.bucketName,
-                threadData.threadInfo
+            const signature = await web3.eth.personal.sign(
+                fileId.toString(),
+                account
             );
-            console.log("bucketJoined");
+            console.log({ signature });
+            const threadData = await keysService.getThreadData(
+                fileId,
+                signature
+            );
+            console.log({ threadData });
+            // await daemonService.joinBucket(
+            //     threadData.bucketName,
+            //     threadData.threadInfo
+            // );
+            // const filePath = await daemonService.getFilePath(
+            //     threadData.bucketName
+            // );
+            // console.log("bucketJoined");
             const location = await daemonService.openFile(
                 threadData.bucketName,
-                threadData.path
+                threadData.threadInfo
+                // filePath
             );
-            console.log({location})
+            console.log({ location });
         } catch (error) {
             console.log({ error });
             dispatch(failure(error));

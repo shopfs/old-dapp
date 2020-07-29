@@ -1,74 +1,99 @@
-import SpaceClient from "@fleekhq/space-client";
+import { SpaceClient } from '@fleekhq/space-client';
 
-const client = new SpaceClient({ url: `http://localhost:9998` });
+const client = new SpaceClient({
+  url: 'http://0.0.0.0:9998',
+});
 
 export const daemonService = {
-    createBucket,
-    shareBucket,
     uploadFile,
-    joinBucket,
     openFile
 };
 
-async function createBucket(bucketName) {
-    const bucketResponse = await client.createBucket({ slug: bucketName });
+const folderName = "folderName";
 
-    return bucketResponse.getBucket();
-}
+const getEntryObject = entry => ({
+    path: entry.getPath(),
+    name: entry.getName(),
+    isDir: entry.getIsdir(),
+    created: entry.getCreated(),
+    updated: entry.getUpdated(),
+    ipfsHash: entry.getIpfshash(),
+    sizeInBytes: entry.getSizeinbytes(),
+    fileExtension: entry.getFileextension()
+});
 
-async function shareBucket(bucketName) {
-    const dirRes = await client.listDirectories({
-        bucket: bucketName
+async function uploadFile(bucket, filePath) {
+    // uploading file to bucket have to integrate with button
+    console.log({ bucket, filePath });
+    await client.createBucket({ slug: bucket });
+    console.log("bucket created");
+    await client.createFolder({ bucket, path: folderName });
+    console.log("folder created: ", folderName);
+    await client.addItems({
+        bucket,
+        targetPath: folderName, // path in the bucket to be saved
+        sourcePaths: [filePath]
     });
-    const entriesList = dirRes.getEntriesList();
-    const path = entriesList[0].getPath();
+    console.log("file added!");
 
-    // bucket sharing details to be saved in  3box/any other alternative
-    const sharingResponse = await client.shareBucket({ bucketName });
+    const sharingResponse = await client.shareBucket({ bucket });
+    console.log("bucket shared");
     const threadInfo = sharingResponse.getThreadinfo();
     return {
-        threadInfo: {
-            key: threadInfo.getKey(),
-            addresses: threadInfo.getAddressesList()
-        },
-        path
+        key: threadInfo.getKey(),
+        addressList: threadInfo.getAddressesList(),
+        addresses: threadInfo.getAddressesList().join(", ")
     };
 }
 
-async function uploadFile(bucketName, filePath) {
-    let uploadData;
-    // uploading file to bucket have to integrate with button
-    const stream = await client.addItems({
-        bucket: bucketName,
-        targetPath: "/", // path in the bucket to be saved
-        sourcePaths: [filePath]
-    });
-
-    await stream.on("error", error => {
-        console.error("error: ", error);
-    });
-
-    return await new Promise(resolve => {
-        stream.on("data", data => {
-            console.log("data: ", data);
-            resolve(data.array[0][1]);
-        });
-    });
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function joinBucket(bucketName, threadInfo) {
-    const bucket = await client.joinBucket({ bucket: bucketName, threadInfo });
-    return;
-}
+async function openFile(bucket, threadInfo) {
+    const payload = {
+        bucket,
+        threadInfo: {
+            key: threadInfo.key,
+            addresses: threadInfo.addresses.replace(" ", "").split(",")
+        }
+    };
+    console.log({ payload });
+    const res = await client.joinBucket(payload);
+    console.log("bucket joined: ", res.getResult());
+    const input0 = {
+        bucket,
+        path: ""
+    };
+    console.log({ input0 });
+    await timeout(5000)
+    console.log("timeout done, listing");
+    const dirRes0 = await client.listDirectory(input0);
+    const entryList0 = dirRes0.getEntriesList();
+    const entries0 = entryList0.map(entry => getEntryObject(entry));
 
-async function openFile(bucket, path) {
-    console.log({bucket, path})
+    console.log({ entries0 });
+    const input1 = {
+        bucket,
+        path: folderName
+    };
+    console.log({ input1 });
+    const dirRes1 = await client.listDirectory(input1);
+    const entryList1 = dirRes1.getEntriesList();
+    const entries1 = entryList1.map(entry => getEntryObject(entry));
+
+    console.log({ entries1 });
+
+    const path = entries1[1].path;
+    console.log({ path });
+    console.log({ bucket, path });
     const openFileRes = await client.openFile({
         bucket,
         path
     });
 
     const location = openFileRes.getLocation();
-    console.log(location);
+    console.log("file opened");
+    console.log({ location });
     return location;
 }
