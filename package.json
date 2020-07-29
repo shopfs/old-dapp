@@ -11,7 +11,7 @@
   "dependencies": {
     "3box": "^1.20.3",
     "@fleekhq/fleek-storage-js": "^1.0.2",
-    "@fleekhq/space-client": "0.1.4",
+    "@fleekhq/space-client": "^0.1.5",
     "babel-polyfill": "^6.26.0",
     "cids": "^0.8.3",
     "history": "^4.10.1",
