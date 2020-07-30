@@ -17,6 +17,9 @@
         position: relative;
         background: white;
         border-radius: 0.5rem;
+        &:hover {
+            background: #e8e8e8;
+        }
     }
     .fileItemInner {
         display: flex;

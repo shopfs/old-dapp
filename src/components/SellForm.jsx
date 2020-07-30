@@ -20,7 +20,8 @@ const SellForm = ({ sell, uploadAndSellFile, uploadImage, inProgress }) => {
         const metadata = {
             title,
             description,
-            imageHash
+            imageHash,
+            uploadDate: new Date()
         };
         try {
             await uploadAndSellFile(path, metadata, price, asset);

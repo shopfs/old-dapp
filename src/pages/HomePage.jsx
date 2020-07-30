@@ -17,7 +17,7 @@ class HomePage extends React.Component {
                 <div className="welcome">
                     <span className="welcomeTitle"> Welcome To ShopFS </span>
                     <span className="welcomeSubtitle">
-                        ShopFS helps creators monetize their files
+                        ShopFS enables creators to monetize their files
                     </span>
                 </div>
                 <div className="howItWorks">

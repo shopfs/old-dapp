@@ -31,7 +31,7 @@ const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
                         </div>
                         <Link
                             className="fileItemInner"
-                            to={`/details/${fileId}`}
+                            to={`/files/${fileId}`}
                         >
                             <img
                                 className="fileImage"

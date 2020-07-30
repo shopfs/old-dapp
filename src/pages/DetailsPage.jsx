@@ -1,51 +1,85 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { userActions } from "../actions";
-import { history } from "../helpers";
+import ProfileHover from "profile-hover";
+import { history, getTokenSymbol } from "../helpers";
 import "../assets/scss/detailsPage.scss";
 
-const DetailsPage = props => {
-    const fileId = props.match.params.fileId;
+const DetailsPage = ({
+    match: {
+        params: { fileId }
+    },
+    data: { file },
+    connected,
+    getFile
+}) => {
     useEffect(() => {
-        console.log(fileId);
-        props.getFile(parseInt(fileId));
-    }, [fileId]);
-
-    const file = props.data.data.file;
+        if (connected && fileId) {
+            getFile(parseInt(fileId));
+        }
+    }, [fileId, connected]);
 
     return (
         <section className="filePage">
             {file && (
                 <div className="fileItem" key={file.metadataHash}>
-                    <p> Description: {file.metadata.description} </p>
-                    <p> FileName: {file.metadata.fileName} </p>
-                    <p> BucketName: {file.metadata.bucketName} </p>
-                    {file.metadata.imageHash && (
-                        <>
-                            <p> ImageHash: {file.metadata.imageHash} </p>
-                            <img
-                                className="file-img"
-                                src={`https://ipfs.infura.io/ipfs/${file.metadata.imageHash}`}
+                    <div className="detailsLeftBar">
+                        <img
+                            className="fileImage"
+                            src={`https://ipfs.infura.io/ipfs/${file.metadata.imageHash}`}
+                        />
+                        <a
+                            className="buyButton button"
+                            onClick={e => {
+                                props.buy(fileId);
+                            }}
+                        >
+                            Buy File
+                        </a>
+                        <a
+                            className="downloadButton button"
+                            onClick={async e => {
+                                await props.downloadFile(fileId);
+                            }}
+                        >
+                            Download File
+                        </a>
+                    </div>
+                    <div className="detailsRightBar">
+                        <span className="label labelTitle">title</span>
+                        <span className="fileTitle">{file.metadata.title}</span>
+                        <span className="label">sold by</span>
+                        <div
+                            className="fileSellerContainer"
+                            onClick={() => {
+                                history.push(`/users/${file.seller}`);
+                            }}
+                        >
+                            <ProfileHover
+                                className="fileSeller"
+                                address={file.seller}
+                                orientation="bottom"
+                                tileStyle
                             />
-                        </>
-                    )}
-                    <p> Hash: {file.metadataHash} </p>
-                    <p> Retrievals: {file.numRetriveals} </p>
-                    <p> Price: {file.price + " DAI"} </p>
-                    <button
-                        onClick={e => {
-                            props.buy(fileId);
-                        }}
-                    >
-                        Buy File
-                    </button>
-                    <button
-                        onClick={async e => {
-                            await props.downloadFile(fileId);
-                        }}
-                    >
-                        Download File
-                    </button>
+                        </div>
+                        <span className="label">price</span>
+                        <span className="filePrice">{`${
+                            file.price
+                        } ${getTokenSymbol(file.paymentAsset)}`}</span>
+                        <span className="label">Number of buys</span>
+                        <span className="fileBuys">
+                            {`${file.numRetrievals}`}
+                        </span>
+                        <span className="label">upload date</span>
+                        <span className="uploadDate">
+                            {new Date(file.metadata.uploadDate).toString()}
+                        </span>
+
+                        <span className="label">description</span>
+                        <span className="fileDescription">
+                            {file.metadata.description}
+                        </span>
+                    </div>
                 </div>
             )}
         </section>
@@ -53,8 +87,9 @@ const DetailsPage = props => {
 };
 
 function mapState(state) {
-    const data = state.user;
-    return { data };
+    const { connected } = state.web3;
+    const { data } = state.user;
+    return { data, connected };
 }
 
 const actionCreators = {

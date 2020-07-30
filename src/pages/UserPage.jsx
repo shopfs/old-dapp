@@ -20,6 +20,8 @@ const UserPage = ({
             getProfile(address);
         }
     }, [address]);
+    const isLoggedInUser =
+        account && account.toLowerCase() == address.toLowerCase();
 
     return (
         <div className="userPage">
@@ -34,55 +36,44 @@ const UserPage = ({
                                           profile.coverPhoto
                                       )}`
                                   }
-                                : { background: "#808080" }
+                                : { background: "#bdbdbd" }
                         }
                     ></div>
                     <div className="mainContent">
-                        <div className="leftBar">
+                        <div className="profileLeftBar">
                             <div className="profileImage">
                                 {profile.image && (
                                     <img src={getImageUrl(profile.image)} />
                                 )}
                             </div>
-                            <div className="name">{profile.name}</div>
-                            <div className="account">
+                            <div className="name">{`${profile.name} ${profile.emoji}`}</div>
+                            <div className="address">
                                 {getAccountString(address)}
                             </div>
-                            <div className="location">{profile.location}</div>
-                            <div className="location">
+                            <div className="description">
                                 {profile.description}
                             </div>
                             <a
-                                className="boxProfile"
-                                href={`https://3box.io/${address}`}
+                                className="boxProfile profileButton"
+                                href={`https://3box.io/${address}${isLoggedInUser &&
+                                    "/edit"}`}
                             >
-                                {account.toLowerCase() === address.toLowerCase()
+                                {isLoggedInUser
                                     ? "Edit 3box Profile"
-                                    : "View 3boxx Profile"}
+                                    : "View 3box Profile"}
                             </a>
+                            {!isLoggedInUser && (
+                                <a className="subscribe profileButton">
+                                    Subscribe
+                                </a>
+                            )}
                         </div>
-                        <div className="rightBar">
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
-                            <p>{profile.description}</p>
+                        <div className="profileRightBar">
+                            <p>
+                                {
+                                    "User's files & subscriptions etc will come here"
+                                }
+                            </p>
                         </div>
                     </div>
                 </>
@@ -93,7 +84,7 @@ const UserPage = ({
 function mapState(state) {
     const { connected, account } = state.web3;
     const data = { ...state.user.data, ...state.box.data };
-    return { data, connected };
+    return { data, connected, account };
 }
 const actionCreators = {
     getAllFiles: userActions.getAllFiles,
