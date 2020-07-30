@@ -1,3 +1,5 @@
+import config from "config";
+
 export function logReceipt(receipt) {
     console.log("Receipt: ");
     Object.keys(receipt).map((key, index) => {
@@ -18,4 +20,18 @@ export function epochConversion(time) {
     epochTime["startTime"] = startTime;
     epochTime["stopTime"] = stopTime;
     return epochTime;
+}
+
+let tokenMapping = {};
+export function getTokenSymbol(tokenAddress) {
+    let tokenSymbol = tokenMapping[tokenAddress];
+    if (tokenSymbol) {
+        return tokenSymbol;
+    }
+    console.log("building mapping");
+    for (let i = 0; i < config.priceAssets.length; ++i) {
+        const token = config.priceAssets[i];
+        tokenMapping[token.address] = token.symbol;
+    }
+    return tokenMapping[tokenAddress];
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import ThreadTest from "./ThreadTest";
-import "../../assets/scss/threadPage.scss";
+import ThreadTest from "../components/ThreadTest";
+import "../assets/scss/threadPage.scss";
 
 class ThreadPage extends React.Component {
     constructor(props) {

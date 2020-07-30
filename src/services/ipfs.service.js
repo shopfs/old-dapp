@@ -7,9 +7,10 @@ const ipfs = new ipfsClient({
     protocol: "https"
 });
 
-export const ipldService = {
+export const ipfsService = {
     uploadMetadata,
-    getMetadata
+    getMetadata,
+    uploadFile
 };
 
 async function uploadMetadata(metadata) {
@@ -20,5 +21,10 @@ async function uploadMetadata(metadata) {
 
 async function getMetadata(cid) {
     const data = await ipfs.dag.get(cid);
-    return data.value
+    return data.value;
+}
+
+async function uploadFile(file) {
+    const node = await ipfs.add([file]);
+    return node.path;
 }

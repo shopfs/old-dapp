@@ -1,0 +1,46 @@
+@import "config.scss";
+
+.userPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.coverImage {
+    background-size: cover; 
+    background-position: center;
+    height: 20rem;
+    position: relative;
+}
+
+.profileImage {
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    border: 2px solid white;
+    height: 10rem;
+    width: 10rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.mainContent {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-gap: 1rem;
+}
+
+.leftBar {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.rightBar {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}

@@ -1,0 +1,76 @@
+@import "config";
+
+.filesDisplay {
+    padding: 1rem;
+    width: 100%;
+    max-width: 70rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+    grid-gap: 1rem;
+    margin: 0 auto;
+    .fileItem {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        padding: 1rem;
+        position: relative;
+        background: white;
+        border-radius: 0.5rem;
+    }
+    .fileItemInner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        text-decoration: none;
+        color: black;
+    }
+    .fileImage {
+        width: auto;
+        max-width: 100%;
+        height: 15rem;
+        max-height: 15rem;
+        border-radius: 0.5rem;
+    }
+    .fileSellerContainer {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        cursor: pointer;
+        .threeboxProfileHover__style_boxShortAddress {
+            display: none;
+        }
+        .threeboxProfileHover__style_boxImg {
+            box-shadow: 0 0.5rem 0.5rem 0 $grey;
+        }
+    }
+    .fileTitle {
+        margin-top: 1rem;
+        width: 100%;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    .fileMeta {
+        margin-top: 1rem;
+        align-self: stretch;
+        display: flex;
+        font-size: 1.25rem;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        .filePrice {
+            z-index: 1;
+            color: white;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        .pricetag {
+            height: 7rem;
+            position: absolute;
+            right: -0.5rem;
+            bottom: -2.6rem;
+        }
+    }
+}

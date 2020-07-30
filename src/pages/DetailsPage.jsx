@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { userActions } from "../../actions";
-import { history } from "../../helpers";
-import "../../assets/scss/detailsPage.scss";
+import { userActions } from "../actions";
+import { history } from "../helpers";
+import "../assets/scss/detailsPage.scss";
 
 const DetailsPage = props => {
     const fileId = props.match.params.fileId;
@@ -12,10 +12,9 @@ const DetailsPage = props => {
     }, [fileId]);
 
     const file = props.data.data.file;
-    //details file for details of single file
+
     return (
         <section className="filePage">
-            <div>welcome to detailspage,what should go here?</div>
             {file && (
                 <div className="fileItem" key={file.metadataHash}>
                     <p> Description: {file.metadata.description} </p>

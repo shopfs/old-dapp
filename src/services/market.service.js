@@ -1,5 +1,5 @@
 import { logReceipt } from "../helpers";
-import { ipldService } from "./ipld.service";
+import { ipfsService } from "./ipfs.service";
 
 export const marketService = {
     getFile,
@@ -16,10 +16,9 @@ export const marketService = {
 };
 
 async function getFile(market, fileId) {
-    console.log({market, fileId});
     let file = await market.methods.Files(parseInt(fileId)).call();
     file.price = file.price / 10 ** 18;
-    const metadata = await ipldService.getMetadata(file.metadataHash);
+    const metadata = await ipfsService.getMetadata(file.metadataHash);
     return { ...file, metadata };
 }
 
@@ -42,7 +41,6 @@ async function getBuyerFiles(market, buyer) {
 
 async function getAllFiles(market) {
     const fileCount = await getFileCount(market);
-    console.log({ fileCount });
     return await Promise.all(
         Array(parseInt(fileCount))
             .fill(1)
@@ -54,7 +52,6 @@ async function sell(market, erc20Address, price, metadataHash) {
     const receipt = await market.methods
         .sell(erc20Address, BigInt(price * 10 ** 18), metadataHash)
         .send();
-    console.log({receipt})
     if (!receipt.status) {
         logReceipt(receipt);
         throw "Transaction failed";

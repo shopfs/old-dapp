@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "3box": "^1.20.3",
-    "@fleekhq/fleek-storage-js": "^1.0.2",
     "@fleekhq/space-client": "^0.1.5",
     "babel-polyfill": "^6.26.0",
     "cids": "^0.8.3",
@@ -18,6 +17,7 @@
     "ipfs-http-client": "^45.0.0",
     "ipld-dag-cbor": "^0.16.0",
     "libp2p-pubsub": "0.4.6",
+    "profile-hover": "^1.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",

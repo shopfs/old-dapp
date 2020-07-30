@@ -3,7 +3,6 @@ import config from "config";
 import { alertActions } from "./";
 import { web3Constants } from "../constants";
 import StorageMarket from "../assets/abis/StorageMarketPlace.json";
-import TestnetDAI from "../assets/abis/TestnetDAI.json";
 
 export const web3Actions = {
     loadWeb3,
@@ -26,7 +25,7 @@ function loadAccount() {
             dispatch(alertActions.error(error));
             return;
         }
-        dispatch(loaded({account, connected: false}));
+        dispatch(loaded({ account, connected: false }));
         dispatch(alertActions.success("Reloaded MetaMask Account"));
     };
 }
@@ -51,7 +50,7 @@ function loadNetwork() {
             dispatch(alertActions.error(error));
             return;
         }
-        dispatch(loaded({networkId, connected: false}));
+        dispatch(loaded({ networkId, connected: false }));
         dispatch(alertActions.success("Reloaded MetaMask Network"));
     };
 }
@@ -61,7 +60,7 @@ function loadWeb3() {
         dispatch(started());
         let { web3 } = getState().web3;
         if (web3) {
-            dispatch(loaded({connected: true}));
+            dispatch(loaded({ connected: true }));
             return;
         }
         if (window.ethereum) {
@@ -105,7 +104,7 @@ function loadWeb3() {
             market = await new web3.eth.Contract(
                 StorageMarket["abi"],
                 config.marketAddress,
-                {from: account}
+                { from: account }
             );
         } catch (e) {
             console.log(e);
@@ -115,27 +114,10 @@ function loadWeb3() {
             return;
         }
 
-        let dai;
-        try {
-            dai = await new web3.eth.Contract(
-                TestnetDAI["abi"],
-                config.testnetDAIAddress,
-                {from: account}
-            );
-        } catch (e) {
-            console.log(e);
-            dispatch(failure(e));
-            let error = "Could not load ERC20 Contract";
-            dispatch(alertActions.error(error));
-            return;
-        }
-		
-		dispatch(loaded({web3, account, networkId, market, dai,connected: true}));
+        dispatch(loaded({ web3, account, networkId, market, connected: true }));
         dispatch(alertActions.success("MetaMask Connected"));
         return;
-		
     };
-
 }
 
 function started() {

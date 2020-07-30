@@ -2,15 +2,17 @@ import React from "react";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { ToastContainer } from "react-toastify";
-import { history } from "../helpers";
-import { web3Actions } from "../actions";
-import { ErrorBoundary, NavBar } from "../components/common";
-import loading from "../assets/img/loading.gif";
-import "../assets/scss/app.scss";
+import { history } from "./helpers";
+import { web3Actions } from "./actions";
+import { ErrorBoundary, NavBar, Footer } from "./components/common";
+import loading from "./assets/img/loading.svg";
+import "./assets/scss/app.scss";
+
 const HomePage = React.lazy(() => import("./pages/HomePage"));
-const SellPage = React.lazy(() => import("./pages/SellPage"));
-const ThreadPage = React.lazy(() => import("./pages/ThreadPage"));
+const FilesPage = React.lazy(() => import("./pages/FilesPage"));
 const DetailsPage = React.lazy(() => import("./pages/DetailsPage"));
+const SellPage = React.lazy(() => import("./pages/SellPage"));
+const UserPage = React.lazy(() => import("./pages/UserPage"));
 
 class App extends React.Component {
     constructor(props) {
@@ -51,28 +53,33 @@ class App extends React.Component {
                                 </div>
                             }
                         >
+                            <NavBar />
                             <Switch>
                                 <Route exact path="/" component={HomePage} />
                                 <Route
                                     exact
-                                    path="/sell"
+                                    path="/files"
+                                    component={FilesPage}
+                                />
+                                <Route
+                                    exact
+                                    path="/files/:fileId"
+                                    component={DetailsPage}
+                                />
+                                <Route
+                                    exact
+                                    path="/upload"
                                     component={SellPage}
                                 />
                                 <Route
                                     exact
-                                    path="/details/:fileId"
-                                    component={DetailsPage}
+                                    path="/users/:address"
+                                    component={UserPage}
                                 />
-                                {/*<Route
-                                        exact
-                                        path="/thread"
-                                        component={ThreadPage}
-                                    />
-								*/}
                                 <Redirect from="*" to="/" />
                             </Switch>
+                            <Footer />
                         </React.Suspense>
-                        <NavBar />
                     </ErrorBoundary>
                 </Router>
             </div>

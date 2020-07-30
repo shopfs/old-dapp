@@ -14,7 +14,12 @@ module.exports = merge(common, {
         config: JSON.stringify({
             networkId: 4,
             marketAddress: "0xc065c823ebeb500f292a8ae8f0f045f977209fda",
-            testnetDAIAddress: "0xc3dbf84Abb494ce5199D5d4D815b10EC29529ff8"
+            priceAssets: [
+                {
+                    address: "0xc3dbf84Abb494ce5199D5d4D815b10EC29529ff8",
+                    symbol: "DAI"
+                }
+            ]
         })
     }
 });
