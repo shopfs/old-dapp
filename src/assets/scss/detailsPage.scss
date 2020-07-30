@@ -15,9 +15,12 @@
 }
 
 .detailsLeftBar {
+    display: flex;
+    flex-direction: column;
     padding: 1rem;
     width: 30rem;
     .fileImage {
+        align-self: center;
         width: auto;
         max-width: 100%;
         height: auto;

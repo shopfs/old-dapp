@@ -120,7 +120,11 @@ function uploadAndSellFile(path, metadata, price, priceAddress) {
             const file = path.replace(/^.*[\\\/]/, "");
             console.log({ bucket });
 
-            const threadInfo = await daemonService.uploadFile(bucket, path);
+            const threadInfo = await daemonService
+                .uploadFile(bucket, path)
+                .catch(error => {
+                    throw "Space Daemon not running";
+                });
 
             console.log({ threadInfo });
             const metadataHash = await ipfsService.uploadMetadata({

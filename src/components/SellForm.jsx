@@ -21,7 +21,7 @@ const SellForm = ({ sell, uploadAndSellFile, uploadImage, inProgress }) => {
             title,
             description,
             imageHash,
-            uploadDate: new Date()
+            uploadDate: new Date().getTime()
         };
         try {
             await uploadAndSellFile(path, metadata, price, asset);
@@ -89,7 +89,7 @@ const SellForm = ({ sell, uploadAndSellFile, uploadImage, inProgress }) => {
                         type="file"
                         style={{ display: "none" }}
                         onChange={e => {
-                            console.log("test")
+                            console.log("test");
                             const file = e.target.files[0];
                             uploadFile(file);
                         }}

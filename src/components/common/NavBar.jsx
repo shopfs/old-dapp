@@ -29,7 +29,7 @@ class NavBar extends React.Component {
     async connect() {
         await this.props.loadWeb3();
         if (this.state.pathname === "/") {
-            history.push("/files");
+            history.push("/upload");
         }
         //3box commented for faster loading for now
         // await this.props.loadbox(this.props.account);
