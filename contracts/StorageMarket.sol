@@ -1,5 +1,5 @@
 /**
- *Submitted for verification at Etherscan.io on 2020-07-28
+ *Submitted for verification at Etherscan.io on 2020-07-30
 */
 
 /**
@@ -1837,6 +1837,8 @@ library SafeMath {
 contract StorageMarketPlace is Sablier {
     using SafeMath for uint;
     
+    event Buy(uint indexed fileId, address indexed buyer);
+    event Sell(uint indexed fileId, address indexed seller);
 
     struct File {
         address seller;
@@ -1887,6 +1889,7 @@ contract StorageMarketPlace is Sablier {
         Files[fileCount] = File(msg.sender, _paymentAsset, _metadataHash, _price, 0);
         uint currentFile = fileCount;
         fileCount ++;
+        emit Sell(currentFile, msg.sender);
         return currentFile;
     }
    
@@ -1903,6 +1906,7 @@ contract StorageMarketPlace is Sablier {
             // Initializing the the mapping with first id if buyer is buying 1st time
             buyerInfo[msg.sender] = [_id];
         }
+        emit Buy(_id, msg.sender);
     }
         
         function createSubscription(uint _deposit, address _token, uint _startTime, uint _stopTime, address reciever) external  {
