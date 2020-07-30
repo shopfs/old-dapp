@@ -5,12 +5,15 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf ./dist && webpack --config webpack.rinkeby.js",
-    "start": "webpack-dev-server --config webpack.rinkeby.js"
+    "build": "rm -rf ./dist && webpack --config webpack.prod.js",
+    "start": "webpack-dev-server --config webpack.local.js"
   },
   "dependencies": {
     "3box": "^1.20.3",
     "@fleekhq/space-client": "^0.1.5",
+    "@openzeppelin/contracts": "2.4.0",
+    "@openzeppelin/contracts-ethereum-package": "2.2.3",
+    "@openzeppelin/upgrades": "^2.8.0",
     "babel-polyfill": "^6.26.0",
     "cids": "^0.8.3",
     "history": "^4.10.1",

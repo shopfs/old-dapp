@@ -170,13 +170,14 @@ function buy(fileId) {
         dispatch(started());
         let data;
         try {
-            const { account, market } = getState().web3;
+            const { account, market, web3 } = getState().web3;
             const file = await marketService.getFile(market, fileId);
             const erc20 = await new web3.eth.Contract(
                 IERC20["abi"],
                 file.paymentAsset,
                 { from: account }
             );
+            console.log("approving market")
             data = await erc20Service.approve(
                 erc20,
                 config.marketAddress,
@@ -185,6 +186,7 @@ function buy(fileId) {
             if (data.error) {
                 throw "Could not approve Market to transfer funds";
             }
+            console.log("buying file")
             data = await marketService.buy(market, fileId);
         } catch (e) {
             console.log(e);
@@ -213,11 +215,13 @@ function downloadFile(fileId) {
                 account
             );
             console.log({ signature });
+            console.log("getting threadData");
             const threadData = await keysService.getThreadData(
                 fileId,
                 signature
             );
             console.log({ threadData });
+            console.log("opening file");
             const location = await daemonService.openFile(
                 threadData.bucket,
                 threadData.threadInfo

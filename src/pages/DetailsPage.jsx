@@ -11,7 +11,9 @@ const DetailsPage = ({
     },
     data: { file },
     connected,
-    getFile
+    getFile,
+    buy,
+    downloadFile
 }) => {
     useEffect(() => {
         if (connected && fileId) {
@@ -31,15 +33,15 @@ const DetailsPage = ({
                         <a
                             className="buyButton button"
                             onClick={e => {
-                                props.buy(fileId);
+                                buy(fileId);
                             }}
                         >
                             Buy File
                         </a>
                         <a
                             className="downloadButton button"
-                            onClick={async e => {
-                                await props.downloadFile(fileId);
+                            onClick={e => {
+                                downloadFile(fileId);
                             }}
                         >
                             Download File
