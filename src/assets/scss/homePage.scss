@@ -1,88 +1,75 @@
 @import "config.scss";
 
 .homePage {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 1365px;
-    height: 100%;
-    padding-top: 5rem;
-    background: #fff;
-    overflow-y: scroll;
-    .homePageInner1 {
-        display: grid;
-        padding-top: 10rem;
-        height: 250px;
-        width: 100%;
-        font-size: 4rem;
-        justify-content: center;
-        align-items: center;
-        section {
-            width: 15rem;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            margin: 1rem 0;
-            p {
-                margin: 0;
-            }
-            button {
-                background: $blue2;
-                color: $white;
-                border-radius: 0.5rem;
-                height: 2rem;
-                margin-top: 1rem;
-            }
-
-            input {
-                border-radius: 0.5rem;
-                height: 2rem;
-            }
-        }
-        .sellForm,
-        .threadTest {
-            border: 1px solid $blue2;
-            padding: 0.5rem;
-        }
-        .threadTest div {
-            margin: 1rem 0;
-        }
-        .filesDisplay {
-        }
-        .fileItem {
-            display: flex;
-            flex-direction: column;
-            border: 1px solid $blue2;
-            margin-bottom: 0.5rem;
-            padding: 0.5rem;
-        }
+    width: 100%;
+    span {
+        text-align: center;
     }
-    .homePageInner2 {
-        display: grid;
-        height: 250px;
-        width: 100%;
-        padding-left: 15rem;
-        font-size: 2rem;
-        justify-content: center;
-        align-items: center;
-        grid-template-rows: 1fr 1fr;
-    }
-    .homePageInner3 {
+    .welcome {
+        padding: 0 2rem;
         display: flex;
-        height: 250px;
+        height: 30rem;
         width: 100%;
-        font-size: 2rem;
+        max-width: 70rem;
+        font-size: 3rem;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        flex-direction: row;
-        grid-template-columns: 1rem 1rem;
-        .inner-box {
-            background: #ccd6e6;
-            justify-content: center;
+        .welcomeTitle {
+            color: $red;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+    }
+    .howItWorks {
+        padding: 2rem;
+        display: grid;
+        height: 35rem;
+        width: 100%;
+        max-width: 70rem;
+        justify-content: space-between;
+        align-items: center;
+        justify-content: center;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 1rem;
+        .innerBox {
+            height: 27rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 0.5rem 0 $grey;
+            background: white;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            padding: 10rem;
-            height: 5px;
-            width: 100%;
+        }
+        .boxImage {
+            height: 15rem;
+            padding: 1rem 0;
+        }
+        .boxTitle {
+            font-size: 2rem;
+        }
+        .boxDescription {
+            font-size: 1.5rem;
+            color: $grey;
+        }
+    }
+    .joinNow {
+        padding: 0 2rem;
+        display: flex;
+        height: 30rem;
+        width: 100%;
+        max-width: 70rem;
+        font-size: 3rem;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .exploreFilesButton {
+            margin-top: 1rem;
         }
     }
 }

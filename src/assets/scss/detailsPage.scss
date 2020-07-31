@@ -5,20 +5,68 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    max-width: 70rem;
 }
 
 .fileItem {
-    background: $blue1;
-    width: 60%;
+    display: flex;
+    width: 100%;
+}
+
+.detailsLeftBar {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    .file-img{
-        width: 100px
+    padding: 1rem;
+    width: 30rem;
+    .fileImage {
+        align-self: center;
+        width: auto;
+        max-width: 100%;
+        height: auto;
+        max-height: 20rem;
+        border-radius: 0.5rem;
     }
 }
 
+.detailsRightBar {
+    flex: 1;
+    padding: 1rem;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    span {
+        width: 100%;
+    }
+}
 
+.buyButton,
+.downloadButton {
+    margin-top: 1rem;
+}
+
+.fileTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.filePrice {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.label {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #808080;
+}
+
+.labelTitle {
+    margin-top: 0;
+}
+
+.fileSellerContainer {
+    cursor: pointer;
+}

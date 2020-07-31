@@ -1,17 +1,18 @@
-$grey: #2F3137;
-$red: #E74C3C;
-$green: #109132;
-$white: #FBFBFB;
-$offwhite: #F0F8FF;
+$grey: #bbbbbb;
+$red: #da5656;
+$white: #e8e1e1;
 $blue1: lightblue;
 $blue2: #3498DB;
 
-$grey_: rgba(43,61,79, 0.2);
-$grey_8: rgba(43,61,79, 0.8);
-$Flat-UI-2-rgba: rgba(230,75,59, 1);
-$Flat-UI-4-rgba: rgba(52,151,175, 1);
-$Flat-UI-5-rgba: rgba(40,128,184, 1);
 @font-face {
-    font-family: "Consolas";
-    src: url("../fonts/Consolas.woff2") format("woff2");
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/inter-v2-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('../fonts/inter-v2-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/inter-v2-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/inter-v2-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/inter-v2-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/inter-v2-latin-regular.svg#Inter') format('svg'); /* Legacy iOS */
 }
