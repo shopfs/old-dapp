@@ -289,7 +289,7 @@ contract ReentrancyGuard is Initializable {
 
 // File: contracts/sablier/compound/CarefulMath.sol
 
-pragma solidity ^0.5.8;
+pragma solidity ^0.5.2;
 
 /**
   * @title Careful Math
@@ -377,7 +377,7 @@ contract CarefulMath {
 
 // File: contracts/sablier/compound/Exponential.sol
 
-pragma solidity ^0.5.8;
+pragma solidity ^0.5.2;
 
 
 /**
@@ -605,7 +605,7 @@ contract Exponential is CarefulMath {
 
 // File: contracts/sablier/interfaces/ICERC20.sol
 
-pragma solidity 0.5.11;
+pragma solidity 0.5.2;
 
 /**
  * @title CERC20 interface
@@ -666,7 +666,7 @@ contract Context {
 
 // File: contracts/sablier/lifecycle/OwnableWithoutRenounce.sol
 
-pragma solidity 0.5.11;
+pragma solidity 0.5.2;
 
 
 
@@ -837,7 +837,7 @@ contract PauserRoleWithoutRenounce is Initializable, Context {
 
 // File: contracts/sablier/lifecycle/PausableWithoutRenounce.sol
 
-pragma solidity 0.5.11;
+pragma solidity 0.5.2;
 
 
 
@@ -916,7 +916,7 @@ contract PausableWithoutRenounce is Initializable, Context, PauserRoleWithoutRen
 
 // File: contracts/sablier/interfaces/ICTokenManager.sol
 
-pragma solidity 0.5.11;
+pragma solidity 0.5.2;
 
 /**
  * @title CTokenManager Interface
@@ -942,7 +942,7 @@ interface ICTokenManager {
 
 // File: contracts/sablier/interfaces/IERC1620.sol
 
-pragma solidity 0.5.11;
+pragma solidity 0.5.2;
 
 /**
  * @title ERC-1620 Money Streaming Standard
@@ -1006,7 +1006,7 @@ interface IERC1620 {
 
 // File: contracts/sablier/Types.sol
 
-pragma solidity 0.5.11;
+pragma solidity 0.5.2;
 
 
 /**
@@ -1036,14 +1036,7 @@ library Types {
 
 // File: contracts/sablier/Sablier.sol
 
-pragma solidity 0.5.11;
-
-
-
-
-
-
-
+pragma solidity 0.5.2;
 
 
 
@@ -1222,6 +1215,10 @@ contract Sablier is IERC1620, OwnableWithoutRenounce, PausableWithoutRenounce, E
     }
 
     /*** View Functions ***/
+    
+    function isValid(uint256 streamId) public view returns (bool) {
+        return streams[streamId].isEntity;
+    }
 
     /**
      * @notice Returns the compounding stream with all its properties.
@@ -1857,9 +1854,7 @@ contract Sablier is IERC1620, OwnableWithoutRenounce, PausableWithoutRenounce, E
 
 // File: contracts/StorageMarket.sol
 
-pragma solidity 0.5.11;
-
-
+pragma solidity 0.5.2;
 
 
 contract StorageMarketPlace is Sablier {
@@ -1867,7 +1862,8 @@ contract StorageMarketPlace is Sablier {
 
     event Buy(uint256 indexed fileId, address indexed buyer);
     event Sell(uint256 indexed fileId, address indexed seller);
-
+    
+    // Struct for recording File metadata
     struct File {
         address seller;
         address paymentAsset;
@@ -1877,31 +1873,25 @@ contract StorageMarketPlace is Sablier {
         mapping(address => bool) buyers;
     }
 
-    struct BuyerSubscription {
-        address buyer;
-        uint256 amount;
-        uint256 streamId;
-        bool isActive;
+ 
+    // Struct to record the no of of subscriptions the user is involved in   
+    struct StreamInfo {
+        bool status;
+        // extra field cannot keep just an array in struct get this error TypeError: Internal or recursive type is not allowed for public state variables.
+        uint[]  subscribed;
+        uint[]  mySubscriptions;
     }
-
-    struct SellerSubscription {
-        address seller;
-        uint256 amount;
-        uint256 streamId;
-        bool isActive;
-    }
-
+    
+    // Tracking the files with file id
     mapping(uint256 => File) public Files;
-
-    // to track the subscriptions for a seller
-    mapping(address => BuyerSubscription[]) public sellerToBuyer;
-
-    // to track the subscriptions for a buyer
-    mapping(address => SellerSubscription[]) public buyerToSeller;
+    // Tracking the subscriptions for a particular user
+    mapping(address => StreamInfo) public subscriptions;
+    
 
 
     uint256 public priceLimit;
     uint256 public fileCount;
+    
 
     modifier isValidPrice(uint256 _price) {
         require(_price < priceLimit, "Price must be less than priceLimit");
@@ -1923,6 +1913,12 @@ contract StorageMarketPlace is Sablier {
         priceLimit = _priceLimit;
     }
 
+   /**
+   * @dev Makes a file available for selling
+   * @param _paymentAsset - asset to be used for payment (currently DAI)
+   * @param _price - price of the Files
+   * @param _metadataHash - ipfs hash of the file metadata
+   */
     function sell(
         address _paymentAsset,
         uint256 _price,
@@ -1941,6 +1937,10 @@ contract StorageMarketPlace is Sablier {
         return currentFile;
     }
 
+   /**
+   * @dev Payment Function through which user pays the payment for the particular file and get's provate access to the exclusive content
+   * @param _fileId - file Id of the particular File
+   */
     function buy(uint256 _fileId) external isValidBuy(_fileId) returns (bool) {
         File storage file = Files[_fileId];
         require(msg.sender != file.seller, "Seller cannot buy his own file");
@@ -1954,6 +1954,14 @@ contract StorageMarketPlace is Sablier {
         emit Buy(_fileId, msg.sender);
     }
 
+   /**
+   * @dev Creates a Subscription for future content for that particular seller during a specific duration
+   * @param _deposit - Subscription amount
+   * @param _token - payment asset address
+   * @param _startTime - epoch start time of the duration
+   * @param _stopTime - epoch end time of the duration
+   * @param reciever - seller address whose subscription is being brought
+   */
     function createSubscription(
         uint256 _deposit,
         address _token,
@@ -1989,21 +1997,17 @@ contract StorageMarketPlace is Sablier {
             _startTime,
             _stopTime
         );
-        // Once stream is created update both mappings so that the subscription can be tracked easily from both sides
+    
+        subscriptions[msg.sender].subscribed.push(streamId);
+        subscriptions[reciever].mySubscriptions.push(streamId);
 
-
-            BuyerSubscription[] storage buyerSubscriptions
-         = sellerToBuyer[reciever];
-        buyerSubscriptions.push(
-            BuyerSubscription(msg.sender, _deposit, streamId, true)
-        );
-        SellerSubscription[] storage sellerSubscriptions = buyerToSeller[msg
-            .sender];
-        sellerSubscriptions.push(
-            SellerSubscription(reciever, _deposit, streamId, true)
-        );
     }
 
+   /**
+   * @dev Check if the particular address is the buyer of that file
+   * @param _fileId - file id
+   * @param buyer - buyer address
+   */
     function isBuyer(uint256 _fileId, address buyer)
         public
         view
@@ -2013,55 +2017,4 @@ contract StorageMarketPlace is Sablier {
         return file.buyers[buyer];
     }
 
-    // function isSubscriber(address seller) public view returns (bool) {
-    //         BuyerSubscription[] storage buyerSubscriptions
-    //      = sellerToBuyer[seller];
-    // }
-
-    function withdraw(
-        uint256 _streamId,
-        address buyer,
-        uint256 _amount
-    ) public {
-        require(_amount > 0, "Cannot pass 0 as amount");
-        (, , , , , uint256 stopTime, , ) = getStream(_streamId);
-        // get stop time of the stream if stop time is <= now then stream has ended so mark false in is active to filter on ui and transfer the amount requested by seller if stream still active then onlt trnsfer
-        if (stopTime >= now) {
-            BuyerSubscription[] storage buyerSubscriptions = sellerToBuyer[msg
-                .sender];
-
-
-                SellerSubscription[] storage sellerSubscriptions
-             = buyerToSeller[buyer];
-            for (uint256 i = 0; i < buyerSubscriptions.length; i++) {
-                if (buyerSubscriptions[i].buyer == buyer) {
-                    buyerSubscriptions[i].isActive = false;
-                }
-            }
-            for (uint256 i = 0; i < sellerSubscriptions.length; i++) {
-                if (sellerSubscriptions[i].seller == msg.sender) {
-                    sellerSubscriptions[i].isActive = false;
-                }
-            }
-        }
-        withdrawFromStream(_streamId, _amount);
-    }
-
-    function cancelSubscription(uint256 _streamId, address seller) public {
-        // first making the isActive property false in order to filter on UI
-        BuyerSubscription[] storage buyerSubscriptions = sellerToBuyer[seller];
-        SellerSubscription[] storage sellerSubscriptions = buyerToSeller[msg
-            .sender];
-        for (uint256 i = 0; i < buyerSubscriptions.length; i++) {
-            if (buyerSubscriptions[i].buyer == msg.sender) {
-                buyerSubscriptions[i].isActive = false;
-            }
-        }
-        for (uint256 i = 0; i < sellerSubscriptions.length; i++) {
-            if (sellerSubscriptions[i].seller == seller) {
-                sellerSubscriptions[i].isActive = false;
-            }
-        }
-        cancelStream(_streamId);
-    }
 }
