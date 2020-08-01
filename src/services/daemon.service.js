@@ -1,6 +1,7 @@
 import { SpaceClient } from '@fleekhq/space-client';
 
 const client = new SpaceClient({
+  // url: 'http://ec2-3-17-128-193.us-east-2.compute.amazonaws.com:9998',
   url: 'http://localhost:9998',
 });
 
@@ -59,8 +60,15 @@ async function openFile(bucket, threadInfo) {
         }
     };
     console.log({ payload });
-    const res = await client.joinBucket(payload);
-    console.log("bucket joined: ", res.getResult());
+    try {
+        const res = await client.joinBucket(payload);
+        console.log("bucket joined: ", res.getResult());
+    } catch (error) {
+        console.log({joinError: error});
+        if (error.code !== 2 || error.message !== "db already exists")  {
+            throw error
+        }
+    }
     const input0 = {
         bucket,
         path: ""

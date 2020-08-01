@@ -12,11 +12,11 @@ module.exports = merge(common, {
     },
     externals: {
         config: JSON.stringify({
-            networkId: 4,
-            marketAddress: "0x6b685dd939c18fcebfab9c63d7d13ea11321d835",
+            networkId: 4447,
+            marketAddress: "0xCfEB869F69431e42cdB54A4F4f105C19C080A601",
             priceAssets: [
                 {
-                    address: "0xc3dbf84Abb494ce5199D5d4D815b10EC29529ff8",
+                    address: "0x254dffcd3277C0b1660F6d42EFbB754edaBAbC2B",
                     symbol: "DAI"
                 }
             ]
