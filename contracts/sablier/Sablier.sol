@@ -188,6 +188,10 @@ contract Sablier is IERC1620, OwnableWithoutRenounce, PausableWithoutRenounce, E
 
     /*** View Functions ***/
 
+    function isValid(uint256 streamId) public view returns (bool) {
+        return streams[streamId].isEntity;
+    }
+
     /**
      * @notice Returns the compounding stream with all its properties.
      * @dev Throws if the id does not point to a valid stream.
