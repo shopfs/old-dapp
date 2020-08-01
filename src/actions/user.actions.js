@@ -230,6 +230,7 @@ function downloadFile(fileId) {
         } catch (error) {
             console.log({ error });
             dispatch(failure(error));
+            dispatch(alertActions.error("Error Downloading File: " + error));
             return;
         }
         dispatch(done());

@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "rm -rf ./dist && webpack --config webpack.prod.js",
-    "start": "webpack-dev-server --config webpack.local.js"
+    "start": "webpack-dev-server --config webpack.rinkeby.js"
   },
   "dependencies": {
     "3box": "^1.20.3",
