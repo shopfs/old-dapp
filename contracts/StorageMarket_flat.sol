@@ -289,7 +289,7 @@ contract ReentrancyGuard is Initializable {
 
 // File: contracts/sablier/compound/CarefulMath.sol
 
-pragma solidity ^0.5.2;
+pragma solidity ^0.5.8;
 
 /**
   * @title Careful Math
@@ -377,7 +377,7 @@ contract CarefulMath {
 
 // File: contracts/sablier/compound/Exponential.sol
 
-pragma solidity ^0.5.2;
+pragma solidity ^0.5.8;
 
 
 /**
@@ -605,7 +605,7 @@ contract Exponential is CarefulMath {
 
 // File: contracts/sablier/interfaces/ICERC20.sol
 
-pragma solidity 0.5.2;
+pragma solidity 0.5.11;
 
 /**
  * @title CERC20 interface
@@ -666,7 +666,7 @@ contract Context {
 
 // File: contracts/sablier/lifecycle/OwnableWithoutRenounce.sol
 
-pragma solidity 0.5.2;
+pragma solidity 0.5.11;
 
 
 
@@ -837,7 +837,7 @@ contract PauserRoleWithoutRenounce is Initializable, Context {
 
 // File: contracts/sablier/lifecycle/PausableWithoutRenounce.sol
 
-pragma solidity 0.5.2;
+pragma solidity 0.5.11;
 
 
 
@@ -916,7 +916,7 @@ contract PausableWithoutRenounce is Initializable, Context, PauserRoleWithoutRen
 
 // File: contracts/sablier/interfaces/ICTokenManager.sol
 
-pragma solidity 0.5.2;
+pragma solidity 0.5.11;
 
 /**
  * @title CTokenManager Interface
@@ -942,7 +942,7 @@ interface ICTokenManager {
 
 // File: contracts/sablier/interfaces/IERC1620.sol
 
-pragma solidity 0.5.2;
+pragma solidity 0.5.11;
 
 /**
  * @title ERC-1620 Money Streaming Standard
@@ -1006,7 +1006,7 @@ interface IERC1620 {
 
 // File: contracts/sablier/Types.sol
 
-pragma solidity 0.5.2;
+pragma solidity 0.5.11;
 
 
 /**
@@ -1036,7 +1036,14 @@ library Types {
 
 // File: contracts/sablier/Sablier.sol
 
-pragma solidity 0.5.2;
+pragma solidity 0.5.11;
+
+
+
+
+
+
+
 
 
 
@@ -1215,7 +1222,7 @@ contract Sablier is IERC1620, OwnableWithoutRenounce, PausableWithoutRenounce, E
     }
 
     /*** View Functions ***/
-    
+
     function isValid(uint256 streamId) public view returns (bool) {
         return streams[streamId].isEntity;
     }
@@ -1854,7 +1861,9 @@ contract Sablier is IERC1620, OwnableWithoutRenounce, PausableWithoutRenounce, E
 
 // File: contracts/StorageMarket.sol
 
-pragma solidity 0.5.2;
+pragma solidity 0.5.11;
+
+
 
 
 contract StorageMarketPlace is Sablier {
@@ -1862,7 +1871,7 @@ contract StorageMarketPlace is Sablier {
 
     event Buy(uint256 indexed fileId, address indexed buyer);
     event Sell(uint256 indexed fileId, address indexed seller);
-    
+
     // Struct for recording File metadata
     struct File {
         address seller;
@@ -1873,7 +1882,6 @@ contract StorageMarketPlace is Sablier {
         mapping(address => bool) buyers;
     }
 
- 
     // Struct to record the no of of subscriptions the user is involved in   
     struct StreamInfo {
         bool status;
@@ -1884,14 +1892,12 @@ contract StorageMarketPlace is Sablier {
     
     // Tracking the files with file id
     mapping(uint256 => File) public Files;
+
     // Tracking the subscriptions for a particular user
     mapping(address => StreamInfo) public subscriptions;
-    
-
 
     uint256 public priceLimit;
     uint256 public fileCount;
-    
 
     modifier isValidPrice(uint256 _price) {
         require(_price < priceLimit, "Price must be less than priceLimit");
@@ -1997,10 +2003,9 @@ contract StorageMarketPlace is Sablier {
             _startTime,
             _stopTime
         );
-    
+        
         subscriptions[msg.sender].subscribed.push(streamId);
         subscriptions[reciever].mySubscriptions.push(streamId);
-
     }
 
    /**
@@ -2016,5 +2021,10 @@ contract StorageMarketPlace is Sablier {
         File storage file = Files[_fileId];
         return file.buyers[buyer];
     }
+
+    // function isSubscriber(address seller) public view returns (bool) {
+    //         BuyerSubscription[] storage buyerSubscriptions
+    //      = sellerToBuyer[seller];
+    // }
 
 }
