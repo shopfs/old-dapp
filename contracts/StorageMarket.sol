@@ -10,6 +10,25 @@ contract StorageMarketPlace is Sablier {
 
     event Buy(uint256 indexed fileId, address indexed buyer);
     event Sell(uint256 indexed fileId, address indexed seller);
+    event SubscriptionInfoUpdated(
+        address indexed seller,
+        bool indexed isEnabled
+    );
+    event SubscriptionCreated(
+        address indexed buyer,
+        address indexed seller,
+        uint256 indexed streamId
+    );
+    event SubscriptionWithdrawal(
+        address indexed seller,
+        uint256 indexed streamId,
+        uint256 amount
+    );
+    event SubscriptionCancelled(
+        address indexed buyer,
+        address indexed seller,
+        uint256 indexed streamId
+    );
 
     // Struct for recording File metadata
     struct File {
@@ -17,23 +36,23 @@ contract StorageMarketPlace is Sablier {
         address paymentAsset;
         string metadataHash; // unique metadataHash
         uint256 price;
-        uint256 numRetrievals;
         mapping(address => bool) buyers;
     }
 
-    // Struct to record the no of of subscriptions the user is involved in   
-    struct StreamInfo {
-        bool status;
-        // extra field cannot keep just an array in struct get this error TypeError: Internal or recursive type is not allowed for public state variables.
-        uint[]  subscribed;
-        uint[]  mySubscriptions;
+    // Struct to record the subscription price for each user
+    struct SubscriptionInfo {
+        bool isEnabled;
+        uint256 minDurationInDays;
+        uint256 amountPerDay;
+        address tokenAddress;
+        mapping(address => uint256) streams;
     }
-    
+
     // Tracking the files with file id
     mapping(uint256 => File) public Files;
 
-    // Tracking the subscriptions for a particular user
-    mapping(address => StreamInfo) public subscriptions;
+    // Tracking the subscriptions amounts for a particular seller
+    mapping(address => SubscriptionInfo) public subscriptions;
 
     uint256 public priceLimit;
     uint256 public fileCount;
@@ -58,12 +77,12 @@ contract StorageMarketPlace is Sablier {
         priceLimit = _priceLimit;
     }
 
-   /**
-   * @dev Makes a file available for selling
-   * @param _paymentAsset - asset to be used for payment (currently DAI)
-   * @param _price - price of the Files
-   * @param _metadataHash - ipfs hash of the file metadata
-   */
+    /**
+     * @dev Makes a file available for selling
+     * @param _paymentAsset - asset to be used for payment (currently DAI)
+     * @param _price - price of the Files
+     * @param _metadataHash - ipfs hash of the file metadata
+     */
     function sell(
         address _paymentAsset,
         uint256 _price,
@@ -73,8 +92,7 @@ contract StorageMarketPlace is Sablier {
             msg.sender,
             _paymentAsset,
             _metadataHash,
-            _price,
-            0
+            _price
         );
         uint256 currentFile = fileCount;
         fileCount++;
@@ -82,10 +100,10 @@ contract StorageMarketPlace is Sablier {
         return currentFile;
     }
 
-   /**
-   * @dev Payment Function through which user pays the payment for the particular file and get's provate access to the exclusive content
-   * @param _fileId - file Id of the particular File
-   */
+    /**
+     * @dev Payment Function through which user pays the payment for the particular file and get's provate access to the exclusive content
+     * @param _fileId - file Id of the particular File
+     */
     function buy(uint256 _fileId) external isValidBuy(_fileId) returns (bool) {
         File storage file = Files[_fileId];
         require(msg.sender != file.seller, "Seller cannot buy his own file");
@@ -94,64 +112,84 @@ contract StorageMarketPlace is Sablier {
             file.seller,
             file.price
         );
-        file.numRetrievals++;
         file.buyers[msg.sender] = true;
         emit Buy(_fileId, msg.sender);
     }
 
-   /**
-   * @dev Creates a Subscription for future content for that particular seller during a specific duration
-   * @param _deposit - Subscription amount
-   * @param _token - payment asset address
-   * @param _startTime - epoch start time of the duration
-   * @param _stopTime - epoch end time of the duration
-   * @param reciever - seller address whose subscription is being brought
-   */
+    function updateSubscriptionInfo(
+        uint256 _amountPerDay,
+        uint256 _minDurationInDays,
+        address _tokenAddress
+    ) external {
+        require(
+            _amountPerDay > 1 days,
+            "amount value cannot be less than value of 1 day"
+        );
+        require(_minDurationInDays >= 1, "minDuration should be atleast 1 day");
+        SubscriptionInfo storage subscription = subscriptions[msg.sender];
+        subscription.isEnabled = true;
+        subscription.minDurationInDays = _minDurationInDays;
+        subscription.amountPerDay = _amountPerDay;
+        subscription.tokenAddress = _tokenAddress;
+        emit SubscriptionInfoUpdated(msg.sender, true);
+    }
+
+    function disableSubscriptionInfo() external {
+        SubscriptionInfo storage subscription = subscriptions[msg.sender];
+        subscription.isEnabled = false;
+        emit SubscriptionInfoUpdated(msg.sender, false);
+    }
+
+    /**
+     * @dev Creates a Subscription for future content for that particular seller during a specific duration
+     * @param _deposit - Subscription amount
+     * @param _token - payment asset address
+     * @param _numDays - number of days of subscription
+     * @param _seller - seller address whose subscription is being brought
+     */
     function createSubscription(
         uint256 _deposit,
         address _token,
-        uint256 _startTime,
-        uint256 _stopTime,
-        address reciever
+        uint256 _numDays,
+        address _seller
     ) external {
-        require(reciever != address(0x00), "cannot stream to the zero address");
+        SubscriptionInfo storage subscription = subscriptions[_seller];
+        uint256 _oldStreamId = subscription.streams[msg.sender];
+        require(subscription.isEnabled, "Seller has not enabled subscriptions");
+        require(!isValid(_oldStreamId), "Buyer already holders a subscription");
         require(
-            reciever != address(this),
-            "cannot stream to the contract itself"
+            _deposit == _numDays.mul(subscription.amountPerDay),
+            "Deposit amount incorrect"
         );
-        require(reciever != msg.sender, "cannot stream to yourself");
-        require(_deposit > 0, "deposit is zero");
-        require(
-            _startTime > block.timestamp,
-            "start time should be after block.timestamp"
-        );
-        require(_stopTime > _startTime, "start time has to be before stoptime");
-        uint256 delta = _stopTime.sub(_startTime);
-        require(
-            _deposit > delta,
-            "Deposit should be more than delta as specified by EIP-1620"
-        );
-        // THE Official implementation of the eip-1620 specifies that the deposit shopuld be a multiple of the delta just for the payament rate, the difference is negligible to be calculated efficiently specified in eip-1620 docs
-        // Check EIP-1620 for more details
-        uint256 remainder = _deposit.mod(delta);
-        uint256 actualDepositAmount = _deposit.sub(remainder);
-        uint256 streamId = createStream(
-            reciever,
-            actualDepositAmount,
+        uint256 _startTime = block.timestamp;
+        uint256 _stopTime = _startTime.add(_numDays.mul(1 days));
+        uint256 _streamId = createStream(
+            _seller,
+            _deposit,
             _token,
             _startTime,
             _stopTime
         );
-        
-        subscriptions[msg.sender].subscribed.push(streamId);
-        subscriptions[reciever].mySubscriptions.push(streamId);
+        subscription.streams[msg.sender] = _streamId;
+        emit SubscriptionCreated(msg.sender, _seller, _streamId);
     }
 
-   /**
-   * @dev Check if the particular address is the buyer of that file
-   * @param _fileId - file id
-   * @param buyer - buyer address
-   */
+    function withdrawFromSubscription(uint256 _streamId, uint256 _amount)
+        external
+    {
+        require(isValid(_streamId), "Invalid Subscription");
+        withdrawFromStream(_streamId, _amount);
+        emit SubscriptionWithdrawal(msg.sender, _streamId, _amount);
+    }
+
+    function cancelSubscription(address _seller) external {
+        SubscriptionInfo storage subscription = subscriptions[_seller];
+        uint256 _streamId = subscription.streams[msg.sender];
+        require(isValid(_streamId), "Buyer doesn't hold a valid subscription");
+        cancelStream(_streamId);
+        emit SubscriptionCancelled(msg.sender, _seller, _streamId);
+    }
+
     function isBuyer(uint256 _fileId, address buyer)
         public
         view
@@ -161,9 +199,12 @@ contract StorageMarketPlace is Sablier {
         return file.buyers[buyer];
     }
 
-    // function isSubscriber(address seller) public view returns (bool) {
-    //         BuyerSubscription[] storage buyerSubscriptions
-    //      = sellerToBuyer[seller];
-    // }
-
+    function isSubscriber(address _seller, address _buyer)
+        public
+        view
+        returns (bool)
+    {
+        SubscriptionInfo storage subscription = subscriptions[_seller];
+        return isValid(subscription.streams[_buyer]);
+    }
 }

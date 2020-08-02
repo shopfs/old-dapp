@@ -1,6 +1,7 @@
-# IPFS-ETH-MarketPlace
+# shopFS
 
-frontend built using react, redux, web3 & webpack
+ShopFS is a web3 storage marketplace built upon ethereum smart contracts and private file storage on IPFS using Fleek's space-daemon.
+Frontend dapp built using react, redux, web3 & webpack
 
 ## Install Dependencies
 
@@ -19,7 +20,7 @@ Start local ethereum blockchain
 ganache-cli -d -i 4447
 ```
 
-Deploy Greeter contract.
+Deploy StorageMarketPlace contracts.
 ```
 truffle migrate
 ```

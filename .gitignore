@@ -29,4 +29,5 @@ firebase-debug.log*
 # vim
 *.swp
 
-
+# package-lock
+package-lock.json
