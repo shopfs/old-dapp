@@ -125,6 +125,10 @@ contract StorageMarketPlace is Sablier {
             _amountPerDay > 1 days,
             "amount value cannot be less than value of 1 day"
         );
+        require(
+            _amountPerDay % 1 days == 0,
+            "amount value must be divisible by 1 days"
+        );
         require(_minDurationInDays >= 1, "minDuration should be atleast 1 day");
         SubscriptionInfo storage subscription = subscriptions[msg.sender];
         subscription.isEnabled = true;
@@ -156,7 +160,18 @@ contract StorageMarketPlace is Sablier {
         SubscriptionInfo storage subscription = subscriptions[_seller];
         uint256 _oldStreamId = subscription.streams[msg.sender];
         require(subscription.isEnabled, "Seller has not enabled subscriptions");
-        require(!isValid(_oldStreamId), "Buyer already holders a subscription");
+        require(
+            !isValid(_oldStreamId),
+            "Buyer already holds a subscription for seller"
+        );
+        require(
+            _numDays >= subscription.minDurationInDays,
+            "Number of days is less than minimum"
+        );
+        require(
+            _token == subscription.tokenAddress,
+            "TokenAddress not enabled by seller"
+        );
         require(
             _deposit == _numDays.mul(subscription.amountPerDay),
             "Deposit amount incorrect"
