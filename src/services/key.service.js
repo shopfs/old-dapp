@@ -8,14 +8,13 @@ const url =
 
 async function getThreadData(fileId, signature) {
     const requestOptions = {
-        method: "GET",
+        method: "GET"
     };
-    const getURL = `${url}/${fileId}?sign=${signature}`
-    console.log(getURL)
+    const getURL = `${url}/${fileId}?sign=${signature}`;
     const response = await fetch(getURL, requestOptions);
-    console.log({response})
+
     if (!response.ok) {
-        throw response.data;
+        return handleError(response)
     } else {
         return response.json();
     }
@@ -27,13 +26,24 @@ async function putThreadData(fileId, payload) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
     };
-    const postURL = `${url}/${fileId}`
-    console.log(postURL)
+    const postURL = `${url}/${fileId}`;
     const response = await fetch(postURL, requestOptions);
 
     if (!response.ok) {
-        throw response.data;
+        return handleError(response)
     } else {
         console.log("success");
+    }
+}
+
+function handleError(response) {
+    switch (response.status) {
+        case 401:
+            throw "Unauthorized Access"
+        case 404:
+            throw "File not found"
+        case 500:
+        default:
+            throw "Internal Server Error"
     }
 }

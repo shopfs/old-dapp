@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { userActions } from "../actions";
 import ProfileHover from "profile-hover";
@@ -15,9 +15,14 @@ const DetailsPage = ({
     buy,
     downloadFile
 }) => {
+    const [location, setLocation] = useState("");
+
     useEffect(() => {
         if (connected && fileId) {
             getFile(parseInt(fileId));
+            const location = localStorage.getItem(fileId);
+            console.log({location});
+            setLocation(location);
         }
     }, [fileId, connected]);
 
@@ -40,8 +45,10 @@ const DetailsPage = ({
                         </a>
                         <a
                             className="downloadButton button"
-                            onClick={e => {
-                                downloadFile(fileId);
+                            onClick={async e => {
+                                const location = await downloadFile(fileId);
+                                localStorage.setItem(fileId, location);
+                                setLocation(location);
                             }}
                         >
                             Download File
@@ -81,6 +88,16 @@ const DetailsPage = ({
                         <span className="fileDescription">
                             {file.metadata.description}
                         </span>
+                        {location && location != "undefined" && (
+                            <>
+                                <span className="label">
+                                    local file location
+                                </span>
+                                <span className="fileDescription">
+                                    {location}
+                                </span>
+                            </>
+                        )}
                     </div>
                 </div>
             )}
