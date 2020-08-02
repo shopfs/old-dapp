@@ -12,7 +12,8 @@ export const marketService = {
     sell,
     createSubscription,
     withdrawSubscriptionAmount,
-    cancelSubscription
+    cancelSubscription,
+    isValidStream
 };
 
 async function getFile(market, fileId) {
@@ -69,9 +70,14 @@ async function buy(market, fileId) {
     return {};
 }
 
+// to be used for expired subscriptions
+async function isValidStream(streamId) {
+    return await market.methods.isValid(streamId).call()
+}
+
 // call approve before in actiom
-async function createSubscription(depositAmount, daiAddress, startTime, stopTime) {
-    const receipt = await market.methods.createSubscription(depositAmount, daiAddress, startTime, stopTime).send()
+async function createSubscription(depositAmount, daiAddress, startTime, stopTime, seller) {
+    const receipt = await market.methods.createSubscription(depositAmount, daiAddress, startTime, stopTime, seller).send()
  if (!receipt.status) {
         logReceipt(receipt);
         throw "Transaction failed";
@@ -80,8 +86,8 @@ async function createSubscription(depositAmount, daiAddress, startTime, stopTime
 }
 
 // seller clicks wothdraw for that particular subscription to get the funds locked, buyer address needed for filtering in mapping
-async function withdrawSubscriptionAmount(streamId, buyer, amount) {
- const receipt = await market.methods.withdraw(streamId, buyer, amount).send()
+async function withdrawSubscriptionAmount(streamId, amount) {
+ const receipt = await market.methods.withdrawFromStream(streamId, amount).send()
  if (!receipt.status) {
         logReceipt(receipt);
         throw "Transaction failed";
@@ -90,8 +96,8 @@ async function withdrawSubscriptionAmount(streamId, buyer, amount) {
 }
 
 // buyer clicks on cancel for that particular seller
-async function cancelSubscription(streamId, seller) {
- const receipt = await market.methods.cancelSubscription(streamId, seller).send()
+async function cancelSubscription(streamId) {
+ const receipt = await market.methods.cancelStream(streamId).send()
  if (!receipt.status) {
         logReceipt(receipt);
         throw "Transaction failed";
