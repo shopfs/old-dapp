@@ -7,7 +7,7 @@
   "scripts": {
     "chain": "ganache-cli -h 0.0.0.0 -d -i 4447",
     "build": "rm -rf ./dist && webpack --config webpack.prod.js",
-    "start": "webpack-dev-server --config webpack.rinkeby.js"
+    "start": "webpack-dev-server --config webpack.local.js"
   },
   "dependencies": {
     "3box": "^1.20.3",

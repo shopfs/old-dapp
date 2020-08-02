@@ -2,6 +2,7 @@ import { alertActions } from "./";
 import config from "config";
 import { userConstants } from "../constants";
 import IERC20 from "../assets/abis/IERC20.json";
+import { epochConversion } from "../helpers"
 import {
     daemonService,
     marketService,
@@ -19,7 +20,10 @@ export const userActions = {
     buy,
     uploadImage,
     downloadFile,
-    uploadAndSellFile
+    uploadAndSellFile,
+    createSubscription,
+    withdrawFromSubscription,
+    cancelSubscription
 };
 
 function clean() {
@@ -200,6 +204,96 @@ function buy(fileId) {
         } else {
             dispatch(failure(data.error));
             dispatch(alertActions.error("Error Buying File: " + data.error));
+        }
+    };
+}
+
+// amount will be in wei
+function createSubscription(amount, days, seller, paymentAsset) {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let data;
+        try {
+            const { account, market, web3 } = getState().web3;
+            const erc20 = await new web3.eth.Contract(
+                IERC20["abi"],
+                paymentAsset,
+                { from: account }
+            );
+            console.log("approving market")
+            data = await erc20Service.approve(
+                erc20,
+                config.marketAddress,
+                amount
+            );
+            if (data.error) {
+                throw "Could not approve Market to transfer funds";
+            }
+            const epochTimePayload = await epochConversion(days)
+            console.log("creating subscription")
+            data = await marketService.createSubscription(market, amount, paymentAsset, epochTimePayload['startTime'], epochTimePayload['stopTime'], seller);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            dispatch(alertActions.error("Error Creating subscription: " + e.toString()));
+            return;
+        }
+        if (!data.error) {
+            dispatch(alertActions.success("Successfully Created Subscription"));
+            dispatch(done());
+        } else {
+            dispatch(failure(data.error));
+            dispatch(alertActions.error("Error Creating subscription: " + data.error));
+        }
+    };
+}
+
+// amount will be in wei
+function withdrawFromSubscription(streamId, amount) {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let data;
+        try {
+            const { account, market, web3 } = getState().web3;
+            console.log("withdrawing from subscription")
+            data = await marketService.withdrawSubscriptionAmount(market, streamId, amount);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            dispatch(alertActions.error("Error Withdrawing amount: " + e.toString()));
+            return;
+        }
+        if (!data.error) {
+            dispatch(alertActions.success("Successfully Withdrawn"));
+            dispatch(done());
+        } else {
+            dispatch(failure(data.error));
+            dispatch(alertActions.error("Error Withdrawing amount: " + data.error));
+        }
+    };
+}
+
+
+function cancelSubscription(streamId) {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let data;
+        try {
+            const { account, market, web3 } = getState().web3;
+            console.log("cancel subscription")
+            data = await marketService.cancelSubscription(market, streamId);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            dispatch(alertActions.error("Error Cancelling Subscription: " + e.toString()));
+            return;
+        }
+        if (!data.error) {
+            dispatch(alertActions.success("Successfully Cancelled Subscription"));
+            dispatch(done());
+        } else {
+            dispatch(failure(data.error));
+            dispatch(alertActions.error("Error Cancelling Subscription: " + data.error));
         }
     };
 }
