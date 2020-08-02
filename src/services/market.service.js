@@ -71,12 +71,12 @@ async function buy(market, fileId) {
 }
 
 // to be used for expired subscriptions
-async function isValidStream(streamId) {
+async function isValidStream(market, streamId) {
     return await market.methods.isValid(streamId).call()
 }
 
 // call approve before in actiom
-async function createSubscription(depositAmount, daiAddress, startTime, stopTime, seller) {
+async function createSubscription(market, depositAmount, daiAddress, startTime, stopTime, seller) {
     const receipt = await market.methods.createSubscription(depositAmount, daiAddress, startTime, stopTime, seller).send()
  if (!receipt.status) {
         logReceipt(receipt);
@@ -86,7 +86,7 @@ async function createSubscription(depositAmount, daiAddress, startTime, stopTime
 }
 
 // seller clicks wothdraw for that particular subscription to get the funds locked, buyer address needed for filtering in mapping
-async function withdrawSubscriptionAmount(streamId, amount) {
+async function withdrawSubscriptionAmount(market, streamId, amount) {
  const receipt = await market.methods.withdrawFromStream(streamId, amount).send()
  if (!receipt.status) {
         logReceipt(receipt);
@@ -96,7 +96,7 @@ async function withdrawSubscriptionAmount(streamId, amount) {
 }
 
 // buyer clicks on cancel for that particular seller
-async function cancelSubscription(streamId) {
+async function cancelSubscription(market, streamId) {
  const receipt = await market.methods.cancelStream(streamId).send()
  if (!receipt.status) {
         logReceipt(receipt);

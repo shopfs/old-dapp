@@ -231,7 +231,7 @@ function createSubscription(amount, days, seller, paymentAsset) {
             }
             const epochTimePayload = await epochConversion(days)
             console.log("creating subscription")
-            data = await marketService.createSubscription(amount, paymentAsset, epochTimePayload['startTime'], epochTimePayload['stopTime'], seller);
+            data = await marketService.createSubscription(market, amount, paymentAsset, epochTimePayload['startTime'], epochTimePayload['stopTime'], seller);
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
@@ -256,7 +256,7 @@ function withdrawFromSubscription(streamId, amount) {
         try {
             const { account, market, web3 } = getState().web3;
             console.log("withdrawing from subscription")
-            data = await marketService.withdrawSubscriptionAmount(streamId, amount);
+            data = await marketService.withdrawSubscriptionAmount(market, streamId, amount);
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
@@ -281,7 +281,7 @@ function cancelSubscription(streamId) {
         try {
             const { account, market, web3 } = getState().web3;
             console.log("cancel subscription")
-            data = await marketService.cancelSubscription(streamId);
+            data = await marketService.cancelSubscription(market, streamId);
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
