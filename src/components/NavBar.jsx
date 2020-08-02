@@ -2,11 +2,11 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import ProfileHover from "profile-hover";
 import { connect } from "react-redux";
-import { web3Actions, boxActions } from "../../actions";
-import { history, getAccountString } from "../../helpers";
-import loading from "../../assets/img/loading.svg";
-import logo from "../../assets/img/logo.svg";
-import "../../assets/scss/navBar.scss";
+import { web3Actions, boxActions } from "../actions";
+import { history, getAccountString } from "../helpers";
+import loading from "../assets/img/loading.svg";
+import logo from "../assets/img/logo.svg";
+import "../assets/scss/navBar.scss";
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -32,7 +32,7 @@ class NavBar extends React.Component {
             history.push("/upload");
         }
         //3box commented for faster loading for now
-        // await this.props.loadbox(this.props.account);
+        await this.props.loadbox(this.props.account);
     }
 
     render() {
@@ -103,4 +103,4 @@ const actionCreators = {
 };
 
 const connectedNavBar = withRouter(connect(mapState, actionCreators)(NavBar));
-export { connectedNavBar as NavBar };
+export default connectedNavBar;

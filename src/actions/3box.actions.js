@@ -21,17 +21,11 @@ function loadbox(account) {
         dispatch(started());
         let box, space;
         try {
-            //authenticate user's 3box auth
-            const box = await Box.openBox(account, window.ethereum);
-            console.log(box);
-            //authenticate users's space for ipfsethmarketplace app
-            //for new user it will create ipfsethmarketplace space
-            //for exissting user it will access his ipfsethmarketplace space
+            box = await Box.openBox(account, window.ethereum);
+            console.log({box});
             space = await box.openSpace(boxConstants.SPACE_NAME);
-            console.log(space);
-            //wait till user's data is synced from network
+            console.log({space});
             await box.syncDone;
-            window.box = box;
             await space.syncDone;
         } catch (e) {
             console.log(e);
