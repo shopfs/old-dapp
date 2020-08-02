@@ -20,6 +20,7 @@ export const userActions = {
     buy,
     uploadImage,
     downloadFile,
+    uploadAndSellFile,
     createSubscription,
     withdrawFromSubscription,
     cancelSubscription
