@@ -76,8 +76,8 @@ async function isValidStream(market, streamId) {
 }
 
 // call approve before in actiom
-async function createSubscription(market, depositAmount, daiAddress, startTime, stopTime, seller) {
-    const receipt = await market.methods.createSubscription(depositAmount, daiAddress, startTime, stopTime, seller).send()
+async function createSubscription(market, deposit, token, numofdays, seller) {
+    const receipt = await market.methods.createSubscription(BigInt(deposit * 10 ** 18), token, parseInt(numofdays), seller).send()
  if (!receipt.status) {
         logReceipt(receipt);
         throw "Transaction failed";
@@ -87,7 +87,7 @@ async function createSubscription(market, depositAmount, daiAddress, startTime, 
 
 // seller clicks wothdraw for that particular subscription to get the funds locked, buyer address needed for filtering in mapping
 async function withdrawSubscriptionAmount(market, streamId, amount) {
- const receipt = await market.methods.withdrawFromStream(streamId, amount).send()
+ const receipt = await market.methods.withdrawFromStream(streamId, BigInt(amount * 10 ** 18)).send()
  if (!receipt.status) {
         logReceipt(receipt);
         throw "Transaction failed";
@@ -96,8 +96,8 @@ async function withdrawSubscriptionAmount(market, streamId, amount) {
 }
 
 // buyer clicks on cancel for that particular seller
-async function cancelSubscription(market, streamId) {
- const receipt = await market.methods.cancelStream(streamId).send()
+async function cancelSubscription(market, seller) {
+ const receipt = await market.methods.cancelStream(seller).send()
  if (!receipt.status) {
         logReceipt(receipt);
         throw "Transaction failed";
