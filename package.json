@@ -7,10 +7,11 @@
   "scripts": {
     "chain": "ganache-cli -h 0.0.0.0 -d -i 4447",
     "build": "rm -rf ./dist && webpack --config webpack.prod.js",
-    "start": "webpack-dev-server --config webpack.local.js"
+    "start": "webpack-dev-server --config webpack.rinkeby.js"
   },
   "dependencies": {
     "3box": "^1.20.3",
+    "3box-comments-react": "^3.0.5",
     "@fleekhq/space-client": "^0.1.5",
     "@openzeppelin/contracts": "2.4.0",
     "@openzeppelin/contracts-ethereum-package": "2.2.3",
