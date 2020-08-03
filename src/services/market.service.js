@@ -76,8 +76,8 @@ async function isValidStream(market, streamId) {
 }
 
 // call approve before in actiom
-async function createSubscription(market, deposit, token, numofdays, seller) {
-    const receipt = await market.methods.createSubscription(BigInt(deposit * 10 ** 18), token, parseInt(numofdays), seller).send()
+async function createSubscription(market, amount, paymentAsset, numofdays, seller) {
+    const receipt = await market.methods.createSubscription(BigInt(amount * 10 ** 18), paymentAsset, parseInt(numofdays), seller).send()
  if (!receipt.status) {
         logReceipt(receipt);
         throw "Transaction failed";

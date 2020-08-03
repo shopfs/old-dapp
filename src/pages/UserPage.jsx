@@ -4,8 +4,6 @@ import { userActions, boxActions } from "../actions";
 import "../assets/scss/userPage.scss";
 import { getImageUrl, getAccountString } from "../helpers";
 import Modal from '../components/Modal';
-import "./styles.css";
-
 
 const UserPage = ({
     connected,

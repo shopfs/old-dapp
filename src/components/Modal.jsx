@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { marketService } from "../services";
+import { userActions } from "../actions";
 
 function Modal(props) {
   const { show, closeModal } = props;
@@ -10,6 +10,10 @@ function Modal(props) {
       <div className={show ? "modal" : "hide"}>        
 	    <button onClick={closeModal}>X</button>
         <h1>Suscribe Modal</h1>
+		
+		<section>
+		
+		</section>
 		
         
       </div>
