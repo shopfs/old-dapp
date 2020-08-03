@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { userActions } from "../actions";
 import ProfileHover from "profile-hover";
 import { history, getTokenSymbol } from "../helpers";
 import "../assets/scss/detailsPage.scss";
+import Comments from "../components/Comments";
 
 const DetailsPage = ({
     match: {
@@ -13,11 +14,17 @@ const DetailsPage = ({
     connected,
     getFile,
     buy,
-    downloadFile
+    downloadFile,
+    box
 }) => {
+    const [location, setLocation] = useState("");
+
     useEffect(() => {
         if (connected && fileId) {
             getFile(parseInt(fileId));
+            const location = localStorage.getItem(fileId);
+            console.log({ location });
+            setLocation(location);
         }
     }, [fileId, connected]);
 
@@ -40,8 +47,10 @@ const DetailsPage = ({
                         </a>
                         <a
                             className="downloadButton button"
-                            onClick={e => {
-                                downloadFile(fileId);
+                            onClick={async e => {
+                                const location = await downloadFile(fileId);
+                                localStorage.setItem(fileId, location);
+                                setLocation(location);
                             }}
                         >
                             Download File
@@ -81,7 +90,25 @@ const DetailsPage = ({
                         <span className="fileDescription">
                             {file.metadata.description}
                         </span>
+                        {location && location != "undefined" && (
+                            <>
+                                <span className="label">
+                                    local file location
+                                </span>
+                                <span className="fileDescription">
+                                    {location}
+                                </span>
+                            </>
+                        )}
                     </div>
+                </div>
+            )}
+            {connected && box && file && (
+                <div className="fileComments">
+                    <Comments
+                        fileId={fileId}
+                        metadataHash={file.metadataHash}
+                    />
                 </div>
             )}
         </section>
@@ -90,8 +117,9 @@ const DetailsPage = ({
 
 function mapState(state) {
     const { connected } = state.web3;
+    const { box } = state.box;
     const { data } = state.user;
-    return { data, connected };
+    return { data, connected, box };
 }
 
 const actionCreators = {

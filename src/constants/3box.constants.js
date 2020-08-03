@@ -3,6 +3,6 @@ export const boxConstants = {
     LOADED: "3BOX_LOADED",
     ERROR: "3BOX_ERROR",
     CLEAN: "3BOX_CLEAN",
-    ADMIN_ACCOUNT: "",
-    SPACE_NAME: "ipfsethmarketplace"
-}
+    SPACE_NAME: "shopfs",
+    ADMIN_ACCOUNT: "0xC9F2D9adfa6C24ce0D5a999F2BA3c6b06E36F75E"
+};

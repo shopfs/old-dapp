@@ -2,7 +2,7 @@ import { alertActions } from "./";
 import config from "config";
 import { userConstants } from "../constants";
 import IERC20 from "../assets/abis/IERC20.json";
-import { epochConversion } from "../helpers"
+import { epochConversion } from "../helpers";
 import {
     daemonService,
     marketService,
@@ -181,7 +181,7 @@ function buy(fileId) {
                 file.paymentAsset,
                 { from: account }
             );
-            console.log("approving market")
+            console.log("approving market");
             data = await erc20Service.approve(
                 erc20,
                 config.marketAddress,
@@ -190,7 +190,7 @@ function buy(fileId) {
             if (data.error) {
                 throw "Could not approve Market to transfer funds";
             }
-            console.log("buying file")
+            console.log("buying file");
             data = await marketService.buy(market, fileId);
         } catch (e) {
             console.log(e);
@@ -220,7 +220,7 @@ function createSubscription(amount, paymentAsset, days, seller) {
                 paymentAsset,
                 { from: account }
             );
-            console.log("approving market")
+            console.log("approving market");
             data = await erc20Service.approve(
                 erc20,
                 config.marketAddress,
@@ -235,7 +235,11 @@ function createSubscription(amount, paymentAsset, days, seller) {
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
-            dispatch(alertActions.error("Error Creating subscription: " + e.toString()));
+            dispatch(
+                alertActions.error(
+                    "Error Creating subscription: " + e.toString()
+                )
+            );
             return;
         }
         if (!data.error) {
@@ -243,7 +247,9 @@ function createSubscription(amount, paymentAsset, days, seller) {
             dispatch(done());
         } else {
             dispatch(failure(data.error));
-            dispatch(alertActions.error("Error Creating subscription: " + data.error));
+            dispatch(
+                alertActions.error("Error Creating subscription: " + data.error)
+            );
         }
     };
 }
@@ -255,12 +261,18 @@ function withdrawFromSubscription(streamId, amount) {
         let data;
         try {
             const { account, market, web3 } = getState().web3;
-            console.log("withdrawing from subscription")
-            data = await marketService.withdrawSubscriptionAmount(market, streamId, amount);
+            console.log("withdrawing from subscription");
+            data = await marketService.withdrawSubscriptionAmount(
+                market,
+                streamId,
+                amount
+            );
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
-            dispatch(alertActions.error("Error Withdrawing amount: " + e.toString()));
+            dispatch(
+                alertActions.error("Error Withdrawing amount: " + e.toString())
+            );
             return;
         }
         if (!data.error) {
@@ -268,32 +280,46 @@ function withdrawFromSubscription(streamId, amount) {
             dispatch(done());
         } else {
             dispatch(failure(data.error));
-            dispatch(alertActions.error("Error Withdrawing amount: " + data.error));
+            dispatch(
+                alertActions.error("Error Withdrawing amount: " + data.error)
+            );
         }
     };
 }
 
-
 function cancelSubscription(seller) {
+
     return async (dispatch, getState) => {
         dispatch(started());
         let data;
         try {
             const { account, market, web3 } = getState().web3;
+			
             console.log("cancel subscription")
             data = await marketService.cancelSubscription(market, seller);
+
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
-            dispatch(alertActions.error("Error Cancelling Subscription: " + e.toString()));
+            dispatch(
+                alertActions.error(
+                    "Error Cancelling Subscription: " + e.toString()
+                )
+            );
             return;
         }
         if (!data.error) {
-            dispatch(alertActions.success("Successfully Cancelled Subscription"));
+            dispatch(
+                alertActions.success("Successfully Cancelled Subscription")
+            );
             dispatch(done());
         } else {
             dispatch(failure(data.error));
-            dispatch(alertActions.error("Error Cancelling Subscription: " + data.error));
+            dispatch(
+                alertActions.error(
+                    "Error Cancelling Subscription: " + data.error
+                )
+            );
         }
     };
 }
@@ -301,6 +327,7 @@ function cancelSubscription(seller) {
 function downloadFile(fileId) {
     return async (dispatch, getState) => {
         dispatch(started());
+        let location;
         try {
             const { account, web3 } = getState().web3;
             console.log("sign fileId");
@@ -316,11 +343,10 @@ function downloadFile(fileId) {
             );
             console.log({ threadData });
             console.log("opening file");
-            const location = await daemonService.openFile(
+            location = await daemonService.openFile(
                 threadData.bucket,
                 threadData.threadInfo
             );
-            console.log({ location });
         } catch (error) {
             console.log({ error });
             dispatch(failure(error));
@@ -328,6 +354,7 @@ function downloadFile(fileId) {
             return;
         }
         dispatch(done());
+        return location;
     };
 }
 

@@ -4,7 +4,9 @@ import { connect } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { history } from "./helpers";
 import { web3Actions } from "./actions";
-import { ErrorBoundary, NavBar, Footer } from "./components/common";
+import Footer from "./components/Footer";
+import NavBar from "./components/NavBar";
+import ErrorBoundary from "./components/ErrorBoundary";
 import loading from "./assets/img/loading.svg";
 import "./assets/scss/app.scss";
 

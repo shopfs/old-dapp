@@ -59,10 +59,6 @@ function loadWeb3() {
     return async (dispatch, getState) => {
         dispatch(started());
         let { web3 } = getState().web3;
-        if (web3) {
-            dispatch(loaded({ connected: true }));
-            return;
-        }
         if (window.ethereum) {
             web3 = new Web3(window.ethereum);
             await window.ethereum.enable();
@@ -99,6 +95,7 @@ function loadWeb3() {
             dispatch(alertActions.error(error));
             return;
         }
+        console.log({account});
         let market;
         try {
             market = await new web3.eth.Contract(
