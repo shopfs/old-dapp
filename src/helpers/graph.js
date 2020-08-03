@@ -1,4 +1,4 @@
-exports.allFilesQuery = `{
+exports.allFilesQuery = `query {
   files {
     id
     metadataHash
@@ -12,7 +12,7 @@ exports.allFilesQuery = `{
 }`
 
 exports.getFileGraphQuery = async (fileId) => {
-return `{
+return `query {
   file(id: "${fileId}") {
     id
     metadataHash

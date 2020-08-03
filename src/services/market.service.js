@@ -2,7 +2,7 @@ import { logReceipt } from "../helpers";
 import { ipfsService } from "./ipfs.service";
 import  graphConfig   from "../helpers/graph";
 import config from "config";
-import axios from "axios"
+import { useQuery } from "urql";
 
 export const marketService = {
     getFile,
@@ -52,7 +52,7 @@ async function getBuyerFiles(market, buyer) {
 
 async function getAllFiles(market) {
     const query = graphConfig.allFilesQuery
-    const res = await axios.post(config.graphUrl, {query: query })
+    // const res = await axios.post(config.subgraph, {query: query })
     const allFiles = res.data.data.files
     const fileCount = res.data.data.files.length;
     return await Promise.all(

@@ -43,7 +43,7 @@ function getFile(fileId) {
         try {
             const { account, market } = getState().web3;
             const query = await graphConfig.getFileGraphQuery(fileId)
-            const res = await axios.post(config.graphUrl, {query: query })
+            // const res = await axios.post(config.subgraph, {query: query })
             file = res.data.data.file
             file.price = file.price / 10 ** 18;
             file.metadata = await ipfsService.getMetadata(file.metadataHash);
