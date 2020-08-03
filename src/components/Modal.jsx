@@ -2,6 +2,7 @@ import React, { useState}  from "react";
 import config from "config";
 import { connect } from "react-redux";
 import { userActions } from "../actions";
+import { useQuery } from "urql";
 
 function Modal(props) {
   const { show, closeModal,createSubscription,address,cancelSubscription } = props;
@@ -10,13 +11,43 @@ function Modal(props) {
   const defaultAsset = config.priceAssets[0].address;
   const [asset, setAsset] = useState(defaultAsset);
   
+  const [res, executeQuery] = useQuery({
+        query: `
+        query {
+          user(id: "${address.toLowerCase()}") {
+            id
+            address
+            isEnabled
+            minDurationInDays
+			amountPerDay
+			tokenAddress           
+          }
+        }
+      `
+    });
+  
+  if (res.fetching) return <p>Loading...</p>;
+  if (res.error) return <p>Errored!</p>;
+  let user = res.data.user;
+  
   const createSub = async () => {
-	  const createsubresult = await createSubscription(amount,asset,days,address);
+	  const useramt = user.amountPerDay;
+	  const totalamt = useramt*days;
+	  
+	  if(user.isEnabled == true){
+      console.log(user);
+	  //const testamt = 10000000000000;
+	  const createsubresult = await createSubscription(totalamt,user.tokenAddress,days,user.address);
 	  console.log(createsubresult);
+	  } else if (user.isEnabled == false) {
+	  console.log("do something");
+	  } else {
+	  console.log("query failed");
+	  }
   }
   
   const cancelSub = async () => {
-	  const cancelsubresult = await cancelSubscription(address);
+	  const cancelsubresult = await cancelSubscription(user.address);
 	  console.log(cancelsubresult);
   }
   
@@ -28,16 +59,6 @@ function Modal(props) {
         <h1>Suscribe Modal</h1>
 		
 		<section>
-		        <label >
-                    amount
-                </label>
-                    <input
-                        id="amountInput"
-                        type="number"
-                        placeholder=""
-                        value={amount}
-                        onChange={e => setAmount(e.target.value)}
-                    />
 				<label >
                     numofdays
                 </label>
@@ -48,21 +69,6 @@ function Modal(props) {
                         value={days}
                         onChange={e => setDays(e.target.value)}
                     />
-					<select
-                        className="assetInput"
-                        onChange={e => {
-                            setAsset(e.target.value);
-                            console.log(e.target.value);
-                        }}
-                        value={asset}
-                    >
-                        {config.priceAssets &&
-                            config.priceAssets.map((asset, index) => (
-                                <option value={asset.address} key={index}>
-                                    {asset.symbol}
-                                </option>
-                            ))}
-                    </select>
 					<button onClick={e => {
                         createSub();
                     }}>createsubscription</button>
