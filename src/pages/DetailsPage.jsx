@@ -18,11 +18,10 @@ const DetailsPage = ({
     box
 }) => {
     const [location, setLocation] = useState("");
-
     useEffect(() => {
         if (connected && fileId) {
-            getFile(parseInt(fileId));
-            const location = localStorage.getItem(fileId);
+            getFile(fileId);
+            const location = localStorage.getItem(parseInt(fileId));
             console.log({ location });
             setLocation(location);
         }
@@ -40,7 +39,7 @@ const DetailsPage = ({
                         <a
                             className="buyButton button"
                             onClick={e => {
-                                buy(fileId);
+                                buy(parseInt(fileId));
                             }}
                         >
                             Buy File
@@ -48,8 +47,8 @@ const DetailsPage = ({
                         <a
                             className="downloadButton button"
                             onClick={async e => {
-                                const location = await downloadFile(fileId);
-                                localStorage.setItem(fileId, location);
+                                const location = await downloadFile(parseInt(fileId));
+                                localStorage.setItem(parseInt(fileId), location);
                                 setLocation(location);
                             }}
                         >
@@ -63,12 +62,12 @@ const DetailsPage = ({
                         <div
                             className="fileSellerContainer"
                             onClick={() => {
-                                history.push(`/users/${file.seller}`);
+                                history.push(`/users/${file.seller.address}`);
                             }}
                         >
                             <ProfileHover
                                 className="fileSeller"
-                                address={file.seller}
+                                address={file.seller.address}
                                 orientation="bottom"
                                 tileStyle
                             />
@@ -76,10 +75,10 @@ const DetailsPage = ({
                         <span className="label">price</span>
                         <span className="filePrice">{`${
                             file.price
-                        } ${getTokenSymbol(file.paymentAsset)}`}</span>
+                        }`}DAI</span>
                         <span className="label">Number of buys</span>
                         <span className="fileBuys">
-                            {`${file.numRetrievals}`}
+                            {`${file.numBuys}`}
                         </span>
                         <span className="label">upload date</span>
                         <span className="uploadDate">
@@ -106,7 +105,7 @@ const DetailsPage = ({
             {connected && box && file && (
                 <div className="fileComments">
                     <Comments
-                        fileId={fileId}
+                        fileId={parseInt(fileId)}
                         metadataHash={file.metadataHash}
                     />
                 </div>

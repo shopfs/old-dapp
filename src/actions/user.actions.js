@@ -3,6 +3,8 @@ import config from "config";
 import { userConstants } from "../constants";
 import IERC20 from "../assets/abis/IERC20.json";
 import { epochConversion } from "../helpers";
+import graphConfig from "../helpers/graph";
+import axios from 'axios'
 import {
     daemonService,
     marketService,
@@ -40,13 +42,19 @@ function getFile(fileId) {
         let file;
         try {
             const { account, market } = getState().web3;
-            file = await marketService.getFile(market, fileId);
+            const query = await graphConfig.getFileGraphQuery(fileId)
+            const res = await axios.post(config.graphUrl, {query: query })
+            file = res.data.data.file
+            file.price = file.price / 10 ** 18;
+            file.metadata = await ipfsService.getMetadata(file.metadataHash);
+            console.log(file)
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
             dispatch(alertActions.error("Error Getting File"));
             return;
         }
+
         dispatch(result({ data: { file } }));
 
         return file;
@@ -174,8 +182,10 @@ function buy(fileId) {
         dispatch(started());
         let data;
         try {
+            console.log(fileId)
             const { account, market, web3 } = getState().web3;
-            const file = await marketService.getFile(market, fileId);
+            const file = await marketService.getFileFromContract(market, fileId);
+            console.log(file)
             const erc20 = await new web3.eth.Contract(
                 IERC20["abi"],
                 file.paymentAsset,

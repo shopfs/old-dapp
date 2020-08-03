@@ -14,6 +14,7 @@ module.exports = merge(common, {
         config: JSON.stringify({
             networkId: 4,
             marketAddress: "0x7fdee497283233794210f91093ba85ceb90f9066",
+            graphUrl: "https://api.thegraph.com/subgraphs/name/shopfs/market-rinkeby",
             priceAssets: [
                 {
                     address: "0xc3dbf84Abb494ce5199D5d4D815b10EC29529ff8",
