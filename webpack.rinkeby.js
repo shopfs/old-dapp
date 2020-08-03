@@ -13,7 +13,9 @@ module.exports = merge(common, {
     externals: {
         config: JSON.stringify({
             networkId: 4,
-            marketAddress: "0x7fdee497283233794210f91093ba85ceb90f9066",
+
+            marketAddress: "0x7Fdee497283233794210F91093Ba85ceB90f9066",
+
             priceAssets: [
                 {
                     address: "0xc3dbf84Abb494ce5199D5d4D815b10EC29529ff8",

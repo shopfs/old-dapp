@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { connect } from "react-redux";
 import { userActions, boxActions } from "../actions";
 import { getImageUrl, getAccountString } from "../helpers";
+import Modal from '../components/Modal';
 import UserProfile from "../components/UserProfile";
 import "../assets/scss/userPage.scss";
 
@@ -13,7 +14,9 @@ const UserPage = ({
         params: { address }
     },
     cleanBox,
-    getProfile
+    getProfile,
+	createSubscription,
+	cancelSubscription
 }) => {
     useEffect(() => {
         if (address) {
@@ -21,8 +24,12 @@ const UserPage = ({
             getProfile(address);
         }
     }, [address]);
-    const isLoggedInUser =
-        account && account.toLowerCase() == address.toLowerCase();
+	
+    const isLoggedInUser = account && account.toLowerCase() == address.toLowerCase();
+		
+	const [show, setShow] = useState(false);
+    const openModal = () => setShow(true);
+    const closeModal = () => setShow(false);
 
     return (
         <div className="userPage">
@@ -68,7 +75,12 @@ const UserPage = ({
                                     Subscribe
                                 </a>
                             )}
+							
                         </div>
+						<div>
+						{!show && (<button onClick={openModal}>Subscribe</button>)}
+						<Modal closeModal={closeModal} show={show} createSubscription={createSubscription} address={address} cancelSubscription={cancelSubscription} />
+						</div>
                         <div className="profileRightBar">
                             <UserProfile address={address} isLoggedInUser={isLoggedInUser} />
                         </div>
@@ -85,8 +97,10 @@ function mapState(state) {
 }
 const actionCreators = {
     getAllFiles: userActions.getAllFiles,
+	createSubscription: userActions.createSubscription,
+	cancelSubscription: userActions.cancelSubscription,
     cleanBox: boxActions.clean,
-    getProfile: boxActions.getDataProfile
+    getProfile: boxActions.getDataProfile	
 };
 const connectedUserPage = connect(mapState, actionCreators)(UserPage);
 export default connectedUserPage;
