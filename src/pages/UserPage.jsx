@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { connect } from "react-redux";
 import { userActions, boxActions } from "../actions";
 import "../assets/scss/userPage.scss";
 import { getImageUrl, getAccountString } from "../helpers";
+import Modal from '../components/Modal';
+import "./styles.css";
+
 
 const UserPage = ({
     connected,
@@ -20,8 +23,12 @@ const UserPage = ({
             getProfile(address);
         }
     }, [address]);
-    const isLoggedInUser =
-        account && account.toLowerCase() == address.toLowerCase();
+	
+    const isLoggedInUser = account && account.toLowerCase() == address.toLowerCase();
+		
+	const [show, setShow] = useState(false);
+    const openModal = () => setShow(true);
+    const closeModal = () => setShow(false);
 
     return (
         <div className="userPage">
@@ -67,7 +74,12 @@ const UserPage = ({
                                     Subscribe
                                 </a>
                             )}
+							
                         </div>
+						<div>
+						{!show && (<button onClick={openModal}>suscribe</button>)}
+						<Modal closeModal={closeModal} show={show} />
+						</div>
                         <div className="profileRightBar">
                             <p>
                                 {
