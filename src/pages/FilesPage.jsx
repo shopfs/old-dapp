@@ -1,34 +1,46 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { userActions } from "../actions";
+import React, { useState, useEffect } from "react";
 import FilesDisplay from "../components/FilesDisplay";
+import Loading from "../components/Loading";
+import { allFilesQuery } from "../helpers/graph";
+import { ipfsService } from "../services";
+import { useQuery } from "urql";
 import "../assets/scss/filesPage.scss";
 
-const FilesPage = ({
-    data: { allFiles },
-    connected,
-    getAllFiles,
-    getBuyerFiles
-}) => {
+const FilesPage = () => {
+    const [allFiles, setFiles] = useState();
+    const [res, executeQuery] = useQuery({
+        query: allFilesQuery
+    });
+
     useEffect(() => {
-        if (connected) {
-            getAllFiles();
+        async function getMetadata(file) {
+            return {
+                ...file,
+                metadata: await ipfsService.getMetadata(file.metadataHash)
+            };
         }
-    }, [connected]);
+        async function getFiles() {
+            let files = res.data.files;
+            files = await Promise.all(
+                res.data.files.map((file, i) => getMetadata(file))
+            );
+            console.log(files);
+            setFiles(files);
+        }
+        if (res && !res.error && !res.fetching && res.data.files) {
+            console.log("getting metadata");
+            getFiles();
+        }
+    }, [res]);
+
+    if (res.fetching) return <Loading />;
+    if (res.error) return <p>Errored!</p>;
 
     return (
         <div className="filesPage">
-            {connected && <FilesDisplay allFiles={allFiles} />}
+            {allFiles && <FilesDisplay allFiles={allFiles} />}
         </div>
     );
 };
-function mapState(state) {
-    const { connected } = state.web3;
-    const { data } = state.user;
-    return { data, connected };
-}
-const actionCreators = {
-    getAllFiles: userActions.getAllFiles
-};
-const connectedFilesPage = connect(mapState, actionCreators)(FilesPage);
-export default connectedFilesPage;
+
+export default FilesPage;

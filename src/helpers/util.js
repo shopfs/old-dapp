@@ -24,14 +24,14 @@ export function epochConversion(time) {
 
 let tokenMapping = {};
 export function getTokenSymbol(tokenAddress) {
-    let tokenSymbol = tokenMapping[tokenAddress];
+    let tokenSymbol = tokenMapping[tokenAddress.toLowerCase()];
     if (tokenSymbol) {
         return tokenSymbol;
     }
     console.log("building mapping");
     for (let i = 0; i < config.priceAssets.length; ++i) {
         const token = config.priceAssets[i];
-        tokenMapping[token.address] = token.symbol;
+        tokenMapping[token.address.toLowerCase()] = token.symbol;
     }
-    return tokenMapping[tokenAddress];
+    return tokenMapping[tokenAddress.toLowerCase()];
 }
