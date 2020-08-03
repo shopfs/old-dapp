@@ -9,11 +9,19 @@ class Footer extends React.Component {
     render() {
         return (
             <div className="footerContainer">
-                <span className="copyright">{`\u00a9 shopFS 2020`}</span>
+                <span className="copyright">
+                    {`\u00a9 `}
+                    <a
+                        style={{ color: "black" }}
+                        href="https://github.com/shopfs"
+                    >
+                        shopFS
+                    </a>
+                    {` 2020`}
+                </span>
             </div>
         );
     }
 }
-
 
 export default Footer;

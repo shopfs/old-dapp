@@ -7,7 +7,7 @@ import { web3Actions } from "./actions";
 import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
 import ErrorBoundary from "./components/ErrorBoundary";
-import loading from "./assets/img/loading.svg";
+import Loading from "./components/Loading";
 import "./assets/scss/app.scss";
 
 const HomePage = React.lazy(() => import("./pages/HomePage"));
@@ -48,13 +48,7 @@ class App extends React.Component {
                 <ToastContainer autoClose={4000} />
                 <Router history={history}>
                     <ErrorBoundary key={location.pathname}>
-                        <React.Suspense
-                            fallback={
-                                <div className="suspense">
-                                    <img className="loading" src={loading} />
-                                </div>
-                            }
-                        >
+                        <React.Suspense fallback={<Loading />}>
                             <NavBar />
                             <Switch>
                                 <Route exact path="/" component={HomePage} />
