@@ -2,12 +2,9 @@ import React, { useEffect,useState } from "react";
 import { connect } from "react-redux";
 import { userActions, boxActions } from "../actions";
 import { getImageUrl, getAccountString } from "../helpers";
-<<<<<<< HEAD
 import Modal from '../components/Modal';
-=======
 import UserProfile from "../components/UserProfile";
 import "../assets/scss/userPage.scss";
->>>>>>> 98c4bc05c5f95d9d3b62b006f0a74bbb35f31ea0
 
 const UserPage = ({
     connected,
