@@ -20,18 +20,18 @@ const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
                         <div
                             className="fileSellerContainer"
                             onClick={() => {
-                                history.push(`/users/${file.seller}`);
+                                history.push(`/users/${file.seller.address}`);
                             }}
                         >
                             <ProfileHover
                                 className="fileSeller"
-                                address={file.seller}
+                                address={file.seller.address}
                                 orientation="bottom"
                             />
                         </div>
                         <Link
                             className="fileItemInner"
-                            to={`/files/${fileId}`}
+                            to={`/files/${file.id}`}
                         >
                             <img
                                 className="fileImage"
@@ -42,12 +42,15 @@ const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
                             </span>
                             <div className="fileMeta">
                                 <span className="fileRetrivals">
-                                    {`${file.numRetrievals} buys`}
+                                    {`${file.numBuys} buys`}
                                 </span>
-                                <span className="filePrice">{`${
-                                    file.price
-                                } ${getTokenSymbol(file.paymentAsset)}`}</span>
-                                <img className="pricetag" src={pricetag}/>
+                                <span className="filePrice">{`${(
+                                    file.price /
+                                    10 ** 18
+                                ).toFixed(2)} ${getTokenSymbol(
+                                    file.priceAsset
+                                )}`}</span>
+                                <img className="pricetag" src={pricetag} />
                             </div>
                         </Link>
                     </div>
