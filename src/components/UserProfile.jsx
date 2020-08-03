@@ -5,7 +5,7 @@ const UserProfile = ({ address, isLoggedInUser }) => {
     const [res, executeQuery] = useQuery({
         query: `
         query {
-          user(id: "0xad825c9ebec95a33ed40915e577022c8fe593b5d") {
+          user(id: "${address.toLowerCase()}") {
             id
             address
             isEnabled
