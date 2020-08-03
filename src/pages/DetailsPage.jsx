@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { useQuery } from "urql";
 import { connect } from "react-redux";
 import { userActions } from "../actions";
 import ProfileHover from "profile-hover";
 import { history, getTokenSymbol } from "../helpers";
 import "../assets/scss/detailsPage.scss";
 import Comments from "../components/Comments";
+import Loading from "../components/Loading";
+import { fileQuery } from "../helpers/graph";
+import { ipfsService } from "../services";
 
 const DetailsPage = ({
     match: {
         params: { fileId }
     },
-    data: { file },
     connected,
     getFile,
     buy,
@@ -18,18 +21,38 @@ const DetailsPage = ({
     box
 }) => {
     const [location, setLocation] = useState("");
+    const [file, setFile] = useState();
+    const query = fileQuery(fileId);
+    const [res, executeQuery] = useQuery({
+        query: query
+    });
+
     useEffect(() => {
-        if (connected && fileId) {
-            getFile(fileId);
+        async function getMetadata() {
+            let file = res.data.file;
+            const metadata = await ipfsService.getMetadata(file.metadataHash);
+            file.metadata = metadata;
+            setFile(file);
+        }
+        if (res && !res.error && !res.fetching && res.data.file) {
+            console.log("getting metadata");
+            getMetadata();
+        }
+    }, [res]);
+
+    useEffect(() => {
+        if (file && connected) {
             const location = localStorage.getItem(parseInt(fileId));
             console.log({ location });
             setLocation(location);
         }
-    }, [fileId, connected]);
+    }, [file, connected]);
 
+    if (res.fetching) return <Loading />;
+    if (res.error) return <p>Errored!</p>;
     return (
         <section className="filePage">
-            {file && (
+            {file && file.metadata && (
                 <div className="fileItem" key={file.metadataHash}>
                     <div className="detailsLeftBar">
                         <img
@@ -47,8 +70,13 @@ const DetailsPage = ({
                         <a
                             className="downloadButton button"
                             onClick={async e => {
-                                const location = await downloadFile(parseInt(fileId));
-                                localStorage.setItem(parseInt(fileId), location);
+                                const location = await downloadFile(
+                                    parseInt(fileId)
+                                );
+                                localStorage.setItem(
+                                    parseInt(fileId),
+                                    location
+                                );
                                 setLocation(location);
                             }}
                         >
@@ -73,13 +101,14 @@ const DetailsPage = ({
                             />
                         </div>
                         <span className="label">price</span>
-                        <span className="filePrice">{`${
-                            file.price
-                        }`}DAI</span>
+                        <span className="filePrice">{`${(
+                            file.price /
+                            10 ** 18
+                        ).toFixed(2)} ${getTokenSymbol(
+                            file.priceAsset
+                        )}`}</span>
                         <span className="label">Number of buys</span>
-                        <span className="fileBuys">
-                            {`${file.numBuys}`}
-                        </span>
+                        <span className="fileBuys">{`${file.numBuys}`}</span>
                         <span className="label">upload date</span>
                         <span className="uploadDate">
                             {new Date(file.metadata.uploadDate).toString()}
@@ -117,8 +146,7 @@ const DetailsPage = ({
 function mapState(state) {
     const { connected } = state.web3;
     const { box } = state.box;
-    const { data } = state.user;
-    return { data, connected, box };
+    return { connected, box };
 }
 
 const actionCreators = {

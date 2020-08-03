@@ -44,10 +44,13 @@ const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
                                 <span className="fileRetrivals">
                                     {`${file.numBuys} buys`}
                                 </span>
-                                <span className="filePrice">{`${
-                                    file.price
-                                }`}DAI</span>
-                                <img className="pricetag" src={pricetag}/>
+                                <span className="filePrice">{`${(
+                                    file.price /
+                                    10 ** 18
+                                ).toFixed(2)} ${getTokenSymbol(
+                                    file.priceAsset
+                                )}`}</span>
+                                <img className="pricetag" src={pricetag} />
                             </div>
                         </Link>
                     </div>

@@ -1,12 +1,8 @@
 import { logReceipt } from "../helpers";
 import { ipfsService } from "./ipfs.service";
-import  graphConfig   from "../helpers/graph";
-import config from "config";
-import { useQuery } from "urql";
 
 export const marketService = {
     getFile,
-    getFileFromContract,
     getAllFiles,
     getBuyerFiles,
     checkHashExists,
@@ -20,17 +16,11 @@ export const marketService = {
     isValidStream
 };
 
-async function getFile(file) {
+async function getFile(market, fileId) {
+    let file = await market.methods.Files(parseInt(fileId)).call();
     file.price = file.price / 10 ** 18;
     const metadata = await ipfsService.getMetadata(file.metadataHash);
     return { ...file, metadata };
-}
-
-
-async function getFileFromContract(market, fileId) {
-    let file = await market.methods.Files(fileId).call();
-    file.price = file.price / 10 ** 18;
-    return file
 }
 
 async function getFileCount(market) {
@@ -51,14 +41,11 @@ async function getBuyerFiles(market, buyer) {
 }
 
 async function getAllFiles(market) {
-    const query = graphConfig.allFilesQuery
-    // const res = await axios.post(config.subgraph, {query: query })
-    const allFiles = res.data.data.files
-    const fileCount = res.data.data.files.length;
+    const fileCount = await getFileCount(market);
     return await Promise.all(
         Array(parseInt(fileCount))
             .fill(1)
-            .map((el, i) => getFile(allFiles[i]))
+            .map((el, i) => getFile(market, i))
     );
 }
 
