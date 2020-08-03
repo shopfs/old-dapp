@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { userActions, boxActions } from "../actions";
-import "../assets/scss/userPage.scss";
 import { getImageUrl, getAccountString } from "../helpers";
+import UserProfile from "../components/UserProfile";
+import "../assets/scss/userPage.scss";
 
 const UserPage = ({
     connected,
@@ -69,11 +70,7 @@ const UserPage = ({
                             )}
                         </div>
                         <div className="profileRightBar">
-                            <p>
-                                {
-                                    "User's files & subscriptions etc will come here"
-                                }
-                            </p>
+                            <UserProfile address={address} isLoggedInUser={isLoggedInUser} />
                         </div>
                     </div>
                 </>

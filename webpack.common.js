@@ -11,10 +11,15 @@ module.exports = {
         publicPath: "/"
     },
     resolve: {
-        extensions: [".js", ".jsx"]
+        extensions: [".webpack.js", ".web.js", ".mjs", ".js", ".json", ".jsx"]
     },
     module: {
         rules: [
+            {
+                test: /\.mjs$/,
+                include: /node_modules/,
+                type: "javascript/auto"
+            },
             {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
