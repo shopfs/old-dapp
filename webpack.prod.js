@@ -14,7 +14,8 @@ module.exports = merge(common, {
                     address: "0xc3dbf84Abb494ce5199D5d4D815b10EC29529ff8",
                     symbol: "DAI"
                 }
-            ]
+            ],
+            subgraph: "https://api.thegraph.com/subgraphs/name/shopfs/market-rinkeby"
         })
     }
 });

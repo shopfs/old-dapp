@@ -218,8 +218,8 @@ function buy(fileId) {
     };
 }
 
-// amount will be in wei
-function createSubscription(amount, days, seller, paymentAsset) {
+// amount needs to be in ether format as its converted to wei in marketservice
+function createSubscription(amount, paymentAsset, days, seller) {
     return async (dispatch, getState) => {
         dispatch(started());
         let data;
@@ -239,16 +239,9 @@ function createSubscription(amount, days, seller, paymentAsset) {
             if (data.error) {
                 throw "Could not approve Market to transfer funds";
             }
-            const epochTimePayload = await epochConversion(days);
-            console.log("creating subscription");
-            data = await marketService.createSubscription(
-                market,
-                amount,
-                paymentAsset,
-                epochTimePayload["startTime"],
-                epochTimePayload["stopTime"],
-                seller
-            );
+            //const epochTimePayload = await epochConversion(days)
+            console.log("creating subscription")
+            data = await marketService.createSubscription(market, amount, paymentAsset, days, seller);
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
@@ -271,7 +264,7 @@ function createSubscription(amount, days, seller, paymentAsset) {
     };
 }
 
-// amount will be in wei
+// amount needs to be in ether format as its converted to wei in marketservice
 function withdrawFromSubscription(streamId, amount) {
     return async (dispatch, getState) => {
         dispatch(started());
@@ -304,14 +297,17 @@ function withdrawFromSubscription(streamId, amount) {
     };
 }
 
-function cancelSubscription(streamId) {
+function cancelSubscription(seller) {
+
     return async (dispatch, getState) => {
         dispatch(started());
         let data;
         try {
             const { account, market, web3 } = getState().web3;
-            console.log("cancel subscription");
-            data = await marketService.cancelSubscription(market, streamId);
+			
+            console.log("cancel subscription")
+            data = await marketService.cancelSubscription(market, seller);
+
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
