@@ -1,9 +1,13 @@
 import React, { useEffect,useState } from "react";
 import { connect } from "react-redux";
 import { userActions, boxActions } from "../actions";
-import "../assets/scss/userPage.scss";
 import { getImageUrl, getAccountString } from "../helpers";
+<<<<<<< HEAD
 import Modal from '../components/Modal';
+=======
+import UserProfile from "../components/UserProfile";
+import "../assets/scss/userPage.scss";
+>>>>>>> 98c4bc05c5f95d9d3b62b006f0a74bbb35f31ea0
 
 const UserPage = ({
     connected,
@@ -81,11 +85,7 @@ const UserPage = ({
 						<Modal closeModal={closeModal} show={show} createSubscription={createSubscription} address={address} cancelSubscription={cancelSubscription} />
 						</div>
                         <div className="profileRightBar">
-                            <p>
-                                {
-                                    "User's files & subscriptions etc will come here"
-                                }
-                            </p>
+                            <UserProfile address={address} isLoggedInUser={isLoggedInUser} />
                         </div>
                     </div>
                 </>

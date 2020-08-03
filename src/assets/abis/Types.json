@@ -4,38 +4,38 @@
   "metadata": "{\"compiler\":{\"version\":\"0.5.11+commit.c082d0b4\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"author\":\"Sablier\",\"methods\":{},\"title\":\"Sablier Types\"},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/media/dhiraj/code/hackfs/shopfs/dapp/contracts/sablier/Types.sol\":\"Types\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":1500},\"remappings\":[]},\"sources\":{\"/media/dhiraj/code/hackfs/shopfs/dapp/contracts/sablier/Types.sol\":{\"keccak256\":\"0xb4268a0da7132fe22006fc75797adc4c72cba90095e86662e1542f4c6d382e52\",\"urls\":[\"bzz-raw://168a51b397c2271bd6d3ac81ddfcb939cc676e513a861c75c0c3183c71e52446\",\"dweb:/ipfs/QmcPatj6j5YPFrctjtoMuq7gNyHdE7hAVJggyqKqF6PUQr\"]},\"/media/dhiraj/code/hackfs/shopfs/dapp/contracts/sablier/compound/CarefulMath.sol\":{\"keccak256\":\"0x4b9a616b36016e34bcd0befbdd6fe9aff824057bfd623341b065ef456e2ac0ce\",\"urls\":[\"bzz-raw://b28ce506d33373a06109ee526565ef5e0e4c92ec199b45683f6a713cd4e2d7ad\",\"dweb:/ipfs/QmS8RijjYT87Neo6ky9nBW5AWDaHwRsmaZTFvNFd3ip233\"]},\"/media/dhiraj/code/hackfs/shopfs/dapp/contracts/sablier/compound/Exponential.sol\":{\"keccak256\":\"0x683be0341206b4dadd5263ddfcf91e416015b82154af5c5ae18d46a5dc0dbe5c\",\"urls\":[\"bzz-raw://cd38acb517fb61238948e5186195b19e696d39965586bb601ca829acc129a7a3\",\"dweb:/ipfs/QmeDSE81k4CaCvMLWRHpQasZ2qZifDwooq6Nf9C8Mo8L2Y\"]}},\"version\":1}",
   "bytecode": "0x60556023600b82828239805160001a607314601657fe5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea265627a7a723158203de6714ef1c8292ff324b7297cbe0bc19ec1b791d51a8c989779ecc6db266ce164736f6c634300050b0032",
   "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea265627a7a723158203de6714ef1c8292ff324b7297cbe0bc19ec1b791d51a8c989779ecc6db266ce164736f6c634300050b0032",
-  "sourceMap": "114:477:5:-;;132:2:-1;166:7;155:9;146:7;137:37;255:7;249:14;246:1;241:23;235:4;232:33;222:2;;269:9;222:2;293:9;290:1;283:20;323:4;314:7;306:22;347:7;338;331:24",
-  "deployedSourceMap": "114:477:5:-;;;;;;;;",
+  "sourceMap": "114:477:6:-;;132:2:-1;166:7;155:9;146:7;137:37;255:7;249:14;246:1;241:23;235:4;232:33;222:2;;269:9;222:2;293:9;290:1;283:20;323:4;314:7;306:22;347:7;338;331:24",
+  "deployedSourceMap": "114:477:6:-;;;;;;;;",
   "source": "pragma solidity 0.5.11;\n\nimport \"./compound/Exponential.sol\";\n\n/**\n * @title Sablier Types\n * @author Sablier\n */\nlibrary Types {\n    struct Stream {\n        uint256 deposit;\n        uint256 ratePerSecond;\n        uint256 remainingBalance;\n        uint256 startTime;\n        uint256 stopTime;\n        address recipient;\n        address sender;\n        address tokenAddress;\n        bool isEntity;\n    }\n\n    struct CompoundingStreamVars {\n        Exponential.Exp exchangeRateInitial;\n        Exponential.Exp senderShare;\n        Exponential.Exp recipientShare;\n        bool isEntity;\n    }\n}\n",
   "sourcePath": "/media/dhiraj/code/hackfs/shopfs/dapp/contracts/sablier/Types.sol",
   "ast": {
     "absolutePath": "/media/dhiraj/code/hackfs/shopfs/dapp/contracts/sablier/Types.sol",
     "exportedSymbols": {
       "Types": [
-        3533
+        8031
       ]
     },
-    "id": 3534,
+    "id": 8032,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3503,
+        "id": 8001,
         "literals": [
           "solidity",
           "0.5",
           ".11"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:23:5"
+        "src": "0:23:6"
       },
       {
         "absolutePath": "/media/dhiraj/code/hackfs/shopfs/dapp/contracts/sablier/compound/Exponential.sol",
         "file": "./compound/Exponential.sol",
-        "id": 3504,
+        "id": 8002,
         "nodeType": "ImportDirective",
-        "scope": 3534,
-        "sourceUnit": 4395,
-        "src": "25:36:5",
+        "scope": 8032,
+        "sourceUnit": 8893,
+        "src": "25:36:6",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -45,24 +45,24 @@
         "contractKind": "library",
         "documentation": "@title Sablier Types\n@author Sablier",
         "fullyImplemented": true,
-        "id": 3533,
+        "id": 8031,
         "linearizedBaseContracts": [
-          3533
+          8031
         ],
         "name": "Types",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "canonicalName": "Types.Stream",
-            "id": 3523,
+            "id": 8021,
             "members": [
               {
                 "constant": false,
-                "id": 3506,
+                "id": 8004,
                 "name": "deposit",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "158:15:5",
+                "scope": 8021,
+                "src": "158:15:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -70,10 +70,10 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 3505,
+                  "id": 8003,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
-                  "src": "158:7:5",
+                  "src": "158:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
                     "typeString": "uint256"
@@ -84,11 +84,11 @@
               },
               {
                 "constant": false,
-                "id": 3508,
+                "id": 8006,
                 "name": "ratePerSecond",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "183:21:5",
+                "scope": 8021,
+                "src": "183:21:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -96,10 +96,10 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 3507,
+                  "id": 8005,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
-                  "src": "183:7:5",
+                  "src": "183:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
                     "typeString": "uint256"
@@ -110,11 +110,11 @@
               },
               {
                 "constant": false,
-                "id": 3510,
+                "id": 8008,
                 "name": "remainingBalance",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "214:24:5",
+                "scope": 8021,
+                "src": "214:24:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -122,10 +122,10 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 3509,
+                  "id": 8007,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
-                  "src": "214:7:5",
+                  "src": "214:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
                     "typeString": "uint256"
@@ -136,11 +136,11 @@
               },
               {
                 "constant": false,
-                "id": 3512,
+                "id": 8010,
                 "name": "startTime",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "248:17:5",
+                "scope": 8021,
+                "src": "248:17:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -148,10 +148,10 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 3511,
+                  "id": 8009,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
-                  "src": "248:7:5",
+                  "src": "248:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
                     "typeString": "uint256"
@@ -162,11 +162,11 @@
               },
               {
                 "constant": false,
-                "id": 3514,
+                "id": 8012,
                 "name": "stopTime",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "275:16:5",
+                "scope": 8021,
+                "src": "275:16:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -174,10 +174,10 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 3513,
+                  "id": 8011,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
-                  "src": "275:7:5",
+                  "src": "275:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
                     "typeString": "uint256"
@@ -188,11 +188,11 @@
               },
               {
                 "constant": false,
-                "id": 3516,
+                "id": 8014,
                 "name": "recipient",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "301:17:5",
+                "scope": 8021,
+                "src": "301:17:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -200,10 +200,10 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 3515,
+                  "id": 8013,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
-                  "src": "301:7:5",
+                  "src": "301:7:6",
                   "stateMutability": "nonpayable",
                   "typeDescriptions": {
                     "typeIdentifier": "t_address",
@@ -215,11 +215,11 @@
               },
               {
                 "constant": false,
-                "id": 3518,
+                "id": 8016,
                 "name": "sender",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "328:14:5",
+                "scope": 8021,
+                "src": "328:14:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -227,10 +227,10 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 3517,
+                  "id": 8015,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
-                  "src": "328:7:5",
+                  "src": "328:7:6",
                   "stateMutability": "nonpayable",
                   "typeDescriptions": {
                     "typeIdentifier": "t_address",
@@ -242,11 +242,11 @@
               },
               {
                 "constant": false,
-                "id": 3520,
+                "id": 8018,
                 "name": "tokenAddress",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "352:20:5",
+                "scope": 8021,
+                "src": "352:20:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -254,10 +254,10 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 3519,
+                  "id": 8017,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
-                  "src": "352:7:5",
+                  "src": "352:7:6",
                   "stateMutability": "nonpayable",
                   "typeDescriptions": {
                     "typeIdentifier": "t_address",
@@ -269,11 +269,11 @@
               },
               {
                 "constant": false,
-                "id": 3522,
+                "id": 8020,
                 "name": "isEntity",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "382:13:5",
+                "scope": 8021,
+                "src": "382:13:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -281,10 +281,10 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 3521,
+                  "id": 8019,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
-                  "src": "382:4:5",
+                  "src": "382:4:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_bool",
                     "typeString": "bool"
@@ -296,36 +296,36 @@
             ],
             "name": "Stream",
             "nodeType": "StructDefinition",
-            "scope": 3533,
-            "src": "134:268:5",
+            "scope": 8031,
+            "src": "134:268:6",
             "visibility": "public"
           },
           {
             "canonicalName": "Types.CompoundingStreamVars",
-            "id": 3532,
+            "id": 8030,
             "members": [
               {
                 "constant": false,
-                "id": 3525,
+                "id": 8023,
                 "name": "exchangeRateInitial",
                 "nodeType": "VariableDeclaration",
-                "scope": 3532,
-                "src": "447:35:5",
+                "scope": 8030,
+                "src": "447:35:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Exp_$3806_storage_ptr",
+                  "typeIdentifier": "t_struct$_Exp_$8304_storage_ptr",
                   "typeString": "struct Exponential.Exp"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 3524,
+                  "id": 8022,
                   "name": "Exponential.Exp",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 3806,
-                  "src": "447:15:5",
+                  "referencedDeclaration": 8304,
+                  "src": "447:15:6",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Exp_$3806_storage_ptr",
+                    "typeIdentifier": "t_struct$_Exp_$8304_storage_ptr",
                     "typeString": "struct Exponential.Exp"
                   }
                 },
@@ -334,26 +334,26 @@
               },
               {
                 "constant": false,
-                "id": 3527,
+                "id": 8025,
                 "name": "senderShare",
                 "nodeType": "VariableDeclaration",
-                "scope": 3532,
-                "src": "492:27:5",
+                "scope": 8030,
+                "src": "492:27:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Exp_$3806_storage_ptr",
+                  "typeIdentifier": "t_struct$_Exp_$8304_storage_ptr",
                   "typeString": "struct Exponential.Exp"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 3526,
+                  "id": 8024,
                   "name": "Exponential.Exp",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 3806,
-                  "src": "492:15:5",
+                  "referencedDeclaration": 8304,
+                  "src": "492:15:6",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Exp_$3806_storage_ptr",
+                    "typeIdentifier": "t_struct$_Exp_$8304_storage_ptr",
                     "typeString": "struct Exponential.Exp"
                   }
                 },
@@ -362,26 +362,26 @@
               },
               {
                 "constant": false,
-                "id": 3529,
+                "id": 8027,
                 "name": "recipientShare",
                 "nodeType": "VariableDeclaration",
-                "scope": 3532,
-                "src": "529:30:5",
+                "scope": 8030,
+                "src": "529:30:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Exp_$3806_storage_ptr",
+                  "typeIdentifier": "t_struct$_Exp_$8304_storage_ptr",
                   "typeString": "struct Exponential.Exp"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 3528,
+                  "id": 8026,
                   "name": "Exponential.Exp",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 3806,
-                  "src": "529:15:5",
+                  "referencedDeclaration": 8304,
+                  "src": "529:15:6",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Exp_$3806_storage_ptr",
+                    "typeIdentifier": "t_struct$_Exp_$8304_storage_ptr",
                     "typeString": "struct Exponential.Exp"
                   }
                 },
@@ -390,11 +390,11 @@
               },
               {
                 "constant": false,
-                "id": 3531,
+                "id": 8029,
                 "name": "isEntity",
                 "nodeType": "VariableDeclaration",
-                "scope": 3532,
-                "src": "569:13:5",
+                "scope": 8030,
+                "src": "569:13:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -402,10 +402,10 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 3530,
+                  "id": 8028,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
-                  "src": "569:4:5",
+                  "src": "569:4:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_bool",
                     "typeString": "bool"
@@ -417,45 +417,45 @@
             ],
             "name": "CompoundingStreamVars",
             "nodeType": "StructDefinition",
-            "scope": 3533,
-            "src": "408:181:5",
+            "scope": 8031,
+            "src": "408:181:6",
             "visibility": "public"
           }
         ],
-        "scope": 3534,
-        "src": "114:477:5"
+        "scope": 8032,
+        "src": "114:477:6"
       }
     ],
-    "src": "0:592:5"
+    "src": "0:592:6"
   },
   "legacyAST": {
     "absolutePath": "/media/dhiraj/code/hackfs/shopfs/dapp/contracts/sablier/Types.sol",
     "exportedSymbols": {
       "Types": [
-        3533
+        8031
       ]
     },
-    "id": 3534,
+    "id": 8032,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3503,
+        "id": 8001,
         "literals": [
           "solidity",
           "0.5",
           ".11"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:23:5"
+        "src": "0:23:6"
       },
       {
         "absolutePath": "/media/dhiraj/code/hackfs/shopfs/dapp/contracts/sablier/compound/Exponential.sol",
         "file": "./compound/Exponential.sol",
-        "id": 3504,
+        "id": 8002,
         "nodeType": "ImportDirective",
-        "scope": 3534,
-        "sourceUnit": 4395,
-        "src": "25:36:5",
+        "scope": 8032,
+        "sourceUnit": 8893,
+        "src": "25:36:6",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -465,24 +465,24 @@
         "contractKind": "library",
         "documentation": "@title Sablier Types\n@author Sablier",
         "fullyImplemented": true,
-        "id": 3533,
+        "id": 8031,
         "linearizedBaseContracts": [
-          3533
+          8031
         ],
         "name": "Types",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "canonicalName": "Types.Stream",
-            "id": 3523,
+            "id": 8021,
             "members": [
               {
                 "constant": false,
-                "id": 3506,
+                "id": 8004,
                 "name": "deposit",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "158:15:5",
+                "scope": 8021,
+                "src": "158:15:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -490,10 +490,10 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 3505,
+                  "id": 8003,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
-                  "src": "158:7:5",
+                  "src": "158:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
                     "typeString": "uint256"
@@ -504,11 +504,11 @@
               },
               {
                 "constant": false,
-                "id": 3508,
+                "id": 8006,
                 "name": "ratePerSecond",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "183:21:5",
+                "scope": 8021,
+                "src": "183:21:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -516,10 +516,10 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 3507,
+                  "id": 8005,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
-                  "src": "183:7:5",
+                  "src": "183:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
                     "typeString": "uint256"
@@ -530,11 +530,11 @@
               },
               {
                 "constant": false,
-                "id": 3510,
+                "id": 8008,
                 "name": "remainingBalance",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "214:24:5",
+                "scope": 8021,
+                "src": "214:24:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -542,10 +542,10 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 3509,
+                  "id": 8007,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
-                  "src": "214:7:5",
+                  "src": "214:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
                     "typeString": "uint256"
@@ -556,11 +556,11 @@
               },
               {
                 "constant": false,
-                "id": 3512,
+                "id": 8010,
                 "name": "startTime",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "248:17:5",
+                "scope": 8021,
+                "src": "248:17:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -568,10 +568,10 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 3511,
+                  "id": 8009,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
-                  "src": "248:7:5",
+                  "src": "248:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
                     "typeString": "uint256"
@@ -582,11 +582,11 @@
               },
               {
                 "constant": false,
-                "id": 3514,
+                "id": 8012,
                 "name": "stopTime",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "275:16:5",
+                "scope": 8021,
+                "src": "275:16:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -594,10 +594,10 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 3513,
+                  "id": 8011,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
-                  "src": "275:7:5",
+                  "src": "275:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
                     "typeString": "uint256"
@@ -608,11 +608,11 @@
               },
               {
                 "constant": false,
-                "id": 3516,
+                "id": 8014,
                 "name": "recipient",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "301:17:5",
+                "scope": 8021,
+                "src": "301:17:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -620,10 +620,10 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 3515,
+                  "id": 8013,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
-                  "src": "301:7:5",
+                  "src": "301:7:6",
                   "stateMutability": "nonpayable",
                   "typeDescriptions": {
                     "typeIdentifier": "t_address",
@@ -635,11 +635,11 @@
               },
               {
                 "constant": false,
-                "id": 3518,
+                "id": 8016,
                 "name": "sender",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "328:14:5",
+                "scope": 8021,
+                "src": "328:14:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -647,10 +647,10 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 3517,
+                  "id": 8015,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
-                  "src": "328:7:5",
+                  "src": "328:7:6",
                   "stateMutability": "nonpayable",
                   "typeDescriptions": {
                     "typeIdentifier": "t_address",
@@ -662,11 +662,11 @@
               },
               {
                 "constant": false,
-                "id": 3520,
+                "id": 8018,
                 "name": "tokenAddress",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "352:20:5",
+                "scope": 8021,
+                "src": "352:20:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -674,10 +674,10 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 3519,
+                  "id": 8017,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
-                  "src": "352:7:5",
+                  "src": "352:7:6",
                   "stateMutability": "nonpayable",
                   "typeDescriptions": {
                     "typeIdentifier": "t_address",
@@ -689,11 +689,11 @@
               },
               {
                 "constant": false,
-                "id": 3522,
+                "id": 8020,
                 "name": "isEntity",
                 "nodeType": "VariableDeclaration",
-                "scope": 3523,
-                "src": "382:13:5",
+                "scope": 8021,
+                "src": "382:13:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -701,10 +701,10 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 3521,
+                  "id": 8019,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
-                  "src": "382:4:5",
+                  "src": "382:4:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_bool",
                     "typeString": "bool"
@@ -716,36 +716,36 @@
             ],
             "name": "Stream",
             "nodeType": "StructDefinition",
-            "scope": 3533,
-            "src": "134:268:5",
+            "scope": 8031,
+            "src": "134:268:6",
             "visibility": "public"
           },
           {
             "canonicalName": "Types.CompoundingStreamVars",
-            "id": 3532,
+            "id": 8030,
             "members": [
               {
                 "constant": false,
-                "id": 3525,
+                "id": 8023,
                 "name": "exchangeRateInitial",
                 "nodeType": "VariableDeclaration",
-                "scope": 3532,
-                "src": "447:35:5",
+                "scope": 8030,
+                "src": "447:35:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Exp_$3806_storage_ptr",
+                  "typeIdentifier": "t_struct$_Exp_$8304_storage_ptr",
                   "typeString": "struct Exponential.Exp"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 3524,
+                  "id": 8022,
                   "name": "Exponential.Exp",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 3806,
-                  "src": "447:15:5",
+                  "referencedDeclaration": 8304,
+                  "src": "447:15:6",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Exp_$3806_storage_ptr",
+                    "typeIdentifier": "t_struct$_Exp_$8304_storage_ptr",
                     "typeString": "struct Exponential.Exp"
                   }
                 },
@@ -754,26 +754,26 @@
               },
               {
                 "constant": false,
-                "id": 3527,
+                "id": 8025,
                 "name": "senderShare",
                 "nodeType": "VariableDeclaration",
-                "scope": 3532,
-                "src": "492:27:5",
+                "scope": 8030,
+                "src": "492:27:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Exp_$3806_storage_ptr",
+                  "typeIdentifier": "t_struct$_Exp_$8304_storage_ptr",
                   "typeString": "struct Exponential.Exp"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 3526,
+                  "id": 8024,
                   "name": "Exponential.Exp",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 3806,
-                  "src": "492:15:5",
+                  "referencedDeclaration": 8304,
+                  "src": "492:15:6",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Exp_$3806_storage_ptr",
+                    "typeIdentifier": "t_struct$_Exp_$8304_storage_ptr",
                     "typeString": "struct Exponential.Exp"
                   }
                 },
@@ -782,26 +782,26 @@
               },
               {
                 "constant": false,
-                "id": 3529,
+                "id": 8027,
                 "name": "recipientShare",
                 "nodeType": "VariableDeclaration",
-                "scope": 3532,
-                "src": "529:30:5",
+                "scope": 8030,
+                "src": "529:30:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Exp_$3806_storage_ptr",
+                  "typeIdentifier": "t_struct$_Exp_$8304_storage_ptr",
                   "typeString": "struct Exponential.Exp"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 3528,
+                  "id": 8026,
                   "name": "Exponential.Exp",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 3806,
-                  "src": "529:15:5",
+                  "referencedDeclaration": 8304,
+                  "src": "529:15:6",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Exp_$3806_storage_ptr",
+                    "typeIdentifier": "t_struct$_Exp_$8304_storage_ptr",
                     "typeString": "struct Exponential.Exp"
                   }
                 },
@@ -810,11 +810,11 @@
               },
               {
                 "constant": false,
-                "id": 3531,
+                "id": 8029,
                 "name": "isEntity",
                 "nodeType": "VariableDeclaration",
-                "scope": 3532,
-                "src": "569:13:5",
+                "scope": 8030,
+                "src": "569:13:6",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -822,10 +822,10 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 3530,
+                  "id": 8028,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
-                  "src": "569:4:5",
+                  "src": "569:4:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_bool",
                     "typeString": "bool"
@@ -837,16 +837,16 @@
             ],
             "name": "CompoundingStreamVars",
             "nodeType": "StructDefinition",
-            "scope": 3533,
-            "src": "408:181:5",
+            "scope": 8031,
+            "src": "408:181:6",
             "visibility": "public"
           }
         ],
-        "scope": 3534,
-        "src": "114:477:5"
+        "scope": 8032,
+        "src": "114:477:6"
       }
     ],
-    "src": "0:592:5"
+    "src": "0:592:6"
   },
   "compiler": {
     "name": "solc",
@@ -854,7 +854,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-08-02T11:29:33.979Z",
+  "updatedAt": "2020-08-03T09:02:58.336Z",
   "devdoc": {
     "author": "Sablier",
     "methods": {},
