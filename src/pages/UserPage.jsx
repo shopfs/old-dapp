@@ -13,7 +13,9 @@ const UserPage = ({
         params: { address }
     },
     cleanBox,
-    getProfile
+    getProfile,
+	createSubscription,
+	cancelSubscription
 }) => {
     useEffect(() => {
         if (address) {
@@ -75,8 +77,8 @@ const UserPage = ({
 							
                         </div>
 						<div>
-						{!show && (<button onClick={openModal}>suscribe</button>)}
-						<Modal closeModal={closeModal} show={show} />
+						{!show && (<button onClick={openModal}>Subscribe</button>)}
+						<Modal closeModal={closeModal} show={show} createSubscription={createSubscription} address={address} cancelSubscription={cancelSubscription} />
 						</div>
                         <div className="profileRightBar">
                             <p>
@@ -98,8 +100,10 @@ function mapState(state) {
 }
 const actionCreators = {
     getAllFiles: userActions.getAllFiles,
+	createSubscription: userActions.createSubscription,
+	cancelSubscription: userActions.cancelSubscription,
     cleanBox: boxActions.clean,
-    getProfile: boxActions.getDataProfile
+    getProfile: boxActions.getDataProfile	
 };
 const connectedUserPage = connect(mapState, actionCreators)(UserPage);
 export default connectedUserPage;

@@ -229,9 +229,9 @@ function createSubscription(amount, paymentAsset, days, seller) {
             if (data.error) {
                 throw "Could not approve Market to transfer funds";
             }
-            const epochTimePayload = await epochConversion(days)
+            //const epochTimePayload = await epochConversion(days)
             console.log("creating subscription")
-            data = await marketService.createSubscription(market, amount, paymentAsset, epochTimePayload, seller);
+            data = await marketService.createSubscription(market, amount, paymentAsset, days, seller);
         } catch (e) {
             console.log(e);
             dispatch(failure(e));
