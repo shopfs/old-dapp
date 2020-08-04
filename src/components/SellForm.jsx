@@ -46,7 +46,7 @@ const SellForm = ({ sell, uploadAndSellFile, uploadImage, inProgress }) => {
     return (
         <main className="sellForm">
             <section>
-                <label htmlFor="titleInput" className="titleLabel label">
+                <label htmlFor="titleInput" className="titleLabel uploadLabel">
                     Title
                 </label>
                 <input
@@ -60,7 +60,7 @@ const SellForm = ({ sell, uploadAndSellFile, uploadImage, inProgress }) => {
             <section>
                 <label
                     htmlFor="descriptionInput"
-                    className="descriptionLabel label"
+                    className="descriptionLabel uploadLabel"
                 >
                     Description
                 </label>
@@ -73,7 +73,7 @@ const SellForm = ({ sell, uploadAndSellFile, uploadImage, inProgress }) => {
                 />
             </section>
             <section>
-                <label htmlFor="imageInput" className="imageLabel label">
+                <label htmlFor="imageInput" className="imageLabel uploadLabel">
                     Display image
                 </label>
                 {imageHash && (
@@ -98,7 +98,7 @@ const SellForm = ({ sell, uploadAndSellFile, uploadImage, inProgress }) => {
                 </label>
             </section>
             <section>
-                <label htmlFor="pathInput" className="pathLabel label">
+                <label htmlFor="pathInput" className="pathLabel uploadLabel">
                     Local file path
                 </label>
                 <input
@@ -111,7 +111,7 @@ const SellForm = ({ sell, uploadAndSellFile, uploadImage, inProgress }) => {
             </section>
 
             <section>
-                <label htmlFor="priceInput" className="pathLabel label">
+                <label htmlFor="priceInput" className="pathLabel uploadLabel">
                     Price
                 </label>
                 <div className="priceInput">

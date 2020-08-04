@@ -14,8 +14,8 @@ export const marketService = {
     withdrawSubscriptionAmount,
     cancelSubscription,
     isValidStream,
-	updateSubscriptionInfo,
-	disableSubscriptionInfo
+    updateSubscriptionInfo,
+    disableSubscriptionInfo
 };
 
 async function getFile(market, fileId) {
@@ -74,13 +74,26 @@ async function buy(market, fileId) {
 
 // to be used for expired subscriptions
 async function isValidStream(market, streamId) {
-    return await market.methods.isValid(streamId).call()
+    return await market.methods.isValid(streamId).call();
 }
 
 // call approve before in actiom
-async function createSubscription(market, amount, paymentAsset, numofdays, seller) {
-    const receipt = await market.methods.createSubscription(BigInt(amount * 10 ** 18), paymentAsset, numofdays, seller).send()
- if (!receipt.status) {
+async function createSubscription(
+    market,
+    amount,
+    paymentAsset,
+    numofdays,
+    seller
+) {
+    const receipt = await market.methods
+        .createSubscription(
+            amount,
+            paymentAsset,
+            numofdays,
+            seller
+        )
+        .send();
+    if (!receipt.status) {
         logReceipt(receipt);
         throw "Transaction failed";
     }
@@ -89,8 +102,10 @@ async function createSubscription(market, amount, paymentAsset, numofdays, selle
 
 // seller clicks wothdraw for that particular subscription to get the funds locked, buyer address needed for filtering in mapping
 async function withdrawSubscriptionAmount(market, streamId, amount) {
- const receipt = await market.methods.withdrawFromSubscription(streamId, BigInt(amount * 10 ** 18)).send()
- if (!receipt.status) {
+    const receipt = await market.methods
+        .withdrawFromSubscription(streamId, BigInt(amount * 10 ** 18))
+        .send();
+    if (!receipt.status) {
         logReceipt(receipt);
         throw "Transaction failed";
     }
@@ -99,8 +114,8 @@ async function withdrawSubscriptionAmount(market, streamId, amount) {
 
 // buyer clicks on cancel for that particular seller
 async function cancelSubscription(market, seller) {
- const receipt = await market.methods.cancelSubscription(seller).send()
- if (!receipt.status) {
+    const receipt = await market.methods.cancelSubscription(seller).send();
+    if (!receipt.status) {
         logReceipt(receipt);
         throw "Transaction failed";
     }
@@ -108,9 +123,16 @@ async function cancelSubscription(market, seller) {
 }
 
 // for enable subs
-async function updateSubscriptionInfo(market, amountperday, minduration, tokenaddress) {
- const receipt = await market.methods.updateSubscriptionInfo(amountperday, minduration, tokenaddress).send()
- if (!receipt.status) {
+async function updateSubscriptionInfo(
+    market,
+    amountperday,
+    minduration,
+    tokenaddress
+) {
+    const receipt = await market.methods
+        .updateSubscriptionInfo(amountperday, minduration, tokenaddress)
+        .send();
+    if (!receipt.status) {
         logReceipt(receipt);
         throw "Transaction failed";
     }
@@ -119,11 +141,10 @@ async function updateSubscriptionInfo(market, amountperday, minduration, tokenad
 
 // for disable subs
 async function disableSubscriptionInfo(market) {
- const receipt = await market.methods.disableSubscriptionInfo().send()
- if (!receipt.status) {
+    const receipt = await market.methods.disableSubscriptionInfo().send();
+    if (!receipt.status) {
         logReceipt(receipt);
         throw "Transaction failed";
     }
     return {};
 }
-
