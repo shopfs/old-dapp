@@ -7,7 +7,7 @@ import { history, getTokenSymbol } from "../helpers";
 import "../assets/scss/detailsPage.scss";
 import Comments from "../components/Comments";
 import Loading from "../components/Loading";
-import { fileQuery, userBoughtFilesQuery } from "../helpers/graph";
+import { fileQuery } from "../helpers/graph";
 import { ipfsService } from "../services";
 
 const DetailsPage = ({
