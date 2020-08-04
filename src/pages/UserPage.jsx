@@ -7,6 +7,8 @@ import UserOwnedFiles from "../components/UserOwnedFiles";
 import UserBoughtFiles from "../components/UserBoughtFiles";
 import UserSubscriptions from "../components/UserSubscriptions";
 import UserSubscribers from "../components/UserSubscribers";
+import Subscribe from "../components/Subscribe";
+import UpdateSubscription from "../components/UpdateSubscription";
 import "../assets/scss/userPage.scss";
 
 const UserPage = ({
@@ -79,6 +81,7 @@ const UserPage = ({
                                 <>
                                     <a
                                         className="subscribe profileButton"
+										onClick={() => setSelected(5)}
                                     >
                                         Update Subscription Info
                                     </a>
@@ -108,7 +111,9 @@ const UserPage = ({
                                     </a>
                                 </>
                             ) : (
-                                <a className="subscribe profileButton">
+                                <a className="subscribe profileButton"
+								 onClick={() => setSelected(4)}
+								>
                                     Subscribe
                                 </a>
                             )}
@@ -142,6 +147,16 @@ const UserPage = ({
                                 <UserSubscribers
                                     address={address}
                                     isLoggedInUser={isLoggedInUser}
+                                />
+                            ) : selected == 4 ? (
+                                <Subscribe
+                                    createSubscription={createSubscription}
+                                    address={address}
+                                    cancelSubscription={cancelSubscription}
+                                />
+                            ) : selected == 5 ? (
+                                <UpdateSubscription
+                                    
                                 />
                             ) : (
                                 <UserSubscriptions

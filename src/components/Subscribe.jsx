@@ -5,8 +5,8 @@ import { userActions } from "../actions";
 import { useQuery } from "urql";
 import { sellerSubscriptionInfoQuery } from "../helpers/graph";
 
-function Modal(props) {
-  const { show, closeModal,createSubscription,address,cancelSubscription } = props;
+function Subscribe(props) {
+  const { createSubscription,address,cancelSubscription } = props;
   const [amount, setAmount] = useState("");
   const [days, setDays] = useState("");
   const defaultAsset = config.priceAssets[0].address;
@@ -44,11 +44,7 @@ function Modal(props) {
   
   return (
     <>
-	  <div className={show ? "overlay" : "hide"} onClick={closeModal} />
-      <div className={show ? "modal" : "hide"}>        
-	    <button onClick={closeModal}>X</button>
-	
-        <h1>to be removed</h1>
+        <h1>Subscribe</h1>	
 		
 		<section>
 				<label >
@@ -68,8 +64,8 @@ function Modal(props) {
                         cancelSub();
                     }}>cancelsubscription</button>
 		</section>       
-      </div>
+    
     </>
   );
 }
-export default Modal;
+export default Subscribe;
