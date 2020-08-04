@@ -104,6 +104,7 @@ export const userSubscriptionsQuery = address => {
         isEnabled
         subscriptions {
           id
+          streamId
           seller {
             address
           }
@@ -112,8 +113,10 @@ export const userSubscriptionsQuery = address => {
           }
           durationInSec
           isActive
+          startTime
           stopTime
           remainingBalance
+          ratePerSecond
           deposit
           tokenAddress
         }
@@ -127,6 +130,7 @@ export const userSubscribersQuery = address => {
         id
         subscribers {
           id
+          streamId
           seller {
             address
           }
@@ -135,8 +139,10 @@ export const userSubscribersQuery = address => {
           }
           durationInSec
           isActive
+          startTime
           stopTime
           remainingBalance
+          ratePerSecond
           deposit
           tokenAddress
         }

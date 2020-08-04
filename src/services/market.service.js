@@ -14,6 +14,7 @@ export const marketService = {
     withdrawSubscriptionAmount,
     cancelSubscription,
     isValidStream,
+    getSubscriptionInfo,
     updateSubscriptionInfo,
     disableSubscriptionInfo
 };
@@ -102,8 +103,9 @@ async function createSubscription(
 
 // seller clicks wothdraw for that particular subscription to get the funds locked, buyer address needed for filtering in mapping
 async function withdrawSubscriptionAmount(market, streamId, amount) {
+    console.log({streamId, amount})
     const receipt = await market.methods
-        .withdrawFromSubscription(streamId, BigInt(amount * 10 ** 18))
+        .withdrawFromSubscription(streamId, amount)
         .send();
     if (!receipt.status) {
         logReceipt(receipt);
@@ -120,6 +122,10 @@ async function cancelSubscription(market, seller) {
         throw "Transaction failed";
     }
     return {};
+}
+
+async function getSubscriptionInfo(market, address) {
+    return await market.methods.subscriptions(address).call();
 }
 
 // for enable subs

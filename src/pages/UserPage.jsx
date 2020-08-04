@@ -183,7 +183,7 @@ const UserPage = ({
                                 />
                             )}
                             {selected == 4 && (
-                                <UpdateSubscription user={seller} />
+                                <UpdateSubscription />
                             )}
                             {showModal && (
                                 <SubscribeModal

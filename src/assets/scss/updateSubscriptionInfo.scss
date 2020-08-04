@@ -1,0 +1,54 @@
+@import "config.scss";
+
+.updateSubscriptionInfo {
+    width: 100%;
+    max-width: 50rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.subscriptionInput {
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    font-size: 1.25rem;
+    height: 2rem;
+    background: white;
+    outline: none;
+    border: solid 1px $grey;
+    &#asset {
+        padding: 0;
+        padding-left: 0.5rem;
+    }
+}
+
+.subscriptionLabel {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #808080;
+}
+
+.subscriptionButton {
+    margin-top: 1rem;
+}
+
+.amountInput {
+    display: flex;
+    align-items: center;
+    #amountInput {
+        flex: 1;
+    }
+}
+
+.assetInput {
+    margin-left: 0.5rem;
+    width: 5rem;
+    border-radius: 0.5rem;
+    font-size: 1.25rem;
+    height: 2rem;
+    background: white;
+    outline: none;
+    border: solid 1px $grey;
+}

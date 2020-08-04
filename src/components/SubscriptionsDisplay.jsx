@@ -21,46 +21,57 @@ function secondsToDhms(seconds) {
     return dDisplay + hDisplay + mDisplay + sDisplay;
 }
 
-const SubscriptionsDisplay = ({ allSubscriptions }) => {
-
+const SubscriptionsDisplay = ({
+    allSubscriptions,
+    seller,
+    withdrawFromSubscription,
+    cancelSubscription
+}) => {
     return (
         <div className="subscriptionsDisplay">
             {allSubscriptions &&
-                allSubscriptions.map((subscription, subscriptionId) => (
-                    <div
-                        className="subscriptionItem"
-                        key={subscription.streamId}
-                    >
-                        <span>Seller:</span>
-                        <div
-                            className="seller"
-                            onClick={() => {
-                                history.push(
-                                    `/users/${subscription.seller.address}`
-                                );
-                            }}
-                        >
-                            <ProfileHover
-                                address={subscription.seller.address}
-                                orientation="bottom"
-                                tileStyle
-                            />
-                        </div>
-                        <span>Subscriber:</span>
-                        <div
-                            className="subscriber"
-                            onClick={() => {
-                                history.push(
-                                    `/users/${subscription.subscriber.address}`
-                                );
-                            }}
-                        >
-                            <ProfileHover
-                                address={subscription.subscriber.address}
-                                orientation="bottom"
-                                tileStyle
-                            />
-                        </div>
+                allSubscriptions.map((subscription, index) => (
+                    <div className="subscriptionItem" key={index.toString()}>
+                        {seller && (
+                            <>
+                                <span>Seller:</span>
+                                <div
+                                    className="seller"
+                                    onClick={() => {
+                                        history.push(
+                                            `/users/${subscription.seller.address}`
+                                        );
+                                    }}
+                                >
+                                    <ProfileHover
+                                        address={subscription.seller.address}
+                                        orientation="bottom"
+                                        tileStyle
+                                    />
+                                </div>
+                            </>
+                        )}
+                        {!seller && (
+                            <>
+                                <span>Subscriber:</span>
+                                <div
+                                    className="subscriber"
+                                    onClick={() => {
+                                        history.push(
+                                            `/users/${subscription.subscriber.address}`
+                                        );
+                                    }}
+                                >
+                                    <ProfileHover
+                                        address={
+                                            subscription.subscriber.address
+                                        }
+                                        orientation="bottom"
+                                        tileStyle
+                                    />
+                                </div>
+                            </>
+                        )}
                         <span className="duration">{`Total Duration: ${subscription.durationInSec /
                             86400} days`}</span>
                         <span className="remaining">{`Remaining Time: ${secondsToDhms(
@@ -84,6 +95,45 @@ const SubscriptionsDisplay = ({ allSubscriptions }) => {
                         ).toFixed(2)} ${getTokenSymbol(
                             subscription.tokenAddress
                         )} (${subscription.remainingBalance})`}</span>
+                        {seller && (
+                            <a
+                                className="subscriptionButton button"
+                                onClick={() => {
+                                    let amount =
+                                        (BigInt(
+                                            parseInt(
+                                                new Date().getTime() / 1000
+                                            )
+                                        ) -
+                                            BigInt(subscription.startTime)) *
+                                        BigInt(subscription.ratePerSecond);
+                                    if (
+                                        amount >
+                                        BigInt(subscription.remainingBalance)
+                                    ) {
+                                        amount = subscription.remainingBalance;
+                                    }
+                                    withdrawFromSubscription(
+                                        subscription.streamId,
+                                        amount
+                                    );
+                                }}
+                            >
+                                Withdraw Balance
+                            </a>
+                        )}
+                        {!seller && (
+                            <a
+                                className="subscriptionButton button"
+                                onClick={() => {
+                                    cancelSubscription(
+                                        subscription.seller.address
+                                    );
+                                }}
+                            >
+                                Cancel Subscription
+                            </a>
+                        )}
                     </div>
                 ))}
         </div>
@@ -94,7 +144,10 @@ function mapState(state) {
     return {};
 }
 
-const actionCreators = {};
+const actionCreators = {
+    withdrawFromSubscription: userActions.withdrawFromSubscription,
+    cancelSubscription: userActions.cancelSubscription
+};
 
 const connectedSubscriptionsDisplay = connect(
     mapState,

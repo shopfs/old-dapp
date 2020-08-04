@@ -24,6 +24,7 @@ export const userActions = {
     createSubscription,
     withdrawFromSubscription,
     cancelSubscription,
+    getSubscriptionInfo,
     updateSubscriptionInfo,
     disableSubscriptionInfo
 };
@@ -327,6 +328,25 @@ function cancelSubscription(seller) {
                 )
             );
         }
+    };
+}
+
+function getSubscriptionInfo() {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let subscription;
+        try {
+            const { account, market } = getState().web3;
+            subscription = await marketService.getSubscriptionInfo(market, account);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            dispatch(alertActions.error("Error Getting Subscription Info"));
+            return;
+        }
+        dispatch(result({ data: { subscription } }));
+
+        return subscription;
     };
 }
 
