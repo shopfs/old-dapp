@@ -7,11 +7,7 @@ import ProfileHover from "profile-hover";
 import pricetag from "../assets/img/pricetag.svg";
 import "../assets/scss/filesDisplay.scss";
 
-const FilesDisplay = ({ buy, allFiles, downloadFile }) => {
-    const url = window.location.href;
-    const arr = url.split("/");
-    const root = arr[0] + "//" + arr[2];
-
+const FilesDisplay = ({ allFiles }) => {
     return (
         <div className="filesDisplay">
             {allFiles &&
@@ -63,8 +59,4 @@ function mapState(state) {
     return {};
 }
 
-const actionCreators = {};
-
-const connectedFilesDisplay = connect(mapState, actionCreators)(FilesDisplay);
-
-export default connectedFilesDisplay;
+export default FilesDisplay;
