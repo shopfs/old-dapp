@@ -23,10 +23,11 @@ const DetailsPage = ({
 }) => {
     const [location, setLocation] = useState("");
     const [file, setFile] = useState();
+	const [days, setDays] = useState("");
     const query = fileQuery(fileId);
     // check if the user has already bought the file
     const [res, executeQuery] = useQuery({
-        query: query
+        query: query	
     });
 
     useEffect(() => {
@@ -52,6 +53,23 @@ const DetailsPage = ({
 
     if (res.fetching) return <Loading />;
     if (res.error) return <p>Errored!</p>;
+	
+	const createSub = async () => {
+	  const useramt =  100;
+	  const totalamt = useramt*days;
+	  
+	  if(user.isEnabled == true){
+      console.log(user);
+	  //const testamt = 10000000000000;
+	  const createsubresult = await createSubscription(totalamt,user.tokenAddress,days,user.address);
+	  console.log(createsubresult);
+	  } else if (user.isEnabled == false) {
+	  console.log("do something");
+	  } else {
+	  console.log("query failed");
+	  }
+  }
+  
     return (
         <section className="filePage">
             {file && file.metadata && (

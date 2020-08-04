@@ -9,6 +9,8 @@ import UserOwnedFiles from "../components/UserOwnedFiles";
 import UserBoughtFiles from "../components/UserBoughtFiles";
 import UserSubscriptions from "../components/UserSubscriptions";
 import UserSubscribers from "../components/UserSubscribers";
+import Subscribe from "../components/Subscribe";
+import UpdateSubscription from "../components/UpdateSubscription";
 import "../assets/scss/userPage.scss";
 
 const UserPage = ({
@@ -23,8 +25,9 @@ const UserPage = ({
     createSubscription,
     cancelSubscription
 }) => {
-        const [userSubscriptions, setSubscriptions] = useState();
-     const query = userSubscriptionsQuery(address);
+
+    const [userSubscriptions, setSubscriptions] = useState();
+    const query = userSubscriptionsQuery(address);
     // check if the user has already bought the file
     const [res, executeQuery] = useQuery({
         query: query
@@ -96,6 +99,7 @@ const UserPage = ({
                                 <>
                                     <a
                                         className="subscribe profileButton"
+										onClick={() => setSelected(5)}
                                     >
                                         Update Subscription Info
                                     </a>
@@ -125,16 +129,19 @@ const UserPage = ({
                                     </a>
                                 </>
                             ) : (
-                                <a className="subscribe profileButton">
+                                <a className="subscribe profileButton"
+								 onClick={() => setSelected(4)}
+								>
                                     Subscribe
                                 </a>
                             )}
                             <div>
+                                   <button onClick={openModal}>
+
                                 {!show && !userSubscriptions.subscriptions.some(user => user.subscriber.address === account.toLowerCase() && user.isActive) &&(
                                     <button onClick={openModal}>
                                         Subscribe
-                                    </button>
-                                )}
+                                    </button>}
                                 <Modal
                                     closeModal={closeModal}
                                     show={show}
@@ -160,6 +167,17 @@ const UserPage = ({
                                     address={address}
                                     isLoggedInUser={isLoggedInUser}
                                 />
+                            ) : selected == 4 ? (
+                                <Subscribe
+                                    createSubscription={createSubscription}
+                                    address={address}
+                                    cancelSubscription={cancelSubscription}
+                                />
+                            ) : selected == 5 ? (
+                                <UpdateSubscription
+								                    enablesubscription = {enablesubscription}
+                                    disablesubscription = {disablesubscription}
+                                />
                             ) : (
                                 <UserSubscriptions
                                     address={address}
@@ -182,6 +200,8 @@ const actionCreators = {
     getAllFiles: userActions.getAllFiles,
     createSubscription: userActions.createSubscription,
     cancelSubscription: userActions.cancelSubscription,
+	enablesubscription: userActions.enablesubscription,
+	disablesubscription: userActions.disablesubscription,
     cleanBox: boxActions.clean,
     getProfile: boxActions.getDataProfile
 };
