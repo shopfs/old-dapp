@@ -25,6 +25,7 @@ const UserPage = ({
     createSubscription,
     cancelSubscription
 }) => {
+	
     const [userSubscriptions, setSubscriptions] = useState();
     const query = userSubscriptionsQuery(address);
     // check if the user has already bought the file
