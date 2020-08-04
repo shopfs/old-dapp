@@ -18,7 +18,9 @@ const UserSubscribers = ({ address, isLoggedInUser }) => {
             res.data.user &&
             res.data.user.subscribers &&
             res.data.user.subscribers.length
-        ) {
+        ) { 
+             // need only active subscriptions on ui i.e which have not been cancelled
+             res.data.user.subscribers =  res.data.user.subscribers.filter((subscription) => subscription.isActive === true)
             setSubscribers(res.data.user.subscribers);
         }
     }, [res]);
@@ -29,7 +31,7 @@ const UserSubscribers = ({ address, isLoggedInUser }) => {
     return (
         <div className="userSubscribers">
             <span className="profileTitle">Subscribers</span>
-            {allSubscribers ? (
+            {allSubscribers  ? (
                 <SubscriptionsDisplay allSubscriptions={allSubscribers} />
             ) : isLoggedInUser ? (
                 <p>{"  You have no subscribers"}</p>

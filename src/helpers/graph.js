@@ -72,6 +72,7 @@ export const userSubscriptionsQuery = address => {
     return `query {
       user(id: "${address.toLowerCase()}") {
         id
+        isEnabled
         subscriptions {
           id
           seller {
