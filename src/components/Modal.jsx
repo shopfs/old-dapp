@@ -3,6 +3,7 @@ import config from "config";
 import { connect } from "react-redux";
 import { userActions } from "../actions";
 import { useQuery } from "urql";
+import { sellerSubscriptionInfoQuery } from "../helpers/graph";
 
 function Modal(props) {
   const { show, closeModal,createSubscription,address,cancelSubscription } = props;
@@ -10,20 +11,10 @@ function Modal(props) {
   const [days, setDays] = useState("");
   const defaultAsset = config.priceAssets[0].address;
   const [asset, setAsset] = useState(defaultAsset);
-  
+   
+  const query = sellerSubscriptionInfoQuery(address);
   const [res, executeQuery] = useQuery({
-        query: `
-        query {
-          user(id: "${address.toLowerCase()}") {
-            id
-            address
-            isEnabled
-            minDurationInDays
-			amountPerDay
-			tokenAddress           
-          }
-        }
-      `
+        query: query
     });
   
   if (res.fetching) return <p>Loading...</p>;

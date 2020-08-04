@@ -110,3 +110,40 @@ export const userSubscribersQuery = address => {
       }
     }`;
 };
+
+export const sellerSubscriptionInfoQuery = address => {
+	return `query {
+          user(id: "${address.toLowerCase()}") {
+            id
+            address
+            isEnabled
+            minDurationInDays
+			amountPerDay
+			tokenAddress            			
+          }
+        }`;
+};
+
+export const fileandSubQuery = (fileId,address) => {
+const hex = web3.utils.toHex(fileId);
+return `query {
+	      file(id: "${hex}") {
+            id
+            metadataHash
+            seller {
+                address
+                   }
+            price
+            priceAsset
+            numBuys
+              }
+          user(id: "${address.toLowerCase()}") {
+            id
+            address
+            isEnabled
+            minDurationInDays
+			amountPerDay
+			tokenAddress            			
+          }
+        }`;
+};
