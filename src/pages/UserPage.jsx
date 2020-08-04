@@ -1,9 +1,12 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { userActions, boxActions } from "../actions";
 import { getImageUrl, getAccountString } from "../helpers";
-import Modal from '../components/Modal';
-import UserProfile from "../components/UserProfile";
+import Modal from "../components/Modal";
+import UserOwnedFiles from "../components/UserOwnedFiles";
+import UserBoughtFiles from "../components/UserBoughtFiles";
+import UserSubscriptions from "../components/UserSubscriptions";
+import UserSubscribers from "../components/UserSubscribers";
 import "../assets/scss/userPage.scss";
 
 const UserPage = ({
@@ -15,8 +18,8 @@ const UserPage = ({
     },
     cleanBox,
     getProfile,
-	createSubscription,
-	cancelSubscription
+    createSubscription,
+    cancelSubscription
 }) => {
     useEffect(() => {
         if (address) {
@@ -24,10 +27,12 @@ const UserPage = ({
             getProfile(address);
         }
     }, [address]);
-	
-    const isLoggedInUser = account && account.toLowerCase() == address.toLowerCase();
-		
-	const [show, setShow] = useState(false);
+
+    const isLoggedInUser =
+        account && account.toLowerCase() == address.toLowerCase();
+    const [selected, setSelected] = useState(0);
+
+    const [show, setShow] = useState(false);
     const openModal = () => setShow(true);
     const closeModal = () => setShow(false);
 
@@ -70,19 +75,80 @@ const UserPage = ({
                                     ? "Edit 3box Profile"
                                     : "View 3box Profile"}
                             </a>
-                            {!isLoggedInUser && (
+                            {isLoggedInUser ? (
+                                <>
+                                    <a
+                                        className="subscribe profileButton"
+                                    >
+                                        Update Subscription Info
+                                    </a>
+                                    <a
+                                        className="profileButton"
+                                        onClick={() => setSelected(0)}
+                                    >
+                                        My Files
+                                    </a>
+                                    <a
+                                        className="profileButton"
+                                        onClick={() => setSelected(1)}
+                                    >
+                                        Bought Files
+                                    </a>
+                                    <a
+                                        className="profileButton"
+                                        onClick={() => setSelected(2)}
+                                    >
+                                        Subscribers
+                                    </a>
+                                    <a
+                                        className="profileButton"
+                                        onClick={() => setSelected(3)}
+                                    >
+                                        Subscriptions
+                                    </a>
+                                </>
+                            ) : (
                                 <a className="subscribe profileButton">
                                     Subscribe
                                 </a>
                             )}
-							
+                            <div>
+                                {!show && (
+                                    <button onClick={openModal}>
+                                        Subscribe
+                                    </button>
+                                )}
+                                <Modal
+                                    closeModal={closeModal}
+                                    show={show}
+                                    createSubscription={createSubscription}
+                                    address={address}
+                                    cancelSubscription={cancelSubscription}
+                                />
+                            </div>
                         </div>
-						<div>
-						{!show && (<button onClick={openModal}>Subscribe</button>)}
-						<Modal closeModal={closeModal} show={show} createSubscription={createSubscription} address={address} cancelSubscription={cancelSubscription} />
-						</div>
                         <div className="profileRightBar">
-                            <UserProfile address={address} isLoggedInUser={isLoggedInUser} />
+                            {selected == 0 ? (
+                                <UserOwnedFiles
+                                    address={address}
+                                    isLoggedInUser={isLoggedInUser}
+                                />
+                            ) : selected == 1 ? (
+                                <UserBoughtFiles
+                                    address={address}
+                                    isLoggedInUser={isLoggedInUser}
+                                />
+                            ) : selected == 2 ? (
+                                <UserSubscribers
+                                    address={address}
+                                    isLoggedInUser={isLoggedInUser}
+                                />
+                            ) : (
+                                <UserSubscriptions
+                                    address={address}
+                                    isLoggedInUser={isLoggedInUser}
+                                />
+                            )}
                         </div>
                     </div>
                 </>
@@ -97,10 +163,10 @@ function mapState(state) {
 }
 const actionCreators = {
     getAllFiles: userActions.getAllFiles,
-	createSubscription: userActions.createSubscription,
-	cancelSubscription: userActions.cancelSubscription,
+    createSubscription: userActions.createSubscription,
+    cancelSubscription: userActions.cancelSubscription,
     cleanBox: boxActions.clean,
-    getProfile: boxActions.getDataProfile	
+    getProfile: boxActions.getDataProfile
 };
 const connectedUserPage = connect(mapState, actionCreators)(UserPage);
 export default connectedUserPage;
