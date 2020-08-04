@@ -1,22 +1,20 @@
 import React, { useState}  from "react";
 import config from "config";
 import { connect } from "react-redux";
-import { userActions } from "../actions";
 
-function UpdateSubscription(props) {
-  const { enablesubscription,disablesubscription } = props;
+const UpdateSubscription = ({ enablesubscription,disablesubscription }) => {
   const defaultAsset = config.priceAssets[0].address;
   const [asset, setAsset] = useState(defaultAsset);
   const [amount, setAmount] = useState("");
   const [days, setDays] = useState("");
   
   const enableSub = async() => {
-	  const enableresult = await enablesubscription(amount,days,asset);
+	  const enableresult = await updateSubscriptionInfo(amount,days,asset);
 	  console.log(enableresult);
   }
   
   const disableSub = async () => {
-	  const disablesubresult = await disablesubscription();
+	  const disablesubresult = await disableSubscriptionInfo();
 	  console.log(disablesubresult);
   }
   

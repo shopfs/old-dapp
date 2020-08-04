@@ -135,21 +135,6 @@ const UserPage = ({
                                     Subscribe
                                 </a>
                             )}
-                            <div>
-                                   <button onClick={openModal}>
-
-                                {!show && !userSubscriptions.subscriptions.some(user => user.subscriber.address === account.toLowerCase() && user.isActive) &&(
-                                    <button onClick={openModal}>
-                                        Subscribe
-                                    </button>}
-                                <Modal
-                                    closeModal={closeModal}
-                                    show={show}
-                                    createSubscription={createSubscription}
-                                    address={address}
-                                    cancelSubscription={cancelSubscription}
-                                />
-                            </div>
                         </div>
                         <div className="profileRightBar">
                             {selected == 0 ? (
@@ -175,8 +160,8 @@ const UserPage = ({
                                 />
                             ) : selected == 5 ? (
                                 <UpdateSubscription
-								                    enablesubscription = {enablesubscription}
-                                    disablesubscription = {disablesubscription}
+								    updateSubscriptionInfo = {updateSubscriptionInfo}
+                                    disableSubscriptionInfo = {disableSubscriptionInfo}
                                 />
                             ) : (
                                 <UserSubscriptions
@@ -200,8 +185,8 @@ const actionCreators = {
     getAllFiles: userActions.getAllFiles,
     createSubscription: userActions.createSubscription,
     cancelSubscription: userActions.cancelSubscription,
-	enablesubscription: userActions.enablesubscription,
-	disablesubscription: userActions.disablesubscription,
+	updateSubscriptionInfo: userActions.updateSubscriptionInfo,
+	disableSubscriptionInfo: userActions.disableSubscriptionInfo,
     cleanBox: boxActions.clean,
     getProfile: boxActions.getDataProfile
 };
