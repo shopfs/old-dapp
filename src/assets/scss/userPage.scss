@@ -42,6 +42,7 @@
     padding: 2rem;
     padding-top: 7rem;
     width: 20rem;
+    min-width: 20rem;
     .name {
         font-size: 1.25rem;
         font-weight: 600;
@@ -62,6 +63,11 @@
     display: flex;
     flex-direction: column;
     padding: 1rem;
+    .profileTitle {
+        padding-left: 1rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
 }
 
 

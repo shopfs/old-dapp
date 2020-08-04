@@ -1,0 +1,22 @@
+@import "config";
+
+.subscriptionsDisplay {
+    padding: 1rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    .subscriptionItem {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        padding: 1rem;
+        position: relative;
+        background: white;
+        border-radius: 0.5rem;
+        &:hover {
+            background: #e8e8e8;
+        }
+    }
+}

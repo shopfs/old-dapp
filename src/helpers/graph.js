@@ -28,3 +28,85 @@ export const fileQuery = fileId => {
       }
     }`;
 };
+
+export const userOwnedFilesQuery = address => {
+    return `query {
+      user(id: "${address.toLowerCase()}") {
+        id
+        filesOwned {
+          id
+          metadataHash
+          seller {
+            address
+          }
+          price
+          priceAsset
+          numBuys
+        }
+      }
+    }`;
+};
+
+export const userBoughtFilesQuery = address => {
+    return `query {
+      user(id: "${address.toLowerCase()}") {
+        id
+        filesBought {
+          id
+          metadataHash
+          seller {
+            address
+          }
+          price
+          priceAsset
+          numBuys
+        }
+      }
+    }`;
+};
+
+export const userSubscriptionsQuery = address => {
+    return `query {
+      user(id: "${address.toLowerCase()}") {
+        id
+        subscriptions {
+          id
+          seller {
+            address
+          }
+          subscriber {
+            address
+          }
+          durationInSec
+          isActive
+          stopTime
+          remainingBalance
+          deposit
+          tokenAddress
+        }
+      }
+    }`;
+};
+
+export const userSubscribersQuery = address => {
+    return `query {
+      user(id: "${address.toLowerCase()}") {
+        id
+        subscribers {
+          id
+          seller {
+            address
+          }
+          subscriber {
+            address
+          }
+          durationInSec
+          isActive
+          stopTime
+          remainingBalance
+          deposit
+          tokenAddress
+        }
+      }
+    }`;
+};

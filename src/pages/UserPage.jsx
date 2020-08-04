@@ -3,7 +3,10 @@ import { connect } from "react-redux";
 import { userActions, boxActions } from "../actions";
 import { getImageUrl, getAccountString } from "../helpers";
 import Modal from "../components/Modal";
-import UserProfile from "../components/UserProfile";
+import UserOwnedFiles from "../components/UserOwnedFiles";
+import UserBoughtFiles from "../components/UserBoughtFiles";
+import UserSubscriptions from "../components/UserSubscriptions";
+import UserSubscribers from "../components/UserSubscribers";
 import "../assets/scss/userPage.scss";
 
 const UserPage = ({
@@ -74,17 +77,33 @@ const UserPage = ({
                             </a>
                             {isLoggedInUser ? (
                                 <>
-                                    <a className="profileButton">
-                                        My Files
-                                    </a>
-                                    <a className="profileButton">
-                                        Bought Files
-                                    </a>
-                                    <a className="subscribe profileButton">
+                                    <a
+                                        className="subscribe profileButton"
+                                    >
                                         Update Subscription Info
                                     </a>
-                                    <a className="profileButton">Subscribers</a>
-                                    <a className="profileButton">
+                                    <a
+                                        className="profileButton"
+                                        onClick={() => setSelected(0)}
+                                    >
+                                        My Files
+                                    </a>
+                                    <a
+                                        className="profileButton"
+                                        onClick={() => setSelected(1)}
+                                    >
+                                        Bought Files
+                                    </a>
+                                    <a
+                                        className="profileButton"
+                                        onClick={() => setSelected(2)}
+                                    >
+                                        Subscribers
+                                    </a>
+                                    <a
+                                        className="profileButton"
+                                        onClick={() => setSelected(3)}
+                                    >
                                         Subscriptions
                                     </a>
                                 </>
@@ -93,16 +112,43 @@ const UserPage = ({
                                     Subscribe
                                 </a>
                             )}
+                            <div>
+                                {!show && (
+                                    <button onClick={openModal}>
+                                        Subscribe
+                                    </button>
+                                )}
+                                <Modal
+                                    closeModal={closeModal}
+                                    show={show}
+                                    createSubscription={createSubscription}
+                                    address={address}
+                                    cancelSubscription={cancelSubscription}
+                                />
+                            </div>
                         </div>
-                        {/*<div>
-						{!show && (<button onClick={openModal}>Subscribe</button>)}
-						<Modal closeModal={closeModal} show={show} createSubscription={createSubscription} address={address} cancelSubscription={cancelSubscription} />
-                        </div>*/}
                         <div className="profileRightBar">
-                            <UserProfile
-                                address={address}
-                                isLoggedInUser={isLoggedInUser}
-                            />
+                            {selected == 0 ? (
+                                <UserOwnedFiles
+                                    address={address}
+                                    isLoggedInUser={isLoggedInUser}
+                                />
+                            ) : selected == 1 ? (
+                                <UserBoughtFiles
+                                    address={address}
+                                    isLoggedInUser={isLoggedInUser}
+                                />
+                            ) : selected == 2 ? (
+                                <UserSubscribers
+                                    address={address}
+                                    isLoggedInUser={isLoggedInUser}
+                                />
+                            ) : (
+                                <UserSubscriptions
+                                    address={address}
+                                    isLoggedInUser={isLoggedInUser}
+                                />
+                            )}
                         </div>
                     </div>
                 </>
