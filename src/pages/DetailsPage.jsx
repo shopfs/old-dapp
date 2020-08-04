@@ -7,7 +7,7 @@ import { history, getTokenSymbol } from "../helpers";
 import "../assets/scss/detailsPage.scss";
 import Comments from "../components/Comments";
 import Loading from "../components/Loading";
-import { fileQuery } from "../helpers/graph";
+import { fileQuery, userBoughtFilesQuery } from "../helpers/graph";
 import { ipfsService } from "../services";
 
 const DetailsPage = ({
@@ -16,6 +16,7 @@ const DetailsPage = ({
     },
     connected,
     getFile,
+    account,
     buy,
     downloadFile,
     box
@@ -24,6 +25,7 @@ const DetailsPage = ({
     const [file, setFile] = useState();
 	const [days, setDays] = useState("");
     const query = fileQuery(fileId);
+    // check if the user has already bought the file
     const [res, executeQuery] = useQuery({
         query: query	
     });
@@ -77,14 +79,14 @@ const DetailsPage = ({
                             className="fileImage"
                             src={`https://ipfs.infura.io/ipfs/${file.metadata.imageHash}`}
                         />
-                        <a
+                        {!file.buyers.some(owner => owner.address === account.toLowerCase()) && <a
                             className="buyButton button"
                             onClick={e => {
                                 buy(parseInt(fileId));
                             }}
                         >
                             Buy File
-                        </a>
+                        </a>}
                         <a
                             className="downloadButton button"
                             onClick={async e => {
@@ -162,9 +164,9 @@ const DetailsPage = ({
 };
 
 function mapState(state) {
-    const { connected } = state.web3;
+    const { connected, account } = state.web3;
     const { box } = state.box;
-    return { connected, box };
+    return { connected, box, account };
 }
 
 const actionCreators = {

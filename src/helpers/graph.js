@@ -22,6 +22,9 @@ export const fileQuery = fileId => {
         seller {
           address
         }
+        buyers {
+            address
+          }
         price
         priceAsset
         numBuys
@@ -87,6 +90,7 @@ export const userSubscriptionsQuery = address => {
       }
     }`;
 };
+
 
 export const userSubscribersQuery = address => {
     return `query {
