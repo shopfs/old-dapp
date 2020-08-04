@@ -130,7 +130,7 @@ const UserPage = ({
                                 </a>
                             )}
                             <div>
-                                {!show && !userSubscriptions.subscriptions.some(user => user.subscriber.address === account.toLowerCase() && user.isActive) &&(
+                                {!show && !userSubscriptions.subscriptions.some(user => user.subscriber.address === account.toLowerCase()) && !userSubscriptions.subscriptions.some(user => user.isActive) && (
                                     <button onClick={openModal}>
                                         Subscribe
                                     </button>
