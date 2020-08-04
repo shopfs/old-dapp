@@ -25,6 +25,7 @@ const UserPage = ({
     createSubscription,
     cancelSubscription
 }) => {
+
     const [userSubscriptions, setSubscriptions] = useState();
     const query = userSubscriptionsQuery(address);
     // check if the user has already bought the file
@@ -136,8 +137,11 @@ const UserPage = ({
                             )}
                             <div>
                                    <button onClick={openModal}>
+
+                                {!show && !userSubscriptions.subscriptions.some(user => user.subscriber.address === account.toLowerCase() && user.isActive) &&(
+                                    <button onClick={openModal}>
                                         Subscribe
-                                    </button>
+                                    </button>}
                                 <Modal
                                     closeModal={closeModal}
                                     show={show}
@@ -171,7 +175,7 @@ const UserPage = ({
                                 />
                             ) : selected == 5 ? (
                                 <UpdateSubscription
-								    enablesubscription = {enablesubscription}
+								                    enablesubscription = {enablesubscription}
                                     disablesubscription = {disablesubscription}
                                 />
                             ) : (
