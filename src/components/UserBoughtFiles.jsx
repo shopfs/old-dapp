@@ -20,7 +20,7 @@ const UserBoughtFiles = ({ address, isLoggedInUser }) => {
             };
         }
         async function getFiles() {
-            setLoading(true)
+            setLoading(true);
             let files = res.data.user.filesBought;
             files = await Promise.all(
                 files.map((file, i) => getMetadata(file))
@@ -51,9 +51,9 @@ const UserBoughtFiles = ({ address, isLoggedInUser }) => {
             {allFiles ? (
                 <FilesDisplay allFiles={allFiles} />
             ) : isLoggedInUser ? (
-                <p> You have bought no files </p>
+                <p>{"  You have bought no files"}</p>
             ) : (
-                <p> User has bought no files </p>
+                <p>{"  User has bought no files"}</p>
             )}
         </div>
     );

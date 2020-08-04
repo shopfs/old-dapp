@@ -32,9 +32,9 @@ const UserSubscribers = ({ address, isLoggedInUser }) => {
             {allSubscribers ? (
                 <SubscriptionsDisplay allSubscriptions={allSubscribers} />
             ) : isLoggedInUser ? (
-                <p> You have no subscribers </p>
+                <p>{"  You have no subscribers"}</p>
             ) : (
-                <p> User has no subscribers </p>
+                <p>{"  User has no subscribers"}</p>
             )}
         </div>
     );

@@ -18,7 +18,6 @@ const UserSubscriptions = ({ address, isLoggedInUser }) => {
             res.data.user &&
             res.data.user.subscriptions &&
             res.data.user.subscriptions.length
-
         ) {
             setSubscriptions(res.data.user.subscriptions);
         }
@@ -33,9 +32,9 @@ const UserSubscriptions = ({ address, isLoggedInUser }) => {
             {allSubscriptions ? (
                 <SubscriptionsDisplay allSubscriptions={allSubscriptions} />
             ) : isLoggedInUser ? (
-                <p> You have no subscriptions </p>
+                <p>{"  You have no subscriptions"}</p>
             ) : (
-                <p> User has no subscriptions </p>
+                <p>{"  User has no subscriptions"}</p>
             )}
         </div>
     );
