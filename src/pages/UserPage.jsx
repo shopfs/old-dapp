@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { useQuery } from "urql";
+import { userSubscriptionsQuery } from "../helpers/graph";
 import { userActions, boxActions } from "../actions";
 import { getImageUrl, getAccountString } from "../helpers";
 import Modal from "../components/Modal";
@@ -23,17 +25,32 @@ const UserPage = ({
     createSubscription,
     cancelSubscription
 }) => {
+    const [userSubscriptions, setSubscriptions] = useState();
+    const query = userSubscriptionsQuery(address);
+    // check if the user has already bought the file
+    const [res, executeQuery] = useQuery({
+        query: query
+    });
+     useEffect(() => {
+        console.log(res)
+        if (res && !res.error && !res.fetching && res.data.user) {
+             let userSubscriptions = res.data.user;
+            console.log(userSubscriptions)
+            setSubscriptions(userSubscriptions)
+        }
+    }, [res]);
+
+
     useEffect(() => {
-        if (address) {
+        if (address ) {
             cleanBox();
             getProfile(address);
         }
     }, [address]);
 
-    const isLoggedInUser =
-        account && account.toLowerCase() == address.toLowerCase();
+    const isLoggedInUser = account && account.toLowerCase() == address.toLowerCase();
     const [selected, setSelected] = useState(0);
-
+  
     const [show, setShow] = useState(false);
     const openModal = () => setShow(true);
     const closeModal = () => setShow(false);
@@ -118,11 +135,9 @@ const UserPage = ({
                                 </a>
                             )}
                             <div>
-                                {!show && (
-                                    <button onClick={openModal}>
+                                   <button onClick={openModal}>
                                         Subscribe
                                     </button>
-                                )}
                                 <Modal
                                     closeModal={closeModal}
                                     show={show}
@@ -156,7 +171,8 @@ const UserPage = ({
                                 />
                             ) : selected == 5 ? (
                                 <UpdateSubscription
-                                    
+								    enablesubscription = {enablesubscription}
+                                    disablesubscription = {disablesubscription}
                                 />
                             ) : (
                                 <UserSubscriptions
@@ -180,6 +196,8 @@ const actionCreators = {
     getAllFiles: userActions.getAllFiles,
     createSubscription: userActions.createSubscription,
     cancelSubscription: userActions.cancelSubscription,
+	enablesubscription: userActions.enablesubscription,
+	disablesubscription: userActions.disablesubscription,
     cleanBox: boxActions.clean,
     getProfile: boxActions.getDataProfile
 };

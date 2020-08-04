@@ -23,7 +23,9 @@ export const userActions = {
     uploadAndSellFile,
     createSubscription,
     withdrawFromSubscription,
-    cancelSubscription
+    cancelSubscription,
+	enablesubscription,
+	disablesubscription
 };
 
 function clean() {
@@ -404,5 +406,79 @@ function failure(error) {
     return {
         type: userConstants.ERROR,
         error
+    };
+}
+
+function enablesubscription(amountperday, minduration, tokenaddress) {
+
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let data;
+        try {
+            const { account, market, web3 } = getState().web3;
+			
+            console.log("enable subs")
+            data = await marketService.updatesubs(market, amountperday, minduration, tokenaddress);
+
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            dispatch(
+                alertActions.error(
+                    "Error enabling subs: " + e.toString()
+                )
+            );
+            return;
+        }
+        if (!data.error) {
+            dispatch(
+                alertActions.success("Successfully enabled Subscription")
+            );
+            dispatch(done());
+        } else {
+            dispatch(failure(data.error));
+            dispatch(
+                alertActions.error(
+                    "Error enabling Subscription: " + data.error
+                )
+            );
+        }
+    };
+}
+
+function disablesubscription() {
+
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let data;
+        try {
+            const { account, market, web3 } = getState().web3;
+			
+            console.log("enable subs")
+            data = await marketService.disablesubs(market);
+
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            dispatch(
+                alertActions.error(
+                    "Error disabling subs: " + e.toString()
+                )
+            );
+            return;
+        }
+        if (!data.error) {
+            dispatch(
+                alertActions.success("Successfully disabled Subscription")
+            );
+            dispatch(done());
+        } else {
+            dispatch(failure(data.error));
+            dispatch(
+                alertActions.error(
+                    "Error disabling Subscription: " + data.error
+                )
+            );
+        }
     };
 }
