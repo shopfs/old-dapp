@@ -25,7 +25,7 @@ const UserPage = ({
     createSubscription,
     cancelSubscription
 }) => {
-	
+
     const [userSubscriptions, setSubscriptions] = useState();
     const query = userSubscriptionsQuery(address);
     // check if the user has already bought the file
@@ -135,7 +135,6 @@ const UserPage = ({
                                     Subscribe
                                 </a>
                             )}
-                            
                         </div>
                         <div className="profileRightBar">
                             {selected == 0 ? (
@@ -161,8 +160,8 @@ const UserPage = ({
                                 />
                             ) : selected == 5 ? (
                                 <UpdateSubscription
-								    enablesubscription = {enablesubscription}
-                                    disablesubscription = {disablesubscription}
+								    updateSubscriptionInfo = {updateSubscriptionInfo}
+                                    disableSubscriptionInfo = {disableSubscriptionInfo}
                                 />
                             ) : (
                                 <UserSubscriptions
@@ -186,8 +185,8 @@ const actionCreators = {
     getAllFiles: userActions.getAllFiles,
     createSubscription: userActions.createSubscription,
     cancelSubscription: userActions.cancelSubscription,
-	enablesubscription: userActions.updateSubscriptionInfo,
-	disablesubscription: userActions.disableSubscriptionInfo,
+	updateSubscriptionInfo: userActions.updateSubscriptionInfo,
+	disableSubscriptionInfo: userActions.disableSubscriptionInfo,
     cleanBox: boxActions.clean,
     getProfile: boxActions.getDataProfile
 };

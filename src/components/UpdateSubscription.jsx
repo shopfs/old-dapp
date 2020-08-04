@@ -9,12 +9,12 @@ const UpdateSubscription = ({ enablesubscription,disablesubscription }) => {
   const [days, setDays] = useState("");
   
   const enableSub = async() => {
-	  const enableresult = await enablesubscription(amount,days,asset);
+	  const enableresult = await updateSubscriptionInfo(amount,days,asset);
 	  console.log(enableresult);
   }
   
   const disableSub = async () => {
-	  const disablesubresult = await disablesubscription();
+	  const disablesubresult = await disableSubscriptionInfo();
 	  console.log(disablesubresult);
   }
   
