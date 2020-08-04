@@ -14,8 +14,8 @@ export const marketService = {
     withdrawSubscriptionAmount,
     cancelSubscription,
     isValidStream,
-	updatesubs,
-	disablesubs
+	updateSubscriptionInfo,
+	disableSubscriptionInfo
 };
 
 async function getFile(market, fileId) {
@@ -108,7 +108,7 @@ async function cancelSubscription(market, seller) {
 }
 
 // for enable subs
-async function updatesubs(market, amountperday, minduration, tokenaddress) {
+async function updateSubscriptionInfo(market, amountperday, minduration, tokenaddress) {
  const receipt = await market.methods.updateSubscriptionInfo(amountperday, minduration, tokenaddress).send()
  if (!receipt.status) {
         logReceipt(receipt);
@@ -118,7 +118,7 @@ async function updatesubs(market, amountperday, minduration, tokenaddress) {
 }
 
 // for disable subs
-async function disablesubs(market) {
+async function disableSubscriptionInfo(market) {
  const receipt = await market.methods.disableSubscriptionInfo().send()
  if (!receipt.status) {
         logReceipt(receipt);

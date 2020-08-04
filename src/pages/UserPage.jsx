@@ -135,18 +135,7 @@ const UserPage = ({
                                     Subscribe
                                 </a>
                             )}
-                            <div>
-                                   <button onClick={openModal}>
-                                        Subscribe
-                                    </button>
-                                <Modal
-                                    closeModal={closeModal}
-                                    show={show}
-                                    createSubscription={createSubscription}
-                                    address={address}
-                                    cancelSubscription={cancelSubscription}
-                                />
-                            </div>
+                            
                         </div>
                         <div className="profileRightBar">
                             {selected == 0 ? (
@@ -197,8 +186,8 @@ const actionCreators = {
     getAllFiles: userActions.getAllFiles,
     createSubscription: userActions.createSubscription,
     cancelSubscription: userActions.cancelSubscription,
-	enablesubscription: userActions.enablesubscription,
-	disablesubscription: userActions.disablesubscription,
+	enablesubscription: userActions.updateSubscriptionInfo,
+	disablesubscription: userActions.disableSubscriptionInfo,
     cleanBox: boxActions.clean,
     getProfile: boxActions.getDataProfile
 };
