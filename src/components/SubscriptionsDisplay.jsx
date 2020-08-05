@@ -32,7 +32,7 @@ const SubscriptionsDisplay = ({
             {allSubscriptions &&
                 allSubscriptions.map((subscription, index) => (
                     <div className="subscriptionItem" key={index.toString()}>
-                        {seller && (
+                        {!seller && (
                             <>
                                 <span>Seller:</span>
                                 <div
@@ -51,7 +51,7 @@ const SubscriptionsDisplay = ({
                                 </div>
                             </>
                         )}
-                        {!seller && (
+                        {seller && (
                             <>
                                 <span>Subscriber:</span>
                                 <div
@@ -112,6 +112,8 @@ const SubscriptionsDisplay = ({
                                         BigInt(subscription.remainingBalance)
                                     ) {
                                         amount = subscription.remainingBalance;
+                                    } else {
+                                        amount = amount - BigInt(subscription.ratePerSecond);
                                     }
                                     withdrawFromSubscription(
                                         subscription.streamId,

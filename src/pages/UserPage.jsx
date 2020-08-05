@@ -40,7 +40,7 @@ const UserPage = ({
                     user.subscriptions.some(subscription => {
                         if (
                             subscription.seller.address ===
-                            account.toLowerCase()
+                            address.toLowerCase()
                         ) {
                             setSubscription(subscription);
                             return true;

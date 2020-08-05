@@ -88,7 +88,7 @@ async function createSubscription(
 ) {
     const receipt = await market.methods
         .createSubscription(
-            amount,
+            amount.toString(),
             paymentAsset,
             numofdays,
             seller
@@ -103,9 +103,9 @@ async function createSubscription(
 
 // seller clicks wothdraw for that particular subscription to get the funds locked, buyer address needed for filtering in mapping
 async function withdrawSubscriptionAmount(market, streamId, amount) {
-    console.log({streamId, amount})
+    console.log({streamId, amount: amount.toString()})
     const receipt = await market.methods
-        .withdrawFromSubscription(streamId, amount)
+        .withdrawFromSubscription(streamId, amount.toString())
         .send();
     if (!receipt.status) {
         logReceipt(receipt);
@@ -136,7 +136,7 @@ async function updateSubscriptionInfo(
     tokenaddress
 ) {
     const receipt = await market.methods
-        .updateSubscriptionInfo(amountperday, minduration, tokenaddress)
+        .updateSubscriptionInfo(amountperday.toString(), minduration, tokenaddress)
         .send();
     if (!receipt.status) {
         logReceipt(receipt);
