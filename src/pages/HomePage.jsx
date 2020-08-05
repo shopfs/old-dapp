@@ -40,7 +40,8 @@ class HomePage extends React.Component {
                         <img className="boxImage" src={ethereum} />
                         <span className="boxTitle">Earn fees</span>
                         <span className="boxDescription">
-                            You can price your files using any ERC20 token
+                            You can price your files using any ERC20 token, or
+                            create a subscription to gain more user visibility.
                         </span>
                     </div>
                 </div>
