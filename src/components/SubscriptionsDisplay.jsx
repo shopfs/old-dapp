@@ -35,7 +35,9 @@ const SubscriptionsDisplay = ({
                     <div className="subscriptionItem" key={index.toString()}>
                         {!seller && (
                             <>
-                                <span>Seller:</span>
+                                <span className="subscriptionLabel topLabel">
+                                    Seller
+                                </span>
                                 <div
                                     className="seller"
                                     onClick={() => {
@@ -54,7 +56,9 @@ const SubscriptionsDisplay = ({
                         )}
                         {seller && (
                             <>
-                                <span>Subscriber:</span>
+                                <span className="subscriptionLabel topLabel">
+                                    Subscriber
+                                </span>
                                 <div
                                     className="subscriber"
                                     onClick={() => {
@@ -73,27 +77,36 @@ const SubscriptionsDisplay = ({
                                 </div>
                             </>
                         )}
-                        <span className="duration">{`Total Duration: ${subscription.durationInSec /
-                            86400} days`}</span>
-                        <span className="remaining">{`Remaining Time: ${secondsToDhms(
+                        <span className="subscriptionLabel">Start Date</span>
+                        <span>
+                            {new Date(subscription.startTime * 1000).toString()}
+                        </span>
+                        <span className="subscriptionLabel">Duration</span>
+                        <span className="duration">{`${subscription.durationInSec /
+                            86400} days (${secondsToDhms(
                             subscription.stopTime - new Date().getTime() / 1000
-                        )}`}</span>
-                        <span className="isExpired">{`isExpired: ${new Date(
+                        )} remaining)`}</span>
+                        <span className="subscriptionLabel">Expired</span>
+                        <span className="isExpired">{`${new Date(
                             subscription.stopTime
                         ) < new Date()}`}</span>
-                        <span className="isActive">{`isActive: ${subscription.isActive}`}</span>
+                        <span className="subscriptionLabel">Active</span>
+                        <span className="isActive">{`${subscription.isActive}`}</span>
+                        <span className="subscriptionLabel">Total Deposit</span>
                         <span className="deposit">
-                            {`Deposit: ${(
-                                subscription.deposit /
-                                10 ** 18
-                            ).toFixed(2)} ${getTokenSymbol(
-                                subscription.tokenAddress
-                            )} (${subscription.deposit})`}
+                            {`${(subscription.deposit / 10 ** 18).toFixed(
+                                3
+                            )} ${getTokenSymbol(subscription.tokenAddress)} (${
+                                subscription.deposit
+                            })`}
                         </span>
-                        <span className="remainingBalance">{`Balance: ${(
+                        <span className="subscriptionLabel">
+                            Remaining Balance
+                        </span>
+                        <span className="remainingBalance">{`${(
                             subscription.remainingBalance /
                             10 ** 18
-                        ).toFixed(2)} ${getTokenSymbol(
+                        ).toFixed(3)} ${getTokenSymbol(
                             subscription.tokenAddress
                         )} (${subscription.remainingBalance})`}</span>
                         {seller && (

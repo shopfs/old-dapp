@@ -117,8 +117,13 @@ const UpdateSubscription = ({
 
                     <a
                         className="subscriptionButton button"
-                        onClick={e => {
-                            updateSubscriptionInfo(actualAmount, days, asset);
+                        onClick={async e => {
+                            await updateSubscriptionInfo(
+                                actualAmount,
+                                days,
+                                asset
+                            );
+                            getSubscriptionInfo();
                         }}
                     >
                         Update Subscription Info
@@ -126,8 +131,9 @@ const UpdateSubscription = ({
                     {subscription.isEnabled && (
                         <a
                             className="subscriptionButton button"
-                            onClick={e => {
-                                disableSubscriptionInfo();
+                            onClick={async e => {
+                                await disableSubscriptionInfo();
+                                getSubscriptionInfo();
                             }}
                         >
                             Disable Subscriptions
