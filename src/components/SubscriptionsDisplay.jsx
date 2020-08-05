@@ -31,7 +31,7 @@ const SubscriptionsDisplay = ({
     return (
         <div className="subscriptionsDisplay">
             {allSubscriptions &&
-                allSubscriptions.map((subscription, index) => (
+                allSubscriptions.reverse().map((subscription, index) => (
                     <div className="subscriptionItem" key={index.toString()}>
                         {!seller && (
                             <>
