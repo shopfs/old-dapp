@@ -29,7 +29,8 @@ const UserPage = ({
     const [seller, setSeller] = useState();
     const query = userProfileQuery(account, address);
     const [res, executeQuery] = useQuery({
-        query: query
+        query: query,
+        requestPollicy: 'network-only'
     });
     useEffect(() => {
         if (res && !res.error && !res.fetching && res.data) {

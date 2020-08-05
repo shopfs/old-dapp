@@ -7,7 +7,8 @@ import Loading from "./Loading";
 const UserSubscriptions = ({ address, isLoggedInUser }) => {
     const [allSubscriptions, setSubscriptions] = useState();
     const [res, executeQuery] = useQuery({
-        query: userSubscriptionsQuery(address)
+        query: userSubscriptionsQuery(address),
+        requestPollicy: 'network-only'
     });
 
     useEffect(() => {
