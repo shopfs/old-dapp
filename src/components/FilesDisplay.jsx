@@ -11,7 +11,7 @@ const FilesDisplay = ({ allFiles }) => {
     return (
         <div className="filesDisplay">
             {allFiles &&
-                allFiles.map((file, fileId) => (
+                allFiles.reverse().map((file, fileId) => (
                     <div className="fileItem" key={file.metadataHash}>
                         <div
                             className="fileSellerContainer"
