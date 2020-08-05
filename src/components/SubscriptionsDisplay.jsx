@@ -25,7 +25,8 @@ const SubscriptionsDisplay = ({
     allSubscriptions,
     seller,
     withdrawFromSubscription,
-    cancelSubscription
+    cancelSubscription,
+    getStreamBalance
 }) => {
     return (
         <div className="subscriptionsDisplay">
@@ -98,23 +99,10 @@ const SubscriptionsDisplay = ({
                         {seller && (
                             <a
                                 className="subscriptionButton button"
-                                onClick={() => {
-                                    let amount =
-                                        (BigInt(
-                                            parseInt(
-                                                new Date().getTime() / 1000
-                                            )
-                                        ) -
-                                            BigInt(subscription.startTime)) *
-                                        BigInt(subscription.ratePerSecond);
-                                    if (
-                                        amount >
-                                        BigInt(subscription.remainingBalance)
-                                    ) {
-                                        amount = subscription.remainingBalance;
-                                    } else {
-                                        amount = amount - BigInt(subscription.ratePerSecond);
-                                    }
+                                onClick={async () => {
+                                    let amount = await getStreamBalance(
+                                        subscription.streamId
+                                    );
                                     withdrawFromSubscription(
                                         subscription.streamId,
                                         amount
@@ -147,6 +135,7 @@ function mapState(state) {
 }
 
 const actionCreators = {
+    getStreamBalance: userActions.getStreamBalance,
     withdrawFromSubscription: userActions.withdrawFromSubscription,
     cancelSubscription: userActions.cancelSubscription
 };

@@ -16,7 +16,8 @@ export const marketService = {
     isValidStream,
     getSubscriptionInfo,
     updateSubscriptionInfo,
-    disableSubscriptionInfo
+    disableSubscriptionInfo,
+    getStreamBalance
 };
 
 async function getFile(market, fileId) {
@@ -122,6 +123,10 @@ async function cancelSubscription(market, seller) {
         throw "Transaction failed";
     }
     return {};
+}
+
+async function getStreamBalance(market, streamId, address) {
+    return await market.methods.balanceOf(streamId, address).call();
 }
 
 async function getSubscriptionInfo(market, address) {
