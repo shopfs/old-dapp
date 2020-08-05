@@ -7,7 +7,7 @@ import { history, getTokenSymbol } from "../helpers";
 import "../assets/scss/detailsPage.scss";
 import Comments from "../components/Comments";
 import Loading from "../components/Loading";
-import { fileQuery } from "../helpers/graph";
+import { fileAndUserQuery } from "../helpers/graph";
 import { ipfsService } from "../services";
 
 const DetailsPage = ({
@@ -23,11 +23,13 @@ const DetailsPage = ({
 }) => {
     const [location, setLocation] = useState("");
     const [file, setFile] = useState();
-	const [days, setDays] = useState("");
-    const query = fileQuery(fileId);
+    const [days, setDays] = useState("");
+    const [isBuyer, setIsBuyer] = useState(false);
+    const [isSubscriber, setIsSubscriber] = useState(false);
+    const query = fileAndUserQuery(fileId, account);
     // check if the user has already bought the file
     const [res, executeQuery] = useQuery({
-        query: query	
+        query: query
     });
 
     useEffect(() => {
@@ -36,6 +38,22 @@ const DetailsPage = ({
             const metadata = await ipfsService.getMetadata(file.metadataHash);
             file.metadata = metadata;
             setFile(file);
+            if (account) {
+                let isBuyer = file.buyers.some(
+                    owner => owner.address === account.toLowerCase()
+                );
+                setIsBuyer(isBuyer);
+            }
+            if (
+                res.data.user &&
+                res.data.subscriptions &&
+                res.data.subscriptions.length
+            ) {
+                let isSubscriber = file.suscriptions.some(
+                    subscription =>
+                        subscription.seller.address === file.seller.address
+                );
+            }
         }
         if (res && !res.error && !res.fetching && res.data.file) {
             console.log("getting metadata");
@@ -53,23 +71,7 @@ const DetailsPage = ({
 
     if (res.fetching) return <Loading />;
     if (res.error) return <p>Errored!</p>;
-	
-	const createSub = async () => {
-	  const useramt =  100;
-	  const totalamt = useramt*days;
-	  
-	  if(user.isEnabled == true){
-      console.log(user);
-	  //const testamt = 10000000000000;
-	  const createsubresult = await createSubscription(totalamt,user.tokenAddress,days,user.address);
-	  console.log(createsubresult);
-	  } else if (user.isEnabled == false) {
-	  console.log("do something");
-	  } else {
-	  console.log("query failed");
-	  }
-  }
-  
+
     return (
         <section className="filePage">
             {file && file.metadata && (
@@ -79,29 +81,33 @@ const DetailsPage = ({
                             className="fileImage"
                             src={`https://ipfs.infura.io/ipfs/${file.metadata.imageHash}`}
                         />
-                        {!file.buyers.some(owner => owner.address === account.toLowerCase()) && <a
-                            className="buyButton button"
-                            onClick={e => {
-                                buy(parseInt(fileId));
-                            }}
-                        >
-                            Buy File
-                        </a>}
-                        <a
-                            className="downloadButton button"
-                            onClick={async e => {
-                                const location = await downloadFile(
-                                    parseInt(fileId)
-                                );
-                                localStorage.setItem(
-                                    parseInt(fileId),
-                                    location
-                                );
-                                setLocation(location);
-                            }}
-                        >
-                            Download File
-                        </a>
+                        {!isBuyer && (
+                            <a
+                                className="buyButton button"
+                                onClick={e => {
+                                    buy(parseInt(fileId));
+                                }}
+                            >
+                                Buy File
+                            </a>
+                        )}
+                        {(isBuyer || isSubscriber) && (
+                            <a
+                                className="downloadButton button"
+                                onClick={async e => {
+                                    const location = await downloadFile(
+                                        parseInt(fileId)
+                                    );
+                                    localStorage.setItem(
+                                        parseInt(fileId),
+                                        location
+                                    );
+                                    setLocation(location);
+                                }}
+                            >
+                                Download File
+                            </a>
+                        )}
                     </div>
                     <div className="detailsRightBar">
                         <span className="label labelTitle">title</span>

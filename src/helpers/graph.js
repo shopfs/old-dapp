@@ -32,6 +32,36 @@ export const fileQuery = fileId => {
     }`;
 };
 
+export const fileAndUserQuery = (fileId, user) => {
+    const hex = web3.utils.toHex(fileId);
+    if (user) {
+        return `query {
+          file(id: "${hex}") {
+            id
+            metadataHash
+            seller {
+              address
+            }
+            buyers {
+                address
+              }
+            price
+            priceAsset
+            numBuys
+          }
+          user(id: "${user.toLowerCase()}") {
+            address
+            subscriptions {
+              seller {
+                address
+              }
+            }
+          }  
+        }`;
+    }
+    return fileQuery(fileId);
+};
+
 export const userOwnedFilesQuery = address => {
     return `query {
       user(id: "${address.toLowerCase()}") {

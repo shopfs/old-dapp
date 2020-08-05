@@ -15,8 +15,20 @@
         position: relative;
         background: white;
         border-radius: 0.5rem;
+        margin-bottom: 1rem;
         &:hover {
             background: #e8e8e8;
+        }
+        .subscriptionLabel {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #808080;
+            &.topLabel {
+                margin-top: 0;
+            }
         }
     }
 }
