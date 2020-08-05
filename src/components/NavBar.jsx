@@ -54,14 +54,20 @@ class NavBar extends React.Component {
                     <div className="navBarRight">
                         {connected && (
                             <>
-                                <Link className="navLink" to="/files">
-                                    explore
-                                </Link>
                                 <Link className="navLink" to="/upload">
                                     upload
                                 </Link>
                             </>
                         )}
+                        <Link className="navLink" to="/files">
+                            explore
+                        </Link>
+                        <a
+                            className="navLink"
+                            href="https://shopfs-docs.web.app"
+                        >
+                            docs
+                        </a>
                         <div className="navBarAddress">
                             {connected ? (
                                 <div
