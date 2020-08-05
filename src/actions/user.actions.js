@@ -26,7 +26,8 @@ export const userActions = {
     cancelSubscription,
     getSubscriptionInfo,
     updateSubscriptionInfo,
-    disableSubscriptionInfo
+    disableSubscriptionInfo,
+    getStreamBalance
 };
 
 function clean() {
@@ -262,6 +263,26 @@ function createSubscription(amount, paymentAsset, days, seller) {
         }
     };
 }
+
+function getStreamBalance(streamId) {
+    return async (dispatch, getState) => {
+        dispatch(started());
+        let balance;
+        try {
+            const { account, market } = getState().web3;
+            balance = await marketService.getStreamBalance(market, streamId, account);
+        } catch (e) {
+            console.log(e);
+            dispatch(failure(e));
+            dispatch(alertActions.error("Error Getting Stream Balance"));
+            return;
+        }
+        dispatch(result({ data: { balance } }));
+
+        return balance;
+    };
+}
+
 
 // amount needs to be in ether format as its converted to wei in marketservice
 function withdrawFromSubscription(streamId, amount) {
