@@ -30,7 +30,7 @@ const DetailsPage = ({
     // check if the user has already bought the file
     const [res, executeQuery] = useQuery({
         query: query,
-        requestPollicy: 'network-only'
+        requestPollicy: "network-only"
     });
 
     useEffect(() => {

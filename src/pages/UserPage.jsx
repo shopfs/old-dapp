@@ -30,7 +30,7 @@ const UserPage = ({
     const query = userProfileQuery(account, address);
     const [res, executeQuery] = useQuery({
         query: query,
-        requestPollicy: 'network-only'
+        requestPollicy: "network-only"
     });
     useEffect(() => {
         if (res && !res.error && !res.fetching && res.data) {
@@ -98,7 +98,9 @@ const UserPage = ({
                                 )}
                             </div>
                             <div className="name">
-                                {`${profile.name} ${profile.emoji}`}
+                                {profile.emoji
+                                    ? `${profile.name} ${profile.emoji}`
+                                    : `${profile.name}`}
                             </div>
                             <div className="address">
                                 {getAccountString(address)}
@@ -183,9 +185,7 @@ const UserPage = ({
                                     isLoggedInUser={isLoggedInUser}
                                 />
                             )}
-                            {selected == 4 && (
-                                <UpdateSubscription />
-                            )}
+                            {selected == 4 && <UpdateSubscription />}
                             {showModal && (
                                 <SubscribeModal
                                     seller={seller}

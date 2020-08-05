@@ -120,7 +120,8 @@ function uploadAndSellFile(path, metadata, price, priceAddress) {
         try {
             const { account, market, web3 } = getState().web3;
             const priceLimit = await marketService.getPriceLimit(market);
-            if (parseInt(price) >= parseInt(priceLimit)) {
+            const priceInWei = BigInt(price  * 10 ** 18);
+            if (priceInWei >= BigInt(priceLimit)) {
                 throw `Price must be lower than priceLimit (${priceLimit})`;
             }
 
@@ -147,7 +148,7 @@ function uploadAndSellFile(path, metadata, price, priceAddress) {
             const fileId = await marketService.sell(
                 market,
                 priceAddress,
-                price,
+                priceInWei,
                 metadataHash
             );
             console.log("file sold on market");
