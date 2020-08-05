@@ -15,9 +15,12 @@ section {
     width: 100%;
 }
 
-.label {
+.uploadLabel {
     margin-bottom: 0.5rem;
     font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #808080;
 }
 
 .file-image {

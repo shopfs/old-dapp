@@ -68,6 +68,35 @@ export const userBoughtFilesQuery = address => {
     }`;
 };
 
+export const userProfileQuery = (user, seller) => {
+    return `query {
+      user: user(id: "${user.toLowerCase()}") {
+        address
+        subscriptions {
+          seller {
+            address
+          }
+          subscriber {
+            address
+          }
+          durationInSec
+          isActive
+          stopTime
+          remainingBalance
+          deposit
+          tokenAddress
+        }
+      }
+      seller: user(id: "${seller.toLowerCase()}") {
+        address
+        isEnabled
+        minDurationInDays
+		amountPerDay
+		tokenAddress            			
+      }
+    }`;
+};
+
 export const userSubscriptionsQuery = address => {
     return `query {
       user(id: "${address.toLowerCase()}") {
@@ -75,6 +104,7 @@ export const userSubscriptionsQuery = address => {
         isEnabled
         subscriptions {
           id
+          streamId
           seller {
             address
           }
@@ -83,15 +113,16 @@ export const userSubscriptionsQuery = address => {
           }
           durationInSec
           isActive
+          startTime
           stopTime
           remainingBalance
+          ratePerSecond
           deposit
           tokenAddress
         }
       }
     }`;
 };
-
 
 export const userSubscribersQuery = address => {
     return `query {
@@ -99,6 +130,7 @@ export const userSubscribersQuery = address => {
         id
         subscribers {
           id
+          streamId
           seller {
             address
           }
@@ -107,8 +139,10 @@ export const userSubscribersQuery = address => {
           }
           durationInSec
           isActive
+          startTime
           stopTime
           remainingBalance
+          ratePerSecond
           deposit
           tokenAddress
         }
@@ -116,22 +150,9 @@ export const userSubscribersQuery = address => {
     }`;
 };
 
-export const sellerSubscriptionInfoQuery = address => {
-	return `query {
-          user(id: "${address.toLowerCase()}") {
-            id
-            address
-            isEnabled
-            minDurationInDays
-			amountPerDay
-			tokenAddress            			
-          }
-        }`;
-};
-
-export const fileandSubQuery = (fileId,address) => {
-const hex = web3.utils.toHex(fileId);
-return `query {
+export const fileandSubQuery = (fileId, address) => {
+    const hex = web3.utils.toHex(fileId);
+    return `query {
 	      file(id: "${hex}") {
             id
             metadataHash
