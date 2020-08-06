@@ -1,14 +1,15 @@
 {
   "name": "IPFS-ETH-MarketPlace",
-  "homepage": "./",
   "version": "0.1.0",
   "description": "IPFS-ETH-MarketPlace",
   "author": "",
   "license": "MIT",
+  "homepage": "./",
   "scripts": {
     "chain": "ganache-cli -h 0.0.0.0 -d -i 4447",
-    "build": "webpack --config webpack.prod.js",
-    "start": "webpack-dev-server --config webpack.rinkeby.js"
+    "run-local": "webpack-dev-server --config webpack.local.js",
+    "start": "webpack-dev-server --config webpack.rinkeby.js",
+    "build": "webpack --config webpack.prod.js"
   },
   "dependencies": {
     "3box": "^1.20.3",
@@ -33,6 +34,7 @@
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
+    "serve": "^11.3.2",
     "urql": "^1.10.0",
     "web3": "^1.2.9",
     "webpack-merge": "^4.2.2"
