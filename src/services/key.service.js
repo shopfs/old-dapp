@@ -4,7 +4,7 @@ export const keysService = {
 };
 
 const url =
-    "http://ec2-18-222-183-167.us-east-2.compute.amazonaws.com:1880/files";
+    "https://ec2-18-222-183-167.us-east-2.compute.amazonaws.com:1880/files";
 
 async function getThreadData(fileId, signature) {
     const requestOptions = {
