@@ -8,7 +8,7 @@ module.exports = {
         filename: "[name].[hash].bundle.js",
         chunkFilename: "[name].[hash].chunk.js",
         path: __dirname + "/build/",
-        publicPath: "./"
+        publicPath: "/"
     },
     resolve: {
         extensions: [".webpack.js", ".web.js", ".mjs", ".js", ".json", ".jsx"]
