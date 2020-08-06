@@ -1,45 +1,7 @@
-# shopFS
+# Shop FS
 
-ShopFS is a web3 storage marketplace built upon ethereum smart contracts and private file storage on IPFS using Fleek's space-daemon.
-Frontend dapp built using react, redux, web3 & webpack
+Shop FS is a Interactive IPFS Ethereum Marketplace where sellers can upload decentralized content and ask for a price to be paid in ERC20 Tokens, and the buyers can buy the content and have private access to it with the help of a smooth payment channel  using Money Streaming
 
-## Install Dependencies
+## Docs
 
-- Install latest version of nodejs and npm for the host os.
-- Install ganache-cli and truffle globally
-- Install local dependencies
-```
-npm install -g truffle ganache-cli
-npm install
-```
-
-## Run Locally
-
-Start local ethereum blockchain
-```
-ganache-cli -d -i 4447
-```
-
-Deploy StorageMarketPlace contracts.
-```
-truffle migrate
-```
-
-Start the frontend and serve it on `http://localhost:3000`
-Make sure metamask is connected to local network "localhost:8545" 
-
-```
-npm start
-```
-
-## Run tests
-
-```
-truffle test
-```
-
-## Build App
-
-```
-npm run build
-```
+Please navigate to our [docs](https://shopfs-docs.web.app/) for complete information on the product.
