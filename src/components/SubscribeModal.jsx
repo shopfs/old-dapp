@@ -51,17 +51,22 @@ const SubscribeModal = ({
                             value={days}
                             onChange={e => {
                                 setDays(parseInt(e.target.value));
-                                setAmount(
-                                    Number(seller.amountPerDay) *
-                                        Number(e.target.value)
-                                );
+                                if (e.target.value) {
+                                    setAmount(
+                                        BigInt(
+                                            BigInt(seller.amountPerDay) * BigInt(e.target.value)
+                                        )
+                                    );
+                                }
                             }}
                         />
                         <p>{`Min Number of Days: ${seller.minDurationInDays}`}</p>
+                        <p>{`Amount per Day: ${seller.amountPerDay}`}</p>
                         <p>
-                            {`Total Amount: ${(amount / 10 ** 18).toFixed(
-                                2
-                            )} ${getTokenSymbol(
+                            {`Total Amount: ${(
+                                Number(amount) /
+                                10 ** 18
+                            ).toFixed(2)} ${getTokenSymbol(
                                 seller.tokenAddress
                             )} (${amount})`}
                         </p>

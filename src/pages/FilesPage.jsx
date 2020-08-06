@@ -9,7 +9,8 @@ import "../assets/scss/filesPage.scss";
 const FilesPage = () => {
     const [allFiles, setFiles] = useState();
     const [res, executeQuery] = useQuery({
-        query: allFilesQuery
+        query: allFilesQuery,
+        requestPollicy: 'network-only'
     });
 
     useEffect(() => {

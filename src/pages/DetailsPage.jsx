@@ -29,7 +29,8 @@ const DetailsPage = ({
     const query = fileAndUserQuery(fileId, account);
     // check if the user has already bought the file
     const [res, executeQuery] = useQuery({
-        query: query
+        query: query,
+        requestPollicy: "network-only"
     });
 
     useEffect(() => {

@@ -22,7 +22,6 @@ export const marketService = {
 
 async function getFile(market, fileId) {
     let file = await market.methods.Files(parseInt(fileId)).call();
-    file.price = file.price / 10 ** 18;
     const metadata = await ipfsService.getMetadata(file.metadataHash);
     return { ...file, metadata };
 }
@@ -33,7 +32,7 @@ async function getFileCount(market) {
 
 async function getPriceLimit(market) {
     const priceLimit = await market.methods.priceLimit().call();
-    return priceLimit / 10 ** 18;
+    return priceLimit;
 }
 
 async function checkHashExists(market, hash) {
@@ -55,7 +54,7 @@ async function getAllFiles(market) {
 
 async function sell(market, erc20Address, price, metadataHash) {
     const receipt = await market.methods
-        .sell(erc20Address, BigInt(price * 10 ** 18), metadataHash)
+        .sell(erc20Address, price.toString(), metadataHash)
         .send();
     if (!receipt.status) {
         logReceipt(receipt);

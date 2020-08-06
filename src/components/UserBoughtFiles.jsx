@@ -9,7 +9,8 @@ const UserBoughtFiles = ({ address, isLoggedInUser }) => {
     const [allFiles, setFiles] = useState();
     const [loading, setLoading] = useState(false);
     const [res, executeQuery] = useQuery({
-        query: userBoughtFilesQuery(address)
+        query: userBoughtFilesQuery(address),
+        requestPollicy: 'network-only'
     });
 
     useEffect(() => {
