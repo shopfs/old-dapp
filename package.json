@@ -4,10 +4,12 @@
   "description": "IPFS-ETH-MarketPlace",
   "author": "",
   "license": "MIT",
+  "homepage": "./",
   "scripts": {
     "chain": "ganache-cli -h 0.0.0.0 -d -i 4447",
-    "build": "webpack --config webpack.prod.js",
-    "start": "webpack-dev-server --config webpack.rinkeby.js"
+    "run-local": "webpack-dev-server --config webpack.local.js",
+    "start": "webpack-dev-server --config webpack.rinkeby.js",
+    "build": "webpack --config webpack.prod.js"
   },
   "dependencies": {
     "3box": "^1.20.3",
