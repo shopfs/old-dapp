@@ -32,6 +32,7 @@ const DetailsPage = ({
         query: query,
         requestPollicy: "network-only"
     });
+    const [isSeller, setIsSeller] = useState(false);
 
     useEffect(() => {
         async function getMetadata() {
@@ -67,6 +68,7 @@ const DetailsPage = ({
             const location = localStorage.getItem(parseInt(fileId));
             console.log({ location });
             setLocation(location);
+            setIsSeller(account && account.toLowerCase() === file.seller.address)
         }
     }, [file, connected]);
 
@@ -82,7 +84,7 @@ const DetailsPage = ({
                             className="fileImage"
                             src={`https://ipfs.infura.io/ipfs/${file.metadata.imageHash}`}
                         />
-                        {!isBuyer && (
+                        {!isBuyer && !isSeller && (
                             <a
                                 className="buyButton button"
                                 onClick={e => {
@@ -92,7 +94,7 @@ const DetailsPage = ({
                                 Buy File
                             </a>
                         )}
-                        {(isBuyer || isSubscriber) && (
+                        {(isBuyer || isSubscriber) && !isSeller && (
                             <a
                                 className="downloadButton button"
                                 onClick={async e => {
@@ -108,6 +110,11 @@ const DetailsPage = ({
                             >
                                 Download File
                             </a>
+                        )}
+                        {isSeller && (
+                            <div className="sellerButton">
+                                You sold this file
+                            </div>
                         )}
                     </div>
                     <div className="detailsRightBar">
