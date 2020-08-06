@@ -41,7 +41,8 @@
 }
 
 .buyButton,
-.downloadButton {
+.downloadButton,
+.sellerButton {
     margin-top: 1rem;
     width: 60%;
     align-self: center;
@@ -80,4 +81,17 @@
     .footer_text {
         flex-direction: column;
     }
+}
+
+.sellerButton {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    text-align: center;
+    border: solid 2px $red;
+    border-radius: 0.5rem;
+    font-size: 1.25rem;
+    padding: 1rem 1rem;
 }
