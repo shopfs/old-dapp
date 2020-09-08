@@ -36,15 +36,15 @@ async function uploadFile(bucket, filePath) {
         sourcePaths: [filePath]
     });
     console.log("file added!");
-
-    const sharingResponse = await client.shareBucket({ bucket });
-    console.log("bucket shared");
-    const threadInfo = sharingResponse.getThreadinfo();
-    return {
-        key: threadInfo.getKey(),
-        addressList: threadInfo.getAddressesList(),
-        addresses: threadInfo.getAddressesList().join(", ")
-    };
+    // Unused code not be needed right now commented for reference
+    // const sharingResponse = await client.shareBucket({ bucket });
+    // console.log("bucket shared");
+    // const threadInfo = sharingResponse.getThreadinfo();
+    // return {
+    //     key: threadInfo.getKey(),
+    //     addressList: threadInfo.getAddressesList(),
+    //     addresses: threadInfo.getAddressesList().join(", ")
+    // };
 }
 
 function timeout(ms) {

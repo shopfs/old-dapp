@@ -129,7 +129,7 @@ function uploadAndSellFile(path, metadata, price, priceAddress) {
             const file = path.replace(/^.*[\\\/]/, "");
             console.log({ bucket });
 
-            const threadInfo = await daemonService
+            await daemonService
                 .uploadFile(bucket, path)
                 .catch(error => {
                     throw "Space Daemon not running";
@@ -158,8 +158,8 @@ function uploadAndSellFile(path, metadata, price, priceAddress) {
             console.log({ signature });
 
             await keysService.putThreadData(fileId, {
-                threadInfo,
-                bucket,
+                // threadInfo,
+                // bucket,
                 signature
             });
             console.log("thread data uploaded");
