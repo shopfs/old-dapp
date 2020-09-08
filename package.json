@@ -14,7 +14,7 @@
   "dependencies": {
     "3box": "^1.20.3",
     "3box-comments-react": "^3.0.5",
-    "@fleekhq/space-client": "^0.1.5",
+    "@fleekhq/space-client": "^1.0.0",
     "@openzeppelin/contracts": "2.4.0",
     "@openzeppelin/contracts-ethereum-package": "2.2.3",
     "@openzeppelin/upgrades": "^2.8.0",
